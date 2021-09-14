@@ -1,0 +1,46 @@
+﻿@page "/visitorpage"
+@inject IVisitorService VisitorService
+
+<h3>Visitors</h3>
+
+@if(visitors.Count == 0)
+{
+    <span>Loading Visitors...</span>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Company</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var visitor in visitors)
+            {
+                <tr>
+                    <td>@visitor.Id</td>
+                    <td>@visitor.FirstName</td>
+                    <td>@visitor.LastName</td>
+                    <td>@visitor.Email</td>
+                    <td>@visitor.PhoneNumber</td>
+                    <td>@visitor.Company</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Visitor> visitors = new List<Visitor>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        visitors = await VisitorService.GetVisitors();
+    }
+}
