@@ -47,21 +47,21 @@ namespace NBG.Visitor_Registration.Server.Controllers
             return Ok(visitors);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateVisitor(CreateVisitorDto createVisitorDto)
-        {
-            Visitor visitor = new()
-            {
-                FirstName = createVisitorDto.FirstName,
-                LastName = createVisitorDto.LastName,
-                Email = createVisitorDto.Email,
-                PhoneNumber = createVisitorDto.PhoneNumber,
-                Company = createVisitorDto.Company
-            };
+        //[HttpPost]
+        //public async Task<ActionResult> CreateVisitor(CreateVisitorDto createVisitorDto)
+        //{
+        //    Visitor visitor = new()
+        //    {
+        //        FirstName = createVisitorDto.FirstName,
+        //        LastName = createVisitorDto.LastName,
+        //        Email = createVisitorDto.Email,
+        //        PhoneNumber = createVisitorDto.PhoneNumber,
+        //        Company = createVisitorDto.Company
+        //    };
 
-            await _visitorRepository.Add(visitor);
-            return Ok();
-        }
+        //    await _visitorRepository.Add(visitor);
+        //    return Ok();
+        //}
 
         //[HttpDelete("{id}")]
         //public async Task<ActionResult> DeleteVisitor(int id)
