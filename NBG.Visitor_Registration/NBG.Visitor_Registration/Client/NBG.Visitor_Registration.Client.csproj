@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\NBG.Visitor_Registration.Library\NBG.Visitor_Registration.Library.csproj" />
     <ProjectReference Include="..\Shared\NBG.Visitor_Registration.Shared.csproj" />
   </ItemGroup>
 
