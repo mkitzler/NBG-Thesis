@@ -1,0 +1,63 @@
+﻿@page "/createvisitor"
+@inject HttpClient Http
+@using VisitorAdministration.Dtos
+<div id = "wrapper">
+    <MudTable style="height:100%" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Filter="new Func<VisitorDto,bool>(FilterFunc)">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Visitors</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitorDto, object>(x=>x.FirstName)">First Name</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitorDto, object>(x=>x.LastName)">Last Name</MudTableSortLabel></MudTh>
+            <MudTh>Email</MudTh>
+            <MudTh>Phone Number</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitorDto, object>(x=>x.Company)">Company</MudTableSortLabel></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="First Name">@context.FirstName</MudTd>
+            <MudTd DataLabel="Last Name">@context.LastName</MudTd>
+            <MudTd DataLabel="Email">@context.Email</MudTd>
+            <MudTd DataLabel="Phone Number">@context.PhoneNumber</MudTd>
+            <MudTd DataLabel="Company">@context.Company</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager/>
+        </PagerContent>
+    </MudTable>
+</div>
+@code {
+    private string searchString = "";
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = false;
+    private int[] pageSizeOptions = new int[] { 11 };
+
+    protected override async Task OnInitializedAsync()
+    {
+        Visitors = await Http.GetFromJsonAsync<VisitorDto[]>("https://localhost:44302/api/visitor");
+    }
+
+    private IEnumerable<VisitorDto> Visitors = new List<VisitorDto>();
+
+    private bool FilterFunc(VisitorDto visitor)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (visitor.FirstName.Contains(searchString))
+            return true;
+        if (visitor.LastName.Contains(searchString))
+            return true;
+        if (visitor.Email.Contains(searchString))
+            return true;
+        if (visitor.PhoneNumber.Contains(searchString))
+            return true;
+        if (visitor.Company.Contains(searchString))
+            return true;
+        return false;
+    }
+}
