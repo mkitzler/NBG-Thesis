@@ -39,7 +39,7 @@ namespace VisitorService
             //13.09.2021
             services.AddDbContext<AppDbContext>(
                options => options.UseNpgsql(
-                   Configuration.GetConnectionString("LocalConnection") //appsettings.json
+                   Configuration.GetConnectionString("DefaultConnection") //appsettings.json
                )
             );
             //services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMemDb"));

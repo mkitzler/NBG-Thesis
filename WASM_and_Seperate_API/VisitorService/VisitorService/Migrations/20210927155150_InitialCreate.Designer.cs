@@ -9,8 +9,8 @@ using VisitorService.ModelContexts;
 namespace VisitorService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210924225029_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210927155150_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
