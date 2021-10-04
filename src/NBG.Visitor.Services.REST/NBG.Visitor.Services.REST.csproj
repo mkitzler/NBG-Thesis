@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj" />
+    <ProjectReference Include="..\NBG.Visitor.Services.DB\NBG.Visitor.Services.DB.csproj" />
+  </ItemGroup>
+
+</Project>
