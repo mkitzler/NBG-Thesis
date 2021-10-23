@@ -2,12 +2,22 @@
   "profiles": {
     "NBG.Visitor": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
       "launchBrowser": true,
-      "applicationUrl": "https://fiss.dev.nbg.tech:44303;http://fiss.dev.nbg.tech:5003",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "https://fiss.dev.nbg.tech:44303;http://fiss.dev.nbg.tech:5003",
+      "dotnetRunMessages": "true"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "launchBrowser": true,
+      "launchUrl": "https://fiss.dev.nbg.tech:44303",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://fiss.dev.nbg.tech:44303;http://fiss.dev.nbg.tech:5003"
+      },
+      "distributionName": ""
     }
   }
 }
