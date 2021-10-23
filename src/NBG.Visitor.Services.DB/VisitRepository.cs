@@ -17,6 +17,12 @@ namespace NBG.Visitor.Services.DB
             return await _context.Visitors.FindAsync(firstName, lastName, phoneNumber);
         }
 
+        public async Task AddVisitor(Storage.Models.Visitor visitor)
+        {
+            await _context.Visitors.AddAsync(visitor);
+            await _context.SaveChangesAsync();
+        }
+
         /// <summary>
         /// Adds a visit entry to the Database.
         /// </summary>
@@ -32,9 +38,11 @@ namespace NBG.Visitor.Services.DB
             var visitor = await GetVisitorIfExists(firstName, lastName, phoneNumber);
             if (visitor == null)
             {
-                visitor = _context.Visitors.Add(new Storage.Models.Visitor() {  FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email }).Entity;
+                visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
+                await AddVisitor(visitor);
             }
-            _context.Visits.Add(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = contactPerson, Company = company });
+            await _context.Visits.AddAsync(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = contactPerson, Company = company });
+            await _context.SaveChangesAsync();
         }
     }
 }

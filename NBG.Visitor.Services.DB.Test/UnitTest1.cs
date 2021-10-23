@@ -13,9 +13,11 @@ namespace NBG.Visitor.Services.DB.Test
         }
 
         [Test]
-        public void Test1()
+        public void TestAddVisitor()
         {
-            Assert.Pass();
+            var visitor = new Storage.Models.Visitor() { FirstName = "Max", LastName = "Mustermann", PhoneNumber = "0664 0815" };
+            _repo.AddVisitor(visitor).Wait();
+            Assert.IsNotNull(visitor.Id);
         }
     }
 }
