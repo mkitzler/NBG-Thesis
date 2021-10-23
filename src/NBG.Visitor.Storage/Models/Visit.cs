@@ -6,17 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Services.DB.Models
+namespace NBG.Visitor.Storage.Models
 {
     [Table("Visit")]
-    class Visit
+    public class Visit
     {
         [Column]
         [Required]
         [Key]
         public int Id {  get; set; }
+
         [Column]
         public DateTime VisitStart {  get; set; }
+
         [Column]
         public DateTime VisitEnd {  get; set; }
 

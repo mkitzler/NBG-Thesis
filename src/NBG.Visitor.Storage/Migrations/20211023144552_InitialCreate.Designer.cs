@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NBG.Visitor.Services.DB;
+using NBG.Visitor.Storage;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace NBG.Visitor.Services.DB.Migrations
+namespace NBG.Visitor.Storage.Migrations
 {
     [DbContext(typeof(VisitContext))]
-    [Migration("20211023121859_UpdateColumnNames2")]
-    partial class UpdateColumnNames2
+    [Migration("20211023144552_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace NBG.Visitor.Services.DB.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("NBG.Visitor.Services.DB.Models.Company", b =>
+            modelBuilder.Entity("NBG.Visitor.Storage.Models.Company", b =>
                 {
                     b.Property<string>("CompanyLabel")
                         .HasColumnType("text");
@@ -34,7 +34,7 @@ namespace NBG.Visitor.Services.DB.Migrations
                     b.ToTable("Company");
                 });
 
-            modelBuilder.Entity("NBG.Visitor.Services.DB.Models.ContactPerson", b =>
+            modelBuilder.Entity("NBG.Visitor.Storage.Models.ContactPerson", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -47,7 +47,7 @@ namespace NBG.Visitor.Services.DB.Migrations
                     b.ToTable("ContactPerson");
                 });
 
-            modelBuilder.Entity("NBG.Visitor.Services.DB.Models.Visit", b =>
+            modelBuilder.Entity("NBG.Visitor.Storage.Models.Visit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,8 +62,9 @@ namespace NBG.Visitor.Services.DB.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("VisitEnd")
                         .HasColumnType("timestamp without time zone");
@@ -85,7 +86,7 @@ namespace NBG.Visitor.Services.DB.Migrations
                     b.ToTable("Visit");
                 });
 
-            modelBuilder.Entity("NBG.Visitor.Services.DB.Models.Visitor", b =>
+            modelBuilder.Entity("NBG.Visitor.Storage.Models.Visitor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,21 +110,21 @@ namespace NBG.Visitor.Services.DB.Migrations
                     b.ToTable("Visitor");
                 });
 
-            modelBuilder.Entity("NBG.Visitor.Services.DB.Models.Visit", b =>
+            modelBuilder.Entity("NBG.Visitor.Storage.Models.Visit", b =>
                 {
-                    b.HasOne("NBG.Visitor.Services.DB.Models.Company", "Company")
+                    b.HasOne("NBG.Visitor.Storage.Models.Company", "Company")
                         .WithMany("Visits")
                         .HasForeignKey("CompanyLabel")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NBG.Visitor.Services.DB.Models.ContactPerson", "ContactPerson")
+                    b.HasOne("NBG.Visitor.Storage.Models.ContactPerson", "ContactPerson")
                         .WithMany("Visits")
                         .HasForeignKey("ContactPersonName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NBG.Visitor.Services.DB.Models.Visitor", "Visitor")
+                    b.HasOne("NBG.Visitor.Storage.Models.Visitor", "Visitor")
                         .WithMany("Visits")
                         .HasForeignKey("VisitorId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -136,17 +137,17 @@ namespace NBG.Visitor.Services.DB.Migrations
                     b.Navigation("Visitor");
                 });
 
-            modelBuilder.Entity("NBG.Visitor.Services.DB.Models.Company", b =>
+            modelBuilder.Entity("NBG.Visitor.Storage.Models.Company", b =>
                 {
                     b.Navigation("Visits");
                 });
 
-            modelBuilder.Entity("NBG.Visitor.Services.DB.Models.ContactPerson", b =>
+            modelBuilder.Entity("NBG.Visitor.Storage.Models.ContactPerson", b =>
                 {
                     b.Navigation("Visits");
                 });
 
-            modelBuilder.Entity("NBG.Visitor.Services.DB.Models.Visitor", b =>
+            modelBuilder.Entity("NBG.Visitor.Storage.Models.Visitor", b =>
                 {
                     b.Navigation("Visits");
                 });

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace NBG.Visitor.Services.DB.Migrations
+namespace NBG.Visitor.Storage.Migrations
 {
-    public partial class initialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,10 +54,10 @@ namespace NBG.Visitor.Services.DB.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     VisitStart = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     VisitEnd = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    VisitId = table.Column<int>(type: "integer", nullable: false),
+                    VisitorId = table.Column<int>(type: "integer", nullable: false),
                     ContactPersonName = table.Column<string>(type: "text", nullable: false),
                     CompanyLabel = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false)
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -75,8 +75,8 @@ namespace NBG.Visitor.Services.DB.Migrations
                         principalColumn: "Name",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Visit_Visitor_VisitId",
-                        column: x => x.VisitId,
+                        name: "FK_Visit_Visitor_VisitorId",
+                        column: x => x.VisitorId,
                         principalTable: "Visitor",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -105,9 +105,9 @@ namespace NBG.Visitor.Services.DB.Migrations
                 column: "ContactPersonName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Visit_VisitId",
+                name: "IX_Visit_VisitorId",
                 table: "Visit",
-                column: "VisitId");
+                column: "VisitorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

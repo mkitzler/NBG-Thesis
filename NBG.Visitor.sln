@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31624.102
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31815.197
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor", "src\NBG.Visitor\NBG.Visitor.csproj", "{FB092C38-2A59-4D4D-A6DF-02F867CC3C53}"
 EndProject
@@ -15,17 +15,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{75CE8240-15E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2312383E-68D0-4AEA-997D-21CF49FEC265}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBG.Visitor.Blazor", "src\NBG.Visitor.Blazor\NBG.Visitor.Blazor.csproj", "{2E290CD3-5482-4B25-B022-0F26A0EA53C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Blazor", "src\NBG.Visitor.Blazor\NBG.Visitor.Blazor.csproj", "{2E290CD3-5482-4B25-B022-0F26A0EA53C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBG.Visitor.Domain", "src\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj", "{6686B746-4885-472D-AF45-87B10B349AA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Domain", "src\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj", "{6686B746-4885-472D-AF45-87B10B349AA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBG.Visitor.Services.DB", "src\NBG.Visitor.Services.DB\NBG.Visitor.Services.DB.csproj", "{31FFC608-264D-4488-A605-1CAA30FF054E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Services.DB", "src\NBG.Visitor.Services.DB\NBG.Visitor.Services.DB.csproj", "{31FFC608-264D-4488-A605-1CAA30FF054E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBG.Visitor.Services.REST", "src\NBG.Visitor.Services.REST\NBG.Visitor.Services.REST.csproj", "{0CBEE1B4-B253-4A27-B195-7414782D9E1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Services.REST", "src\NBG.Visitor.Services.REST\NBG.Visitor.Services.REST.csproj", "{0CBEE1B4-B253-4A27-B195-7414782D9E1E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBG.Services.Clients.REST", "src\NBG.Services.Clients.REST\NBG.Services.Clients.REST.csproj", "{CB378188-BD5A-46FC-9DA6-F3B6C11EE64B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Services.Clients.REST", "src\NBG.Services.Clients.REST\NBG.Services.Clients.REST.csproj", "{CB378188-BD5A-46FC-9DA6-F3B6C11EE64B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBG.Visitor.Storage", "src\NBG.Visitor.Storage\NBG.Visitor.Storage.csproj", "{A37209E6-FBAC-4403-9F03-EC23AC64C5C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Storage", "src\NBG.Visitor.Storage\NBG.Visitor.Storage.csproj", "{A37209E6-FBAC-4403-9F03-EC23AC64C5C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

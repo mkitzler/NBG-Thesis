@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NBG.Visitor.Services.DB.Models;
+using NBG.Visitor.Storage.Models;
 
-namespace NBG.Visitor.Services.DB
+namespace NBG.Visitor.Storage
 {
-    class VisitContext : DbContext
+    public class VisitContext : DbContext
     {
-        public DbSet<Company> Companies {  get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<ContactPerson> ContactPeople { get; set; }
         public DbSet<Models.Visitor> Visitors {  get; set; }
         public DbSet<Visit> Visits { get; set; }
@@ -24,6 +24,13 @@ namespace NBG.Visitor.Services.DB
             builder.Entity<ContactPerson>(entity => {
                 entity.HasIndex(e => e.Name).IsUnique();
             });
+
+            builder.Entity<Visit>()
+                .Property(e => e.Status)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => Enum.Parse<VisitStatus>(v)
+                );
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

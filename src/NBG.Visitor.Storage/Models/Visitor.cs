@@ -6,15 +6,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Services.DB.Models
+namespace NBG.Visitor.Storage.Models
 {
     [Table("Visitor")]
-    class Visitor
+    public class Visitor
     {
+        [Column]
+        [Required]
+        [Key]
         public int Id {  get; set; }
+
+        [Column]
+        [Required]
         public string FirstName {  get; set; }
+
+        [Column]
+        [Required]
         public string LastName {  get; set; }
+
+        [Column]
+        [Required]
         public string PhoneNumber {  get; set; }
+
+        [Column]
         public string Email {  get; set; }
 
         [ForeignKey("VisitorId")]

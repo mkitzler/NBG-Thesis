@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Services.DB.Models
+namespace NBG.Visitor.Storage.Models
 {
     [Table("ContactPerson")]
-    class ContactPerson
+    public class ContactPerson
     {
         [Column]
         [Required]
