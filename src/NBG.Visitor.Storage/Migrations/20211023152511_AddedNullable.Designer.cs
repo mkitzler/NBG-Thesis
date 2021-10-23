@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NBG.Visitor.Storage;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NBG.Visitor.Storage.Migrations
 {
     [DbContext(typeof(VisitContext))]
-    partial class VisitContextModelSnapshot : ModelSnapshot
+    [Migration("20211023152511_AddedNullable")]
+    partial class AddedNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,29 +24,27 @@ namespace NBG.Visitor.Storage.Migrations
             modelBuilder.Entity("NBG.Visitor.Storage.Models.Company", b =>
                 {
                     b.Property<string>("CompanyLabel")
-                        .HasColumnType("text")
-                        .HasColumnName("company_label");
+                        .HasColumnType("text");
 
                     b.HasKey("CompanyLabel");
 
                     b.HasIndex("CompanyLabel")
                         .IsUnique();
 
-                    b.ToTable("company");
+                    b.ToTable("Company");
                 });
 
             modelBuilder.Entity("NBG.Visitor.Storage.Models.ContactPerson", b =>
                 {
                     b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
+                        .HasColumnType("text");
 
                     b.HasKey("Name");
 
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("contact_person");
+                    b.ToTable("ContactPerson");
                 });
 
             modelBuilder.Entity("NBG.Visitor.Storage.Models.Visit", b =>
@@ -52,7 +52,6 @@ namespace NBG.Visitor.Storage.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CompanyLabel")
@@ -63,18 +62,16 @@ namespace NBG.Visitor.Storage.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("status");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("VisitEnd")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("visit_end");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("VisitStart")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("visit_start");
+                        .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("VisitorId")
+                    b.Property<int?>("VisitorId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -85,7 +82,7 @@ namespace NBG.Visitor.Storage.Migrations
 
                     b.HasIndex("VisitorId");
 
-                    b.ToTable("visit");
+                    b.ToTable("Visit");
                 });
 
             modelBuilder.Entity("NBG.Visitor.Storage.Models.Visitor", b =>
@@ -93,31 +90,26 @@ namespace NBG.Visitor.Storage.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Email")
-                        .HasColumnType("text")
-                        .HasColumnName("email");
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("first_name");
+                        .HasColumnType("text");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("last_name");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("phone_number");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("visitor");
+                    b.ToTable("Visitor");
                 });
 
             modelBuilder.Entity("NBG.Visitor.Storage.Models.Visit", b =>

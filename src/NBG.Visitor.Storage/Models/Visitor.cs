@@ -8,28 +8,28 @@ using System.Threading.Tasks;
 
 namespace NBG.Visitor.Storage.Models
 {
-    [Table("Visitor")]
+    [Table("visitor")]
     public class Visitor
     {
-        [Column]
+        [Column("id")]
         [Required]
         [Key]
         public int Id {  get; set; }
 
-        [Column]
+        [Column("first_name")]
         [Required]
         public string FirstName {  get; set; }
 
-        [Column]
+        [Column("last_name")]
         [Required]
         public string LastName {  get; set; }
 
-        [Column]
+        [Column("phone_number")]
         [Required]
         public string PhoneNumber {  get; set; }
 
-        [Column]
-        public string Email {  get; set; }
+        [Column("email")]
+        public string? Email {  get; set; }
 
         [ForeignKey("VisitorId")]
         public List<Visit> Visits {  get; set; }

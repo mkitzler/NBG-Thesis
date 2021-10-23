@@ -8,37 +8,32 @@ using System.Threading.Tasks;
 
 namespace NBG.Visitor.Storage.Models
 {
-    [Table("Visit")]
+    [Table("visit")]
     public class Visit
     {
-        [Column]
+        [Column("id")]
         [Required]
         [Key]
         public int Id {  get; set; }
 
-        [Column]
-        public DateTime VisitStart {  get; set; }
+        [Column("visit_start")]
+        public DateTime? VisitStart {  get; set; }
 
-        [Column]
-        public DateTime VisitEnd {  get; set; }
+        [Column("visit_end")]
+        public DateTime? VisitEnd {  get; set; }
 
-
-        [Column]
+        [Column("visitor_id")]
         [Required]
-        public int VisitorId {  get; set; }
-        public Visitor Visitor {  get; set; }
+        public Visitor? Visitor {  get; set; }
 
-        [Column]
+        [Column("contact_person_name")]
+        public ContactPerson? ContactPerson {  get; set; }
+
+        [Column("company_label")]
+        public Company? Company {  get; set; }
+
+        [Column("status")]
         [Required]
-        public string ContactPersonName { get; set; }
-        public ContactPerson ContactPerson {  get; set; }
-
-        [Column]
-        [Required]
-        public string CompanyLabel { get; set; }
-        public Company Company {  get; set; }
-
-        [Column]
         public VisitStatus Status {  get; set; }
     }
 }

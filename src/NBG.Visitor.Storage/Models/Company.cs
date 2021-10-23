@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace NBG.Visitor.Storage.Models
 {
-    [Table("Company")]
+    [Table("company")]
     public class Company
     {
-        [Column]
+        [Column("company_label")]
         [Required]
         [Key]
         public string CompanyLabel {  get; set; }

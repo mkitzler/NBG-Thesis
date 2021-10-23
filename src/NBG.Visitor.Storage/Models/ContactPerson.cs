@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace NBG.Visitor.Storage.Models
 {
-    [Table("ContactPerson")]
+    [Table("contact_person")]
     public class ContactPerson
     {
-        [Column]
+        [Column("name")]
         [Required]
         [Key]
         public string Name {  get; set; }
