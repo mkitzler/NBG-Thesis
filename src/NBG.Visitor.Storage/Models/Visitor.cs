@@ -12,9 +12,9 @@ namespace NBG.Visitor.Storage.Models
     public class Visitor
     {
         [Column("id")]
-        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id {  get; set; }
+        public int? Id {  get; set; }
 
         [Column("first_name")]
         [Required]

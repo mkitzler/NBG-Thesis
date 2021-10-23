@@ -12,9 +12,9 @@ namespace NBG.Visitor.Storage.Models
     public class Visit
     {
         [Column("id")]
-        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int Id {  get; set; }
+        public int? Id {  get; set; }
 
         [Column("visit_start")]
         public DateTime? VisitStart {  get; set; }
