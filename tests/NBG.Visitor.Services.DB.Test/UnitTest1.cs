@@ -1,6 +1,7 @@
 using NBG.Visitor.Storage.Models;
 using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NBG.Visitor.Services.DB.Test
@@ -14,6 +15,8 @@ namespace NBG.Visitor.Services.DB.Test
         {
 
         }
+
+        #region Write
 
         [Test]
         public async Task TestAddVisitor()
@@ -45,5 +48,36 @@ namespace NBG.Visitor.Services.DB.Test
             await _repo.RemoveVisit(visit);
             await _repo.RemoveVisitor(visitor);
         }
+        #endregion
+
+        #region Read
+        [Test]
+        public async Task TestReadVisit()
+        {
+            var visit = await _repo.ReadVisit(28);
+            Assert.IsTrue(visit.ContactPerson.Name == "Andreas Steiner");
+        }
+
+        [Test]
+        public async Task TestReadVisitor()
+        {
+            var visitor = await _repo.ReadVisitor(1);
+            Assert.IsTrue(visitor.Email == "pduplantier0@opera.com");
+        }
+
+        [Test]
+        public async Task TestReadAllVisits()
+        {
+            var visits = await _repo.ReadAllVisits();
+            Assert.IsTrue(visits.First().ContactPerson.Name == "Andreas Steiner");
+        }
+
+        [Test]
+        public async Task TestReadAllVisitors()
+        {
+            var visitors = await _repo.ReadAllVisitors();
+            Assert.IsTrue(visitors.First().Email == "pduplantier0@opera.com");
+        }
+        #endregion
     }
 }

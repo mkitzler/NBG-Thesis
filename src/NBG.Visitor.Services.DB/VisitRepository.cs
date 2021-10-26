@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NBG.Visitor.Storage;
 using NBG.Visitor.Storage.Models;
 
@@ -80,5 +81,34 @@ namespace NBG.Visitor.Services.DB
             await Task.Run(() => _context.Visits.Remove(visit));
             await _context.SaveChangesAsync();
         }
+
+        #region Read
+        public async Task<Visit> ReadVisit(int id)
+        {
+            return await _context.Visits
+                .Include(v => v.Visitor)
+                .Include(v => v.ContactPerson)
+                .Include(v => v.Company)
+                .FirstOrDefaultAsync(v => v.Id == id);
+        }
+        public async Task<IEnumerable<Visit>> ReadAllVisits()
+        {
+            return await _context.Visits
+                .Select(v => new Visit
+                {
+                    ContactPerson = v.ContactPerson,
+                    Company = v.Company,
+                    Visitor = v.Visitor
+                }).ToListAsync();
+        }
+        public async Task<Storage.Models.Visitor> ReadVisitor(int id)
+        {
+            return await _context.Visitors.FindAsync(id);
+        }
+        public async Task<IEnumerable<Storage.Models.Visitor>> ReadAllVisitors()
+        {
+            return await _context.Visitors.ToListAsync();
+        }
+        #endregion
     }
 }
