@@ -1,9 +1,18 @@
-﻿<div class="welcomeBox">
-    <h1>@welcome</h1>
-</div>
+﻿@using MudBlazor;
 
-<footer>test</footer>
+<MudContainer >
+    <MudText Typo="Typo.h1">@welcome</MudText>
+    <MudElement HtmlTag="img" Class="flagButton" src="german.jpg" @onclick=@(() => ChangeLang("DE"))/>
+    <MudElement HtmlTag="img" Class="flagButton" src=""/>
+    <MudButton>@register</MudButton>
+</MudContainer>
 
 @code {
     string welcome = "Willkommen bei NBG";
+    string register = "Registrieren";
+
+    public void ChangeLang(string to)
+    {
+        
+    }
 }
