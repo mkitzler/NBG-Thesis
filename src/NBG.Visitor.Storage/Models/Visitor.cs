@@ -31,7 +31,7 @@ namespace NBG.Visitor.Storage.Models
         [Column("email")]
         public string? Email {  get; set; }
 
-        [ForeignKey("VisitorId")]
-        public List<Visit> Visits {  get; set; }
+        [ForeignKey("visitor_id")]
+        public List<Visit> Visits { get; set; }
     }
 }

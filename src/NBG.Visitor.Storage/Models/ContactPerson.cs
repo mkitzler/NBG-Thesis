@@ -16,7 +16,7 @@ namespace NBG.Visitor.Storage.Models
         [Key]
         public string Name {  get; set; }
 
-        [ForeignKey("ContactPersonName")]
+        [ForeignKey("contact_person_name")]
         public List<Visit> Visits {  get; set; }
     }
 }

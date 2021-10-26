@@ -16,7 +16,7 @@ namespace NBG.Visitor.Storage.Models
         [Key]
         public string CompanyLabel {  get; set; }
 
-        [ForeignKey("CompanyLabel")]
+        [ForeignKey("company_label")]
         public List<Visit> Visits { get; set; }
     }
 }
