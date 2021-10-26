@@ -14,13 +14,33 @@ namespace NBG.Visitor.Services.DB
 
         public async Task<Storage.Models.Visitor> GetVisitorIfExists(string firstName, string lastName, string phoneNumber)
         {
-            return await _context.Visitors.FindAsync(firstName, lastName, phoneNumber);
+            return await Task.Run(_context.Visitors.Where(x => x.FirstName == firstName && x.LastName == lastName && x.PhoneNumber == phoneNumber).FirstOrDefault);
         }
 
         public async Task AddVisitor(Storage.Models.Visitor visitor)
         {
             await _context.Visitors.AddAsync(visitor);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<ContactPerson[]> GetContactPeople()
+        {
+            return await Task.Run(_context.ContactPeople.ToArray);
+        }
+
+        public async Task<ContactPerson> GetContactPersonByName(string name)
+        {
+            return await _context.ContactPeople.FindAsync(name);
+        }
+        
+        public async Task<Company[]> GetCompanies()
+        {
+            return await Task.Run(_context.Companies.ToArray);
+        }
+
+        public async Task<Company> GetCompanyByLabel(string label)
+        {
+            return await _context.Companies.FindAsync(label);
         }
 
         /// <summary>
@@ -33,7 +53,7 @@ namespace NBG.Visitor.Services.DB
         /// <param name="lastName"></param>
         /// <param name="phoneNumber"></param>
         /// <param name="email"></param>
-        public async Task AddVisit(DateTime start, ContactPerson contactPerson, Company company, string firstName, string lastName, string phoneNumber, string email = null)
+        public async Task<Visit> AddVisit(DateTime start, ContactPerson contactPerson, Company company, string firstName, string lastName, string phoneNumber, string email = null)
         {
             var visitor = await GetVisitorIfExists(firstName, lastName, phoneNumber);
             if (visitor == null)
@@ -41,8 +61,9 @@ namespace NBG.Visitor.Services.DB
                 visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
                 await AddVisitor(visitor);
             }
-            await _context.Visits.AddAsync(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = contactPerson, Company = company });
+            var visit = (await _context.Visits.AddAsync(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = contactPerson, Company = company })).Entity;
             await _context.SaveChangesAsync();
+            return visit;
         }
     }
 }
