@@ -12,15 +12,10 @@ namespace NBG.Visitor.Services.DB
     {
         private VisitContext _context = new();
 
+        // get
         public async Task<Storage.Models.Visitor> GetVisitorIfExists(string firstName, string lastName, string phoneNumber)
         {
             return await Task.Run(_context.Visitors.Where(x => x.FirstName == firstName && x.LastName == lastName && x.PhoneNumber == phoneNumber).FirstOrDefault);
-        }
-
-        public async Task AddVisitor(Storage.Models.Visitor visitor)
-        {
-            await _context.Visitors.AddAsync(visitor);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<ContactPerson[]> GetContactPeople()
@@ -41,6 +36,13 @@ namespace NBG.Visitor.Services.DB
         public async Task<Company> GetCompanyByLabel(string label)
         {
             return await _context.Companies.FindAsync(label);
+        }
+
+        // add
+        public async Task AddVisitor(Storage.Models.Visitor visitor)
+        {
+            await _context.Visitors.AddAsync(visitor);
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -64,6 +66,19 @@ namespace NBG.Visitor.Services.DB
             var visit = (await _context.Visits.AddAsync(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = contactPerson, Company = company })).Entity;
             await _context.SaveChangesAsync();
             return visit;
+        }
+
+        // remove
+        public async Task RemoveVisitor(Storage.Models.Visitor visitor)
+        {
+            await Task.Run(() => _context.Visitors.Remove(visitor));
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveVisit(Visit visit)
+        {
+            await Task.Run(() => _context.Visits.Remove(visit));
+            await _context.SaveChangesAsync();
         }
     }
 }
