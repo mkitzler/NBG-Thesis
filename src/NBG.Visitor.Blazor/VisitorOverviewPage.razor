@@ -7,13 +7,12 @@
 
 <h3>VisitorOverviewPage</h3>
 
-@if (Visits == null)
+@if (!isLoaded)
 {
     <p><em>Loading Visitors...</em></p>
 }
 else
 {
-    <h1>test</h1>
     <MudTable style="height:100%" Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
         <ToolBarContent>
             <MudText Typo="Typo.h6">Visits</MudText>
@@ -24,19 +23,21 @@ else
             <MudTh>Id</MudTh>
             <MudTh>Start</MudTh>
             <MudTh>End</MudTh>
-            <MudTh>Visitor Id</MudTh>
-            <MudTh>Contact Person Id</MudTh>
+            <MudTh>First Name</MudTh>
+            <MudTh>Last Name</MudTh>
+            <MudTh>Contact Person</MudTh>
             <MudTh>Company</MudTh>
             <MudTh>Status</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Id">@context.Id</MudTd>
-            <MudTd DataLabel="Start">@context.VisitStart</MudTd>
-            <MudTd DataLabel="End">@context.VisitEnd</MudTd>
-            <MudTd DataLabel="Visitor Id">@context.Visitor.FirstName</MudTd>
-            <MudTd DataLabel="Contact Person Id">@context.ContactPerson.Name</MudTd>
-            <MudTd DataLabel="Company">@context.Company.CompanyLabel</MudTd>
-            <MudTd DataLabel="Status">@context.Status</MudTd>
+            <MudTd>@context.Id</MudTd>
+            <MudTd>@context.VisitStart</MudTd>
+            <MudTd>@context.VisitEnd</MudTd>
+            <MudTd>@context.Visitor.FirstName</MudTd>
+            <MudTd>@context.Visitor.LastName</MudTd>
+            <MudTd>@context.ContactPerson.Name</MudTd>
+            <MudTd>@context.Company.CompanyLabel</MudTd>
+            <MudTd>@context.Status</MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager/>
@@ -45,6 +46,7 @@ else
 }
 
 @code {
+    bool isLoaded;
     private string searchString = "";
     private bool dense = false;
     private bool hover = true;
@@ -60,7 +62,8 @@ else
         foreach(var v in visits){
             Visits.Add(mapper.Map<VisitDto>(v));
         }
-        
+        isLoaded = true;
+
     }
     
     private List<VisitDto> Visits = new List<VisitDto>();

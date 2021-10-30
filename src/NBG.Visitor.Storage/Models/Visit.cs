@@ -16,6 +16,7 @@ namespace NBG.Visitor.Storage.Models
         [Key]
         public int? Id {  get; set; }
 
+        #nullable enable
         [Column("visit_start")]
         public DateTime? VisitStart {  get; set; }
 
@@ -31,6 +32,7 @@ namespace NBG.Visitor.Storage.Models
 
         [Column("company_label")]
         public Company? Company {  get; set; }
+        #nullable disable
 
         [Column("status")]
         [Required]

@@ -28,8 +28,10 @@ namespace NBG.Visitor.Storage.Models
         [Required]
         public string PhoneNumber {  get; set; }
 
+        #nullable enable
         [Column("email")]
         public string? Email {  get; set; }
+        #nullable disable
 
         [ForeignKey("visitor_id")]
         public List<Visit> Visits { get; set; }

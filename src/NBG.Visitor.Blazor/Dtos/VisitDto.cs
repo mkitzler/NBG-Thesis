@@ -10,22 +10,13 @@ namespace NBG.Visitor.Blazor.Dtos
     {
         public VisitDto(VisitorDto visitor, ContactPersonDto contactPerson, CompanyDto company)
         {
-            if(company  == null)
-                Company = new CompanyDto();
-            else
-                Company = company;
-            if (contactPerson == null)
-                ContactPerson = new ContactPersonDto();
-            else
-                ContactPerson = contactPerson;
-            if (contactPerson == null)
-                Visitor = new VisitorDto();
-            else
-                Visitor = visitor;
+            Company = company  == null ? new CompanyDto() : company;
+            ContactPerson = contactPerson == null ? new ContactPersonDto() : contactPerson;
+            Visitor = contactPerson == null ? new VisitorDto() : visitor;
         }
         public int Id { get; set; }
-        public DateTime VisitStart { get; set; }
-        public DateTime VisitEnd { get; set; }
+        public DateTime? VisitStart { get; set; }
+        public DateTime? VisitEnd { get; set; }
         public VisitorDto Visitor { get; set; }
         public ContactPersonDto ContactPerson { get; set; }
         public CompanyDto Company { get; set; }
