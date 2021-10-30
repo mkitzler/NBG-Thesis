@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using MudBlazor.Services;
+using AutoMapper;
+using NBG.Visitor.Blazor;
 
 namespace NBG.Visitor
 {

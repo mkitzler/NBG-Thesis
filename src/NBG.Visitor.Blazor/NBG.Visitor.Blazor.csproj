@@ -10,12 +10,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
     <PackageReference Include="MudBlazor" Version="5.1.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj" />
+    <ProjectReference Include="..\NBG.Visitor.Services.DB\NBG.Visitor.Services.DB.csproj" />
   </ItemGroup>
 
 </Project>

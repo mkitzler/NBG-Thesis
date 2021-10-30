@@ -98,7 +98,12 @@ namespace NBG.Visitor.Services.DB
                 {
                     ContactPerson = v.ContactPerson,
                     Company = v.Company,
-                    Visitor = v.Visitor
+                    Visitor = v.Visitor,
+                    Id = v.Id,
+                    VisitStart = v.VisitStart,
+                    VisitEnd = v.VisitEnd,
+                    Status = v.Status
+
                 }).ToListAsync();
         }
         public async Task<Storage.Models.Visitor> ReadVisitor(int id)

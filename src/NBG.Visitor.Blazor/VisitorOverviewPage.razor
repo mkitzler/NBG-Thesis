@@ -1,0 +1,68 @@
+﻿@using AutoMapper
+@using MudBlazor;
+@using NBG.Visitor.Blazor.Dtos
+@using NBG.Visitor;
+@using NBG.Visitor.Services.DB;
+@using NBG.Visitor.Blazor.Mapping;
+
+<h3>VisitorOverviewPage</h3>
+
+@if (Visits == null)
+{
+    <p><em>Loading Visitors...</em></p>
+}
+else
+{
+    <h1>test</h1>
+    <MudTable style="height:100%" Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Visits</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Start</MudTh>
+            <MudTh>End</MudTh>
+            <MudTh>Visitor Id</MudTh>
+            <MudTh>Contact Person Id</MudTh>
+            <MudTh>Company</MudTh>
+            <MudTh>Status</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Id">@context.Id</MudTd>
+            <MudTd DataLabel="Start">@context.VisitStart</MudTd>
+            <MudTd DataLabel="End">@context.VisitEnd</MudTd>
+            <MudTd DataLabel="Visitor Id">@context.Visitor.FirstName</MudTd>
+            <MudTd DataLabel="Contact Person Id">@context.ContactPerson.Name</MudTd>
+            <MudTd DataLabel="Company">@context.Company.CompanyLabel</MudTd>
+            <MudTd DataLabel="Status">@context.Status</MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager/>
+        </PagerContent>
+    </MudTable>
+}
+
+@code {
+    private string searchString = "";
+    private bool dense = false;
+    private bool hover = true;
+    private bool striped = true;
+    private bool bordered = false;
+    private int[] pageSizeOptions = new int[] { 11 };
+
+    protected override async Task OnInitializedAsync()
+    {
+        var config = new AutoMapperConfiguration().Configure();
+        var mapper = config.CreateMapper();
+        var visits = await _repo.ReadAllVisits();
+        foreach(var v in visits){
+            Visits.Add(mapper.Map<VisitDto>(v));
+        }
+        
+    }
+    
+    private List<VisitDto> Visits = new List<VisitDto>();
+    private VisitRepository _repo = new VisitRepository();
+}
