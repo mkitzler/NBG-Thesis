@@ -1,0 +1,12 @@
+﻿.flag {
+    height: 10em;
+}
+
+.footer {
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #F00C;
+}
