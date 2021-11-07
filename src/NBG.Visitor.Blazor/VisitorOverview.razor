@@ -11,29 +11,31 @@
 }
 else
 {
-    <MudTable style="height:100%" Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped">
+    <MudTable style="height:100%" Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation=1 Class="ml-0 mr-0">
         <ToolBarContent>
             <MudText Typo="Typo.h6">Visits</MudText>
             <MudSpacer />
             <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh>Id</MudTh>
             <MudTh>Start</MudTh>
             <MudTh>End</MudTh>
-            <MudTh>First Name</MudTh>
-            <MudTh>Last Name</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">Last Name</MudTableSortLabel></MudTh>
             <MudTh>Contact Person</MudTh>
-            <MudTh>Company</MudTh>
-            <MudTh>Status</MudTh>
+            <MudTh>Email</MudTh>
+            <MudTh>Phone Number</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Company.CompanyLabel)">Company</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd>@context.Id</MudTd>
             <MudTd>@context.VisitStart</MudTd>
             <MudTd>@context.VisitEnd</MudTd>
             <MudTd>@context.Visitor.FirstName</MudTd>
             <MudTd>@context.Visitor.LastName</MudTd>
             <MudTd>@context.ContactPerson.Name</MudTd>
+            <MudTd>@context.Visitor.Email</MudTd>
+            <MudTd>@context.Visitor.PhoneNumber</MudTd>
             <MudTd>@context.Company.CompanyLabel</MudTd>
             <MudTd>
                 @context.Status
