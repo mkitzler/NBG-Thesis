@@ -5,8 +5,6 @@
 @using NBG.Visitor.Services.DB;
 @using NBG.Visitor.Blazor.Mapping;
 
-<h3>VisitorOverviewPage</h3>
-
 @if (!isLoaded)
 {
     <p><em>Loading Visitors...</em></p>
@@ -37,7 +35,13 @@ else
             <MudTd>@context.Visitor.LastName</MudTd>
             <MudTd>@context.ContactPerson.Name</MudTd>
             <MudTd>@context.Company.CompanyLabel</MudTd>
-            <MudTd>@context.Status</MudTd>
+            <MudTd>
+                @context.Status
+                @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+                {
+                    <MudFab OnClick=@(()=>SignOff(@context)) Size=Size.Small Class="ml-5" DisableElevation=true Icon=@Icons.Filled.Logout></MudFab>
+                }
+            </MudTd>
         </RowTemplate>
         <PagerContent>
             <MudTablePager/>
@@ -59,13 +63,22 @@ else
         var config = new AutoMapperConfiguration().Configure();
         var mapper = config.CreateMapper();
         var visits = await _repo.ReadAllVisits();
-        foreach(var v in visits){
-            Visits.Add(mapper.Map<VisitDto>(v));
+        foreach(var visit in visits){
+            Visits.Add(mapper.Map<VisitDto>(visit));
         }
         isLoaded = true;
-
     }
-    
+
+    public async Task SignOff(VisitDto visit)
+    {
+        var config = new AutoMapperConfiguration().Configure();
+        var mapper = config.CreateMapper();
+
+        visit.VisitEnd = DateTime.Now;
+        visit.Status = VisitStatusDto.VISIT_OVER.ToString();
+        await _repo.UpdateVisit(mapper.Map<Storage.Models.Visit>(visit));
+    }
+
     private List<VisitDto> Visits = new List<VisitDto>();
     private VisitRepository _repo = new VisitRepository();
 }

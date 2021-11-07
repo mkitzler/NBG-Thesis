@@ -115,5 +115,24 @@ namespace NBG.Visitor.Services.DB
             return await _context.Visitors.ToListAsync();
         }
         #endregion
+
+        public async Task UpdateVisit(Visit visit)
+        {
+            var local = _context.Set<Visit>()
+            .Local
+            .FirstOrDefault(v => v.Id.Equals(visit.Id));
+
+            // check if local is not null 
+            if (local != null)
+            {
+                // detach
+                _context.Entry(local).State = EntityState.Detached;
+            }
+            // set Modified flag in your entry
+            _context.Entry(visit).State = EntityState.Modified;
+
+            _context.Update<Visit>(visit);
+            await _context.SaveChangesAsync();
+        }
     }
 }
