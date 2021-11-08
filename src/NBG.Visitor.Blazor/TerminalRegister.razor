@@ -3,21 +3,32 @@
 <MudGrid Justify=Justify.Center>
     <MudItem lg=7>
         <MudGrid Justify=Justify.Center Style="text-align: center;">
-            <MudItem xs=12>
-                <MudText Typo="Typo.h1">@title</MudText>
+            <MudItem xs=6>
+                <MudField Label="Vorname" Variant=Variant.Outlined/>
+            </MudItem>
+            <MudItem xs=6>
+                <MudField @bind="" Label="Nachname" Variant=Variant.Outlined/>
             </MudItem>
             <MudItem xs=12>
-                <MudButton Variant=Variant.Filled Color=Color.Primary OnClick=Register>@register</MudButton>
+                <MudField @bind="" Label="Telefonnummer" Variant=Variant.Outlined/>
+            </MudItem>
+            <MudItem xs=6>
+                <MudField @bind="" Label="E-Mail" Variant=Variant.Outlined/>
+            </MudItem>
+            <MudItem xs=6>
+                <MudField @bind="" Label="Unternehmen" Variant=Variant.Outlined/>
+            </MudItem>
+            <MudItem xs=6>
+                <MudTextField @bind-Value="test" Label="Ansprechperson" Variant=Variant.Outlined/>
             </MudItem>
         </MudGrid>
     </MudItem>
 </MudGrid>
 
 @code {
-    string title = "Registrieren";
-    string register = "Registrieren";
+    private string test;
 
-    public void Register()
+    public void Next()
     {
         
     }
