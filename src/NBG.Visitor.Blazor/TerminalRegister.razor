@@ -1,8 +1,5 @@
 ﻿@using MudBlazor;
 
-@*DEBUG*@
-@inject IDialogService DialogService;
-
 <MudGrid Justify=Justify.Center>
     <MudItem lg=7>
         <MudGrid Justify=Justify.Center Style="text-align: center;">
@@ -22,28 +19,6 @@
     </MudItem>
 </MudGrid>
 
-<footer class="footer">
-    <MudGrid Justify=Justify.Center>
-        <MudItem lg=4>
-            <MudText Typo=Typo.h4 Style=@($"color: {Colors.Grey.Lighten2}")>
-                @sidenote
-            </MudText>
-        </MudItem>
-    </MudGrid>
-</footer>
-
 @code {
-    string welcome = "Willkommen bei NBG";
-    string register = "Registrieren";
-    string sidenote = "Für Besucheranmeldung / -abmeldung Ticket scannen";
-
-    public void ChangeLang(string to)
-    {
-        DialogService.Show<MudText>(to);
-    }
-
-    public void Register()
-    {
-        
-    }
+    string 
 }
