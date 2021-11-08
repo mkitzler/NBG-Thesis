@@ -4,6 +4,14 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="VisitorOverview.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="VisitorOverview.razor.css" />
+  </ItemGroup>
+
   
   <ItemGroup>
     <SupportedPlatform Include="browser" />

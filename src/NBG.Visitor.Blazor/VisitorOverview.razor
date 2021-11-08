@@ -5,6 +5,8 @@
 @using NBG.Visitor.Services.DB;
 @using NBG.Visitor.Blazor.Mapping;
 
+@inject IDialogService DialogService
+
 @if (!isLoaded)
 {
     <p><em>Loading Visitors...</em></p>
@@ -18,27 +20,46 @@ else
             <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh>Start</MudTh>
-            <MudTh>End</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Id)">Id</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">Last Name</MudTableSortLabel></MudTh>
-            <MudTh>Contact Person</MudTh>
-            <MudTh>Email</MudTh>
             <MudTh>Phone Number</MudTh>
+            <MudTh>Email</MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Company.CompanyLabel)">Company</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
+            <MudTh>Contact Person</MudTh>
+            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<VisitDto, object>(x=>x.VisitStart)">Start</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
+            <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd>@context.VisitStart</MudTd>
-            <MudTd>@context.VisitEnd</MudTd>
+            <MudTd>@context.Id</MudTd>
             <MudTd>@context.Visitor.FirstName</MudTd>
             <MudTd>@context.Visitor.LastName</MudTd>
-            <MudTd>@context.ContactPerson.Name</MudTd>
-            <MudTd>@context.Visitor.Email</MudTd>
             <MudTd>@context.Visitor.PhoneNumber</MudTd>
+            <MudTd>@context.Visitor.Email</MudTd>
             <MudTd>@context.Company.CompanyLabel</MudTd>
-            <MudTd>
-                @context.Status
+            <MudTd>@context.ContactPerson.Name</MudTd>
+            <MudTd>@context.VisitStart</MudTd>
+            <MudTd>@context.VisitEnd</MudTd>
+            <MudTd Class = "status">
+                @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+                {
+                    //<MudChip Color="Color.Success">@context.Status</MudChip>
+                    //<div><MudText Color="Color.Success">@context.Status</MudText></div>
+                    <MudChip Color="Color.Success" Size=Size.Small>Visit Active</MudChip> 
+                }
+                else if(@context.Status == VisitStatusDto.VISIT_OVER.ToString()){
+                    //<div><MudText Color="Color.Error">@context.Status</MudText></div>
+                    <MudChip Color="Color.Error" Size=Size.Small>Visit Over</MudChip>
+                }
+                else{
+                    //<div><MudText Color="Color.Warning">@context.Status</MudText></div>
+                    <MudChip Color="Color.Warning" Size=Size.Small>Visit Pending</MudChip>
+                }
+            </MudTd>
+            <MudTd Style = "padding-top:0px;padding-bottom:0px;">
+                <MudFab OnClick=@(()=>Delete(@context)) Size=Size.Small Class="ml-5" DisableElevation=true Icon=@Icons.Filled.Delete></MudFab>
                 @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
                 {
                     <MudFab OnClick=@(()=>SignOff(@context)) Size=Size.Small Class="ml-5" DisableElevation=true Icon=@Icons.Filled.Logout></MudFab>
@@ -53,6 +74,7 @@ else
 
 @code {
     bool isLoaded;
+
     private string searchString = "";
     private bool dense = false;
     private bool hover = true;
@@ -62,8 +84,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var config = new AutoMapperConfiguration().Configure();
-        var mapper = config.CreateMapper();
+        var mapper = ConfigMapper();
+
         var visits = await _repo.ReadAllVisits();
         foreach(var visit in visits){
             Visits.Add(mapper.Map<VisitDto>(visit));
@@ -73,12 +95,49 @@ else
 
     public async Task SignOff(VisitDto visit)
     {
-        var config = new AutoMapperConfiguration().Configure();
-        var mapper = config.CreateMapper();
+        var mapper = ConfigMapper();
 
-        visit.VisitEnd = DateTime.Now;
-        visit.Status = VisitStatusDto.VISIT_OVER.ToString();
-        await _repo.UpdateVisit(mapper.Map<Storage.Models.Visit>(visit));
+        var parameters = new DialogParameters { ["visit"]=visit };
+        parameters.Add("ContentText", "Do you really want to manually sign off this visitor? This process cannot be undone.");
+        parameters.Add("ButtonText", "Sign Off");
+        parameters.Add("Color", Color.Warning);
+
+        var dialog = DialogService.Show<Dialog>("Sign Off Visitor", parameters);
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            visit.VisitEnd = DateTime.Now;
+            visit.Status = VisitStatusDto.VISIT_OVER.ToString();
+            await _repo.UpdateVisit(mapper.Map<Storage.Models.Visit>(visit));
+        }
+    }
+
+    public async Task Delete(VisitDto visit)
+    {
+        var mapper = ConfigMapper();
+
+        var parameters = new DialogParameters { ["visit"]=visit };
+        parameters.Add("ContentText", "Do you really want to delete this visitor? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var dialog = DialogService.Show<Dialog>("Delete Visitor", parameters);
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await _repo.RemoveVisit(mapper.Map<Storage.Models.Visit>(visit));
+            Visits.Remove(visit);
+        }
+    }
+
+    public IMapper ConfigMapper()
+    {
+        var config = new AutoMapperConfiguration().Configure();
+        return config.CreateMapper();
     }
 
     private List<VisitDto> Visits = new List<VisitDto>();

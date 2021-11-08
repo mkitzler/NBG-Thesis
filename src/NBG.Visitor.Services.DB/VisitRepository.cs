@@ -78,6 +78,19 @@ namespace NBG.Visitor.Services.DB
 
         public async Task RemoveVisit(Visit visit)
         {
+            var local = _context.Set<Visit>()
+            .Local
+            .FirstOrDefault(v => v.Id.Equals(visit.Id));
+
+            // check if local is not null 
+            if (local != null)
+            {
+                // detach
+                _context.Entry(local).State = EntityState.Detached;
+            }
+            // set Modified flag in your entry
+            _context.Entry(visit).State = EntityState.Deleted;
+
             await Task.Run(() => _context.Visits.Remove(visit));
             await _context.SaveChangesAsync();
         }
