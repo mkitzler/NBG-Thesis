@@ -23,12 +23,12 @@
                     <MudTextField T="string" Label="Unternehmen" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudSelect T="string" Label="Ansprechperson" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld">
+                    @*<MudSelect T="string" Label="Ansprechperson" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld">
                         @foreach(ContactPerson cp in vr.GetContactPeople().Result)
                         {
                             <MudSelectItem Value="@(cp.Name)" />
                         }
-                    </MudSelect>
+                    </MudSelect> Causes Freeze*@
                 </MudItem>
             </MudGrid>
         </MudForm>

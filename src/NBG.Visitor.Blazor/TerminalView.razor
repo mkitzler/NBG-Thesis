@@ -1,0 +1,19 @@
+﻿@if (subpage == 0)
+{
+    <TerminalHome OnNext=OnNext />
+}
+else
+{    
+    <TerminalRegister />
+}
+
+@code {
+    private int subpage = 0;
+
+    private void OnNext()
+    {
+        Console.WriteLine("Next Event");
+        subpage++;
+        StateHasChanged();
+    }
+}

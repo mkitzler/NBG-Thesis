@@ -16,7 +16,7 @@
                 <MudButton Style="padding: 0;" OnClick=@(() => ChangeLang("EN"))><img class="flag" src="./_content/NBG.Visitor.Blazor/images/english.jpg"/></MudButton>
             </MudItem>
             <MudItem xs=12>
-                <MudButton Link="/terminalregister" Variant=Variant.Filled Color=Color.Primary>@register</MudButton>
+                <MudButton OnClick=@(async () => await OnNext.InvokeAsync()) Variant=Variant.Filled Color=Color.Primary>@register</MudButton>
             </MudItem>
         </MudGrid>
     </MudItem>
@@ -33,6 +33,9 @@
 </footer>
 
 @code {
+    [Parameter]
+    public EventCallback OnNext { get; set; }
+
     // Placeholder for multiple languages
     string welcome = "Willkommen bei NBG";
     string register = "Registrieren";
