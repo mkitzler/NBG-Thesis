@@ -1,35 +1,44 @@
 ﻿@using MudBlazor;
+@using System.ComponentModel.DataAnnotations;
+@using NBG.Visitor.Storage.Models;
+@using NBG.Visitor.Services.DB;
 
 <MudGrid Justify=Justify.Center>
     <MudItem lg=7>
-        <MudGrid Justify=Justify.Center Style="text-align: center;">
-            <MudItem xs=6>
-                <MudField Label="Vorname" Variant=Variant.Outlined/>
-            </MudItem>
-            <MudItem xs=6>
-                <MudField @bind="" Label="Nachname" Variant=Variant.Outlined/>
-            </MudItem>
-            <MudItem xs=12>
-                <MudField @bind="" Label="Telefonnummer" Variant=Variant.Outlined/>
-            </MudItem>
-            <MudItem xs=6>
-                <MudField @bind="" Label="E-Mail" Variant=Variant.Outlined/>
-            </MudItem>
-            <MudItem xs=6>
-                <MudField @bind="" Label="Unternehmen" Variant=Variant.Outlined/>
-            </MudItem>
-            <MudItem xs=6>
-                <MudTextField @bind-Value="test" Label="Ansprechperson" Variant=Variant.Outlined/>
-            </MudItem>
-        </MudGrid>
+        <MudForm @ref="visitorForm">
+            <MudGrid Justify=Justify.Center Style="text-align: center;">
+                <MudItem xs=6>
+                    <MudTextField T="string" bind-Value="FirstName" Label="Vorname" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                </MudItem>
+                <MudItem xs=6>
+                    <MudTextField T="string" Label="Nachname" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                </MudItem>
+                <MudItem xs=12>
+                    <MudTextField T="string" Label="Telefonnummer" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                </MudItem>
+                <MudItem xs=12>
+                    <MudTextField T="string" Label="E-Mail" Variant=Variant.Outlined Validation="@(new EmailAddressAttribute() {ErrorMessage = "Die E-Mail ist ungültig"})" />
+                </MudItem>
+                <MudItem xs=12>
+                    <MudTextField T="string" Label="Unternehmen" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                </MudItem>
+                <MudItem xs=12>
+                    <MudSelect T="string" Label="Ansprechperson" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld">
+                        @foreach(ContactPerson cp in vr.GetContactPeople().Result)
+                        {
+                            <MudSelectItem Value="@(cp.Name)" />
+                        }
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
     </MudItem>
 </MudGrid>
 
 @code {
-    private string test;
+    private VisitRepository vr = new();
 
-    public void Next()
-    {
-        
-    }
+    private MudForm visitorForm;
+
+    public string FirstName { get; private set; }
 }
