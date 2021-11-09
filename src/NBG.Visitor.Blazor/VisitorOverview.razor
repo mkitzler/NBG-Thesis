@@ -13,7 +13,7 @@
 }
 else
 {
-    <MudTable style="height:100%" Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation=1 Class="ml-0 mr-0">
+    <MudTable style="height:100%" Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation=1 Class="ml-0 mr-0" Filter="new Func<VisitDto,bool>(FilterFunc)">
         <ToolBarContent>
             <MudText Typo="Typo.h6">Visits</MudText>
             <MudSpacer />
@@ -26,7 +26,7 @@ else
             <MudTh>Phone Number</MudTh>
             <MudTh>Email</MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Company.CompanyLabel)">Company</MudTableSortLabel></MudTh>
-            <MudTh>Contact Person</MudTh>
+            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.ContactPerson.Name)">Contact Person</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<VisitDto, object>(x=>x.VisitStart)">Start</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
@@ -132,6 +132,27 @@ else
             await _repo.RemoveVisit(mapper.Map<Storage.Models.Visit>(visit));
             Visits.Remove(visit);
         }
+    }
+
+    private bool FilterFunc(VisitDto visit)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (visit.Visitor.FirstName.ToLower().Contains(searchString.ToLower()))
+            return true;
+        if (visit.Visitor.LastName.ToLower().Contains(searchString.ToLower()))
+            return true;
+        if (visit.Visitor.Email.ToLower().Contains(searchString.ToLower()))
+            return true;
+        if (visit.Visitor.PhoneNumber.ToLower().Contains(searchString.ToLower()))
+            return true;
+        if (visit.ContactPerson.Name != null)
+            if (visit.ContactPerson.Name.ToLower().Contains(searchString.ToLower()))
+            return true;
+        if (visit.Company.CompanyLabel != null)
+            if (visit.Company.CompanyLabel.ToLower().Contains(searchString.ToLower()))
+            return true;
+        return false;
     }
 
     public IMapper ConfigMapper()
