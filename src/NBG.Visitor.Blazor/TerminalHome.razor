@@ -16,7 +16,7 @@
                 <MudButton Style="padding: 0;" OnClick=@(() => ChangeLang("EN"))><img class="flag" src="./_content/NBG.Visitor.Blazor/images/english.jpg"/></MudButton>
             </MudItem>
             <MudItem xs=12>
-                <MudButton OnClick=@(async () => await OnNext.InvokeAsync()) Variant=Variant.Filled Color=Color.Primary>@register</MudButton>
+                <MudButton OnClick=@(async () => await OnNext.InvokeAsync()) Variant=Variant.Filled Size=Size.Large EndIcon=@Icons.Outlined.ArrowForward Color=Color.Primary>@register</MudButton>
             </MudItem>
         </MudGrid>
     </MudItem>
@@ -25,7 +25,7 @@
 <footer class="footer">
     <MudGrid Justify=Justify.Center>
         <MudItem lg=4>
-            <MudText Typo=Typo.h4 Style=@($"color: {Colors.Grey.Lighten2}")>
+            <MudText Typo=Typo.h4 Style="color: #b71c1c">
                 @sidenote
             </MudText>
         </MudItem>
