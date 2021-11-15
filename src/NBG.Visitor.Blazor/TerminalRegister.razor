@@ -4,33 +4,35 @@
 @using NBG.Visitor.Storage.Dtos;
 @using AutoMapper;
 
+@inject IVisitService vs;
+
 <MudGrid Justify=Justify.Center>
     <MudItem lg=7>
         <MudForm @ref="visitorForm">
             <MudGrid Justify=Justify.Center Style="text-align: center;">
                 <MudItem xs=6>
-                    <MudTextField T="string" bind-Value="FirstName" Label="Vorname" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                    <MudTextField T="string" bind-Value="FormData.FirstName" Label="Vorname" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
                 <MudItem xs=6>
-                    <MudTextField T="string" Label="Nachname" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                    <MudTextField T="string" bind-Value="FormData.LastName" Label="Nachname" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" Label="Telefonnummer" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                    <MudTextField T="string" bind-Value="FormData.PhoneNumber" Label="Telefonnummer" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" Label="E-Mail" Variant=Variant.Outlined Validation="@(new EmailAddressAttribute() {ErrorMessage = "Die E-Mail ist ungültig"})" />
+                    <MudTextField T="string" bind-Value="FormData.Email" Label="E-Mail" Variant=Variant.Outlined Validation="@(new EmailAddressAttribute() {ErrorMessage = "Die E-Mail ist ungültig"})" />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" Label="Unternehmen" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                    <MudTextField T="string" bind-Value="FormData.Company" Label="Unternehmen" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" Label="Ansprechperson" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                    <MudTextField T="string" bind-Value="FormData.ContactPerson" Label="Ansprechperson" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
                 <MudItem xs=6 Style="text-align: left;">
-                    <MudButton Variant=Variant.Filled Size=Size.Large EndIcon=@Icons.Outlined.ArrowForward Color=Color.Primary>Zurück</MudButton>
+                    <MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Variant=Variant.Filled Size=Size.Large StartIcon=@Icons.Outlined.ArrowBack Color=Color.Primary>Zurück</MudButton>
                 </MudItem>
                 <MudItem xs=6 Style="text-align: right;">
-                    <MudButton Variant=Variant.Filled Size=Size.Large EndIcon=@Icons.Outlined.ArrowForward Color=Color.Primary>Weiter</MudButton>
+                    <MudButton OnClick=@(async () => await OnNext.InvokeAsync()) Variant=Variant.Filled Size=Size.Large EndIcon=@Icons.Outlined.ArrowForward Color=Color.Primary>Weiter</MudButton>
                 </MudItem>
             </MudGrid>
         </MudForm>
@@ -38,7 +40,12 @@
 </MudGrid>
 
 @code {
-    private MudForm visitorForm;
+    [Parameter]
+    public EventCallback OnNext { get; set; }
+    [Parameter]
+    public EventCallback OnBack { get; set; }
+    [Parameter]
+    public RegisterFormData FormData { get; set; }
 
-    public string FirstName { get; private set; }
+    private MudForm visitorForm;
 }

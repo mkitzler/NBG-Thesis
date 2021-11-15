@@ -1,19 +1,17 @@
-﻿@if (subpage == 0)
+﻿@using NBG.Visitor.Storage.Dtos;
+
+@switch (subpage)
 {
-    <TerminalHome OnNext=OnNext />
-}
-else
-{    
-    <TerminalRegister />
+    case 0:
+        <TerminalHome OnNext=@(() => subpage = 1) />
+        break;
+    case 1:
+        <TerminalRegister FormData=form OnBack=@(() => subpage = 0) OnNext=@(() => Console.WriteLine(form)) />
+        break;
 }
 
 @code {
     private int subpage = 0;
 
-    private void OnNext()
-    {
-        Console.WriteLine("Next Event");
-        subpage++;
-        StateHasChanged();
-    }
+    private RegisterFormData form = new();
 }
