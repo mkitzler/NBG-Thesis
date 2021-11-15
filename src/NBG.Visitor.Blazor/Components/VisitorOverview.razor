@@ -1,10 +1,8 @@
-﻿@using AutoMapper
-@using MudBlazor;
-@using NBG.Visitor.Storage.Dtos
-@using NBG.Visitor;
-@using NBG.Visitor.Services.DB;
+﻿@using MudBlazor;
+@using NBG.Visitor.Domain;
+@using NBG.Visitor.Storage.Dtos;
 
-@inject IVisitService _repo;
+@inject IVisitService DataRepository;
 @inject IDialogService DialogService
 
 @if (!isLoaded)
@@ -84,7 +82,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var visits = await _repo.ReadAllVisits();
+        var visits = await DataRepository.ReadAllVisits();
         foreach(var visit in visits){
             Visits.Add(visit);
         }
@@ -106,7 +104,7 @@ else
         {
             visit.VisitEnd = DateTime.Now;
             visit.Status = VisitStatusDto.VISIT_OVER.ToString();
-            await _repo.UpdateVisit(visit);
+            await DataRepository.UpdateVisit(visit);
         }
     }
 
@@ -123,7 +121,7 @@ else
 
         if (!result.Cancelled)
         {
-            await _repo.RemoveVisit(visit);
+            await DataRepository.RemoveVisit(visit);
             Visits.Remove(visit);
         }
     }

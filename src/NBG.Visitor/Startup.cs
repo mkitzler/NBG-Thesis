@@ -11,6 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using MudBlazor.Services;
 using NBG.Visitor.Services.DB;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using NBG.Visitor.Domain;
 
 namespace NBG.Visitor
 {
@@ -86,6 +88,9 @@ namespace NBG.Visitor
             services.AddSingleton<IVisitService, VisitService>();
 
             services.AddMudServices();
+
+            services.AddDbContextFactory<VisitContext>(options => 
+                options.UseNpgsql("Host=nbg.ftp.sh;Database=nbg;Username=nbg;Password=nbg1234"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj" />
-    <ProjectReference Include="..\NBG.Visitor.Storage\NBG.Visitor.Storage.csproj" />
   </ItemGroup>
 
 </Project>

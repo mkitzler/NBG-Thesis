@@ -11,6 +11,10 @@ namespace NBG.Visitor.Services.DB
         public DbSet<Storage.Models.Visitor> Visitors {  get; set; }
         public DbSet<Visit> Visits { get; set; }
 
+        public VisitContext(DbContextOptions<VisitContext> options) : base(options)
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Company>(entity => {
@@ -28,8 +32,5 @@ namespace NBG.Visitor.Services.DB
                     v => Enum.Parse<VisitStatus>(v)
                 );
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=nbg.ftp.sh;Database=nbg;Username=nbg;Password=nbg1234");
     }
 }

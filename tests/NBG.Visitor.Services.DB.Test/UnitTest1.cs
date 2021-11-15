@@ -8,7 +8,7 @@ namespace NBG.Visitor.Services.DB.Test
 {
     public class Tests
     {
-        private VisitContext _repo = new();
+        //private VisitContext _repo = new();
 
         [SetUp]
         public void Setup()

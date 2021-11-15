@@ -1,12 +1,9 @@
 ﻿using NBG.Visitor.Storage.Dtos;
-using NBG.Visitor.Storage.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Services.DB
+namespace NBG.Visitor.Domain
 {
     public interface IVisitService
     {
