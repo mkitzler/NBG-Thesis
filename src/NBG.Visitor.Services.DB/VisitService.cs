@@ -15,7 +15,7 @@ namespace NBG.Visitor.Services.DB
     public class VisitService : IVisitService
     {
         private readonly IDbContextFactory<VisitContext> _contextFactory;
-        private readonly IMapper mapper = (new AutoMapperConfiguration()).Configure().CreateMapper();
+        private readonly IMapper mapper = AutoMapperConfiguration.Configure().CreateMapper();
 
         public VisitService(IDbContextFactory<VisitContext> dbContextFactory) 
         {

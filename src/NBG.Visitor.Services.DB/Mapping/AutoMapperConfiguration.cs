@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace NBG.Visitor.Services.DB.Mapping
 {
-    public class AutoMapperConfiguration
+    public static class AutoMapperConfiguration
     {
-        public MapperConfiguration Configure()
+        public static MapperConfiguration Configure()
         {
             var config = new MapperConfiguration(cfg =>
             {
