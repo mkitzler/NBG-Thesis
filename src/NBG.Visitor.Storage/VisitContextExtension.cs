@@ -69,32 +69,10 @@ namespace NBG.Visitor.Services.DB
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        /// <summary>
-        /// Adds a visit entry to the Database.
-        /// </summary>
-        /// <remarks>
-        /// Will also create a new visitor if not already in Database.
-        /// </remarks>
-        /// <param name="_context"></param>
-        /// <param name="start"></param>
-        /// <param name="contactPerson"></param>
-        /// <param name="company"></param>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <param name="phoneNumber"></param>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        public static async Task<Visit> AddVisit(this VisitContext _context, DateTime start, ContactPerson contactPerson, Company company, string firstName, string lastName, string phoneNumber, string email = null)
+        public static async Task AddVisit(this VisitContext _context, Visit visit)
         {
-            var visitor = await _context.ReadVisitorIfExists(firstName, lastName, phoneNumber).ConfigureAwait(false);
-            if (visitor == null)
-            {
-                visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
-                await _context.AddVisitor(visitor).ConfigureAwait(false);
-            }
-            var visit = (await _context.Visits.AddAsync(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = contactPerson, Company = company }).ConfigureAwait(false)).Entity;
-            await _context.SaveChangesAsync().ConfigureAwait(false);
-            return visit;
+            await _context.Visits.AddAsync(visit).ConfigureAwait(false);
+            await _context.SaveChangesAsync().ConfigureAwait (false);
         }
         #endregion
 

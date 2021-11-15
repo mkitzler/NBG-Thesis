@@ -1,8 +1,8 @@
 ﻿@using MudBlazor;
 @using System.ComponentModel.DataAnnotations;
 @using NBG.Visitor.Services.DB;
-@using AutoMapper;
 @using NBG.Visitor.Storage.Dtos;
+@using AutoMapper;
 
 @inject VisitContext vc;
 
@@ -26,15 +26,7 @@
                     <MudTextField T="string" Label="Unternehmen" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudSelect T="string" Label="Ansprechperson" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld">
-                        @if (contactPeople != null)
-                        {
-                            @foreach (ContactPersonDto cp in contactPeople)
-                            {
-                                <MudSelectItem Value="@(cp.Name)" />
-                            }
-                        }
-                    </MudSelect>
+                    <MudTextField T="string" Label="Ansprechperson" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
                 <MudItem xs=12 Style="text-align: right;">
                     <MudButton Variant=Variant.Filled Size=Size.Large EndIcon=@Icons.Outlined.ArrowForward Color=Color.Primary>Weiter</MudButton>
@@ -45,21 +37,7 @@
 </MudGrid>
 
 @code {
-    public IMapper ConfigMapper()
-    {
-        var config = new AutoMapperConfiguration().Configure();
-        return config.CreateMapper();
-    }
-    private ContactPersonDto[] contactPeople;
-
     private MudForm visitorForm;
 
     public string FirstName { get; private set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        var mapper = ConfigMapper();
-        contactPeople = (await vc.ReadContactPeople()).Select((cp) => mapper.Map<ContactPersonDto>(cp)).ToArray();
-        StateHasChanged();
-    }
 }

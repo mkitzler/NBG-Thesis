@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NBG.Visitor.Storage.Dtos;
+using NBG.Visitor.Storage.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,8 @@ namespace NBG.Visitor.Services.DB
 {
     public interface IVisitService
     {
-        Task<Storage.Models.Visitor> ReadVisitorIfExists(string firstName, string lastName, string phoneNumber);
+        Task<VisitorDto> ReadVisitorIfExists(string firstName, string lastName, string phoneNumber);
+
+        Task AddVisit(DateTime start, ContactPerson contactPerson, Company company, string firstName, string lastName, string phoneNumber, string email = null);
     }
 }
