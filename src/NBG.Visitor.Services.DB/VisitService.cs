@@ -19,7 +19,7 @@ namespace NBG.Visitor.Services.DB
 
         public async Task<VisitorDto> ReadVisitorIfExists(string firstName, string lastName, string phoneNumber)
         {
-            return mapper.Map<VisitorDto>(await _context.Visitors.Where(x => x.FirstName == firstName && x.LastName == lastName && x.PhoneNumber == phoneNumber).FirstOrDefaultAsync().ConfigureAwait(false));
+            return mapper.Map<VisitorDto>(await _context.Visitors.FirstOrDefaultAsync(x => x.FirstName == firstName && x.LastName == lastName && x.PhoneNumber == phoneNumber).ConfigureAwait(false));
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace NBG.Visitor.Services.DB
         /// <param name="phoneNumber"></param>
         /// <param name="email"></param>
         /// <returns></returns>
-        public async Task AddVisit(DateTime start, ContactPerson contactPerson, Company company, string firstName, string lastName, string phoneNumber, string email = null)
+        public async Task AddVisit(DateTime start, ContactPersonDto contactPerson, CompanyDto company, string firstName, string lastName, string phoneNumber, string email = null)
         {
             var visitor = mapper.Map<Storage.Models.Visitor>(await ReadVisitorIfExists(firstName, lastName, phoneNumber).ConfigureAwait(false));
             if (visitor == null)
@@ -45,7 +45,27 @@ namespace NBG.Visitor.Services.DB
                 visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
                 await _context.AddVisitor(visitor).ConfigureAwait(false);
             }
-            await _context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = contactPerson, Company = company }).ConfigureAwait(false);
+            await _context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = mapper.Map<ContactPerson>(contactPerson), Company = mapper.Map<Company>(company) }).ConfigureAwait(false);
+        }
+
+        public async Task<List<VisitDto>> ReadAllVisits()
+        {
+            return await _context.ReadAllVisits()
+                .Include(v => v.Visitor)
+                .Include(v => v.ContactPerson)
+                .Include(v => v.Company)
+                .Select(v => mapper.Map<VisitDto>(v))
+                .ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task RemoveVisit(VisitDto visit)
+        {
+            await _context.RemoveVisit(mapper.Map<Visit>(visit)).ConfigureAwait(false);
+        }
+
+        public async Task UpdateVisit(VisitDto visit)
+        {
+            await _context.UpdateVisit(mapper.Map<Visit>(visit)).ConfigureAwait(false);
         }
     }
 }

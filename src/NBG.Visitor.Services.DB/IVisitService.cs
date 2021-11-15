@@ -12,6 +12,12 @@ namespace NBG.Visitor.Services.DB
     {
         Task<VisitorDto> ReadVisitorIfExists(string firstName, string lastName, string phoneNumber);
 
-        Task AddVisit(DateTime start, ContactPerson contactPerson, Company company, string firstName, string lastName, string phoneNumber, string email = null);
+        Task AddVisit(DateTime start, ContactPersonDto contactPerson, CompanyDto company, string firstName, string lastName, string phoneNumber, string email = null);
+
+        Task<List<VisitDto>> ReadAllVisits();
+
+        Task RemoveVisit(VisitDto visit);
+
+        Task UpdateVisit(VisitDto visit);
     }
 }

@@ -1,12 +1,10 @@
 ﻿@using AutoMapper
 @using MudBlazor;
-@using NBG.Visitor.Blazor.Dtos
+@using NBG.Visitor.Storage.Dtos
 @using NBG.Visitor;
 @using NBG.Visitor.Services.DB;
-@using NBG.Visitor.Blazor.Mapping;
 
-@inject VisitContext _repo;
-
+@inject IVisitService _repo;
 @inject IDialogService DialogService
 
 @if (!isLoaded)
@@ -86,19 +84,15 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var mapper = ConfigMapper();
-
         var visits = await _repo.ReadAllVisits();
         foreach(var visit in visits){
-            Visits.Add(mapper.Map<VisitDto>(visit));
+            Visits.Add(visit);
         }
         isLoaded = true;
     }
 
     public async Task SignOff(VisitDto visit)
     {
-        var mapper = ConfigMapper();
-
         var parameters = new DialogParameters { ["visit"]=visit };
         parameters.Add("ContentText", "Do you really want to manually sign off this visitor? This process cannot be undone.");
         parameters.Add("ButtonText", "Sign Off");
@@ -112,14 +106,12 @@ else
         {
             visit.VisitEnd = DateTime.Now;
             visit.Status = VisitStatusDto.VISIT_OVER.ToString();
-            await _repo.UpdateVisit(mapper.Map<Storage.Models.Visit>(visit));
+            await _repo.UpdateVisit(visit);
         }
     }
 
     public async Task Delete(VisitDto visit)
     {
-        var mapper = ConfigMapper();
-
         var parameters = new DialogParameters { ["visit"]=visit };
         parameters.Add("ContentText", "Do you really want to delete this visitor? This process cannot be undone.");
         parameters.Add("ButtonText", "Delete");
@@ -131,7 +123,7 @@ else
 
         if (!result.Cancelled)
         {
-            await _repo.RemoveVisit(mapper.Map<Storage.Models.Visit>(visit));
+            await _repo.RemoveVisit(visit);
             Visits.Remove(visit);
         }
     }
@@ -155,12 +147,6 @@ else
             if (visit.Company.CompanyLabel.ToLower().Contains(searchString.ToLower()))
             return true;
         return false;
-    }
-
-    public IMapper ConfigMapper()
-    {
-        var config = new AutoMapperConfiguration().Configure();
-        return config.CreateMapper();
     }
 
     private List<VisitDto> Visits = new List<VisitDto>();

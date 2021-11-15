@@ -31,26 +31,11 @@ namespace NBG.Visitor.Services.DB
         }
         public static async Task<Visit> ReadVisit(this VisitContext _context, int id)
         {
-            return await _context.Visits
-                .Include(v => v.Visitor)
-                .Include(v => v.ContactPerson)
-                .Include(v => v.Company)
-                .FirstOrDefaultAsync(v => v.Id == id).ConfigureAwait(false);
+            return await _context.Visits.FirstOrDefaultAsync(v => v.Id == id).ConfigureAwait(false);
         }
-        public static async Task<IEnumerable<Visit>> ReadAllVisits(this VisitContext _context)
+        public static DbSet<Visit> ReadAllVisits(this VisitContext _context)
         {
-            return await _context.Visits
-                .Select(v => new Visit
-                {
-                    ContactPerson = v.ContactPerson,
-                    Company = v.Company,
-                    Visitor = v.Visitor,
-                    Id = v.Id,
-                    VisitStart = v.VisitStart,
-                    VisitEnd = v.VisitEnd,
-                    Status = v.Status
-
-                }).ToListAsync().ConfigureAwait(false);
+            return _context.Visits;
         }
         public static async Task<Storage.Models.Visitor> ReadVisitor(this VisitContext _context, int id)
         {
@@ -85,18 +70,18 @@ namespace NBG.Visitor.Services.DB
 
         public static async Task RemoveVisit(this VisitContext _context, Visit visit)
         {
-            var local = _context.Set<Visit>()
-                .Local
-                .FirstOrDefault(v => v.Id.Equals(visit.Id));
+            //var local = _context.Set<Visit>()
+            //    .Local
+            //    .FirstOrDefault(v => v.Id.Equals(visit.Id));
 
-            // check if local is not null 
-            if (local != null)
-            {
-                // detach
-                _context.Entry(local).State = EntityState.Detached;
-            }
-            // set Modified flag in your entry
-            _context.Entry(visit).State = EntityState.Deleted;
+            //// check if local is not null 
+            //if (local != null)
+            //{
+            //    // detach
+            //    _context.Entry(local).State = EntityState.Detached;
+            //}
+            //// set Modified flag in your entry
+            //_context.Entry(visit).State = EntityState.Deleted;
 
             _context.Visits.Remove(visit);
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -106,18 +91,18 @@ namespace NBG.Visitor.Services.DB
         #region Update
         public static async Task UpdateVisit(this VisitContext _context, Visit visit)
         {
-            var local = _context.Set<Visit>()
-            .Local
-            .FirstOrDefault(v => v.Id.Equals(visit.Id));
+            //var local = _context.Set<Visit>()
+            //.Local
+            //.FirstOrDefault(v => v.Id.Equals(visit.Id));
 
-            // check if local is not null 
-            if (local != null)
-            {
-                // detach
-                _context.Entry(local).State = EntityState.Detached;
-            }
-            // set Modified flag in your entry
-            _context.Entry(visit).State = EntityState.Modified;
+            //// check if local is not null 
+            //if (local != null)
+            //{
+            //    // detach
+            //    _context.Entry(local).State = EntityState.Detached;
+            //}
+            //// set Modified flag in your entry
+            //_context.Entry(visit).State = EntityState.Modified;
 
             _context.Update<Visit>(visit);
             await _context.SaveChangesAsync().ConfigureAwait(false);
