@@ -4,8 +4,6 @@
 @using NBG.Visitor.Storage.Dtos;
 @using AutoMapper;
 
-@inject VisitContext vc;
-
 <MudGrid Justify=Justify.Center>
     <MudItem lg=7>
         <MudForm @ref="visitorForm">
@@ -28,7 +26,10 @@
                 <MudItem xs=12>
                     <MudTextField T="string" Label="Ansprechperson" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
-                <MudItem xs=12 Style="text-align: right;">
+                <MudItem xs=6 Style="text-align: left;">
+                    <MudButton Variant=Variant.Filled Size=Size.Large EndIcon=@Icons.Outlined.ArrowForward Color=Color.Primary>Zurück</MudButton>
+                </MudItem>
+                <MudItem xs=6 Style="text-align: right;">
                     <MudButton Variant=Variant.Filled Size=Size.Large EndIcon=@Icons.Outlined.ArrowForward Color=Color.Primary>Weiter</MudButton>
                 </MudItem>
             </MudGrid>

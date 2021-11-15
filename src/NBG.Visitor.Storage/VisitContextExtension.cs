@@ -70,18 +70,18 @@ namespace NBG.Visitor.Services.DB
 
         public static async Task RemoveVisit(this VisitContext _context, Visit visit)
         {
-            //var local = _context.Set<Visit>()
-            //    .Local
-            //    .FirstOrDefault(v => v.Id.Equals(visit.Id));
+            var local = _context.Set<Visit>()
+                .Local
+                .FirstOrDefault(v => v.Id.Equals(visit.Id));
 
-            //// check if local is not null 
-            //if (local != null)
-            //{
-            //    // detach
-            //    _context.Entry(local).State = EntityState.Detached;
-            //}
-            //// set Modified flag in your entry
-            //_context.Entry(visit).State = EntityState.Deleted;
+            // check if local is not null 
+            if (local != null)
+            {
+                // detach
+                _context.Entry(local).State = EntityState.Detached;
+            }
+            // set Modified flag in your entry
+            _context.Entry(visit).State = EntityState.Deleted;
 
             _context.Visits.Remove(visit);
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -91,18 +91,18 @@ namespace NBG.Visitor.Services.DB
         #region Update
         public static async Task UpdateVisit(this VisitContext _context, Visit visit)
         {
-            //var local = _context.Set<Visit>()
-            //.Local
-            //.FirstOrDefault(v => v.Id.Equals(visit.Id));
+            var local = _context.Set<Visit>()
+            .Local
+            .FirstOrDefault(v => v.Id.Equals(visit.Id));
 
-            //// check if local is not null 
-            //if (local != null)
-            //{
-            //    // detach
-            //    _context.Entry(local).State = EntityState.Detached;
-            //}
-            //// set Modified flag in your entry
-            //_context.Entry(visit).State = EntityState.Modified;
+            // check if local is not null 
+            if (local != null)
+            {
+                // detach
+                _context.Entry(local).State = EntityState.Detached;
+            }
+            // set Modified flag in your entry
+            _context.Entry(visit).State = EntityState.Modified;
 
             _context.Update<Visit>(visit);
             await _context.SaveChangesAsync().ConfigureAwait(false);
