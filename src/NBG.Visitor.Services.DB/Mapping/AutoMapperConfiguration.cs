@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Blazor.Mapping
+namespace NBG.Visitor.Services.DB.Mapping
 {
     public class AutoMapperConfiguration
     {

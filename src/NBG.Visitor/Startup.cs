@@ -83,7 +83,7 @@ namespace NBG.Visitor
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<VisitContext>();
+            services.AddSingleton<IVisitService, VisitService>();
 
             services.AddMudServices();
         }

@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Blazor.Dtos
+namespace NBG.Visitor.Storage.Dtos
 {
-    public enum VisitStatusDto
+    public class CompanyDto
     {
-        VISIT_ACTIVE,
-        VISIT_PENDING,
-        VISIT_OVER
+        public string CompanyLabel { get; set; }
     }
 }

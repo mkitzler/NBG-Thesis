@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
 using NBG.Visitor.Storage.Models;
-using NBG.Visitor.Blazor.Dtos;
+using NBG.Visitor.Storage.Dtos;
+using AutoMapper;
 
-namespace NBG.Visitor
+namespace NBG.Visitor.Services.DB.Mapping
 {
     public class MappingProfile : Profile
     {

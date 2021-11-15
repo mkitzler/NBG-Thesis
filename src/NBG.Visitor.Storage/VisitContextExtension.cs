@@ -10,11 +10,6 @@ namespace NBG.Visitor.Services.DB
     public static class VisitContextExtension
     {
         #region Read
-        public static async Task<Storage.Models.Visitor> ReadVisitorIfExists(this VisitContext _context, string firstName, string lastName, string phoneNumber)
-        {
-            return await _context.Visitors.Where(x => x.FirstName == firstName && x.LastName == lastName && x.PhoneNumber == phoneNumber).FirstOrDefaultAsync().ConfigureAwait(false);
-        }
-
         public static async Task<ContactPerson[]> ReadContactPeople(this VisitContext _context)
         {
             return await _context.ContactPeople.ToArrayAsync().ConfigureAwait(false);

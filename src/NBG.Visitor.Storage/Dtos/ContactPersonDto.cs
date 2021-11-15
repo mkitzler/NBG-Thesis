@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Blazor.Dtos
+namespace NBG.Visitor.Storage.Dtos
 {
-    public class CompanyDto
+    public class ContactPersonDto
     {
-        public string CompanyLabel { get; set; }
+        public string Name { get; set; }
     }
 }
