@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NBG.Visitor.Services.DB;
 using NBG.Visitor.Storage;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 

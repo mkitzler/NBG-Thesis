@@ -5,6 +5,8 @@
 @using AutoMapper;
 @using Dtos;
 
+@inject VisitContext vc;
+
 <MudGrid Justify=Justify.Center>
     <MudItem lg=7>
         <MudForm @ref="visitorForm">
@@ -44,7 +46,6 @@
 </MudGrid>
 
 @code {
-    private VisitRepository vr = new();
     public IMapper ConfigMapper()
     {
         var config = new AutoMapperConfiguration().Configure();
@@ -59,7 +60,7 @@
     protected override async Task OnInitializedAsync()
     {
         var mapper = ConfigMapper();
-        contactPeople = (await vr.GetContactPeople()).Select((cp) => mapper.Map<ContactPersonDto>(cp)).ToArray();
+        contactPeople = (await vc.ReadContactPeople()).Select((cp) => mapper.Map<ContactPersonDto>(cp)).ToArray();
         StateHasChanged();
     }
 }

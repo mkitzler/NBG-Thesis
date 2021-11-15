@@ -5,6 +5,8 @@
 @using NBG.Visitor.Services.DB;
 @using NBG.Visitor.Blazor.Mapping;
 
+@inject VisitContext _repo;
+
 @inject IDialogService DialogService
 
 @if (!isLoaded)
@@ -162,5 +164,4 @@ else
     }
 
     private List<VisitDto> Visits = new List<VisitDto>();
-    private VisitRepository _repo = new VisitRepository();
 }

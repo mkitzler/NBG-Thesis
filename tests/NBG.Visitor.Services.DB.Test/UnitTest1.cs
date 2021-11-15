@@ -8,7 +8,7 @@ namespace NBG.Visitor.Services.DB.Test
 {
     public class Tests
     {
-        private VisitRepository _repo = new();
+        private VisitContext _repo = new();
 
         [SetUp]
         public void Setup()
@@ -31,18 +31,18 @@ namespace NBG.Visitor.Services.DB.Test
         [Test]
         public async Task TestGetVisitor()
         {
-            var visitor = await _repo.GetVisitorIfExists("Pat", "Du Plantier", "724 964 6781");
+            var visitor = await _repo.ReadVisitorIfExists("Pat", "Du Plantier", "724 964 6781");
             Assert.IsInstanceOf<Storage.Models.Visitor>(visitor);
-            visitor = await _repo.GetVisitorIfExists("Non", "existent", "person");
+            visitor = await _repo.ReadVisitorIfExists("Non", "existent", "person");
             Assert.IsNull(visitor);
         }
 
         [Test]
         public async Task TestAddVisit()
         {
-            Visit visit = await _repo.AddVisit(DateTime.Now, await _repo.GetContactPersonByName("Andreas Steiner"), await _repo.GetCompanyByLabel("Siemens"), "Dietfried", "Haber", "0664 1234567", "d.haber@email.com");
+            Visit visit = await _repo.AddVisit(DateTime.Now, await _repo.ReadContactPersonByName("Andreas Steiner"), await _repo.ReadCompanyByLabel("Siemens"), "Dietfried", "Haber", "0664 1234567", "d.haber@email.com");
             Assert.IsInstanceOf<Visit>(visit);
-            var visitor = await _repo.GetVisitorIfExists("Dietfried", "Haber", "0664 1234567");
+            var visitor = await _repo.ReadVisitorIfExists("Dietfried", "Haber", "0664 1234567");
             Assert.IsInstanceOf<Storage.Models.Visitor>(visitor);
 
             await _repo.RemoveVisit(visit);
