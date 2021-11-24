@@ -1,17 +1,22 @@
 ﻿@using NBG.Visitor.Storage.Dtos;
+@using MudBlazor;
 
-@switch (subpage)
-{
-    case 0:
-        <TerminalHome OnNext=@(() => subpage = 1) />
-        break;
-    case 1:
-        <TerminalRegister FormData=form OnBack=@(() => subpage = 0) OnNext=@(() => Console.WriteLine(form)) />
-        break;
-}
+<MudCarousel @ref="carousel" Style="height: 100vh; margin: 0;" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
+    <MudCarouselItem>
+        <TerminalHome OnNext=@(() => carousel.Next()) />
+    </MudCarouselItem>
+    <MudCarouselItem>
+        <TerminalRegister @ref="form" OnBack=@(() => carousel.Previous()) OnNext=@(() => Console.WriteLine(form.FormData)) />
+    </MudCarouselItem>
+</MudCarousel>
+
+<footer>
+    @footer
+</footer>
 
 @code {
-    private int subpage = 0;
+    private MudCarousel<object> carousel;
+    private RenderFragment footer;
 
-    private RegisterFormData form = new();
+    private TerminalRegister form;
 }

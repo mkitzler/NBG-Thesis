@@ -22,7 +22,7 @@
     </MudItem>
 </MudGrid>
 
-<footer class="footer">
+<div @ref="Footer" class="footer">
     <MudGrid Justify=Justify.Center>
         <MudItem lg=4>
             <MudText Typo=Typo.h4 Style="color: #b71c1c">
@@ -30,9 +30,11 @@
             </MudText>
         </MudItem>
     </MudGrid>
-</footer>
+</div>
 
 @code {
+    [Parameter]
+    public RenderFragment Footer { get; set; }
     [Parameter]
     public EventCallback OnNext { get; set; }
 

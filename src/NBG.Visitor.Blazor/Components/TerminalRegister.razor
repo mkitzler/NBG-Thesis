@@ -31,7 +31,7 @@
                     <MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Variant=Variant.Filled Size=Size.Large StartIcon=@Icons.Outlined.ArrowBack Color=Color.Primary>Zurück</MudButton>
                 </MudItem>
                 <MudItem xs=6 Style="text-align: right;">
-                    <MudButton OnClick=@(async () => await OnNext.InvokeAsync()) Variant=Variant.Filled Size=Size.Large EndIcon=@Icons.Outlined.ArrowForward Color=Color.Primary>Weiter</MudButton>
+                    <MudButton OnClick=Validate Variant=Variant.Filled Size=Size.Large EndIcon=@Icons.Outlined.ArrowForward Color=Color.Primary>Weiter</MudButton>
                 </MudItem>
             </MudGrid>
         </MudForm>
@@ -43,8 +43,16 @@
     public EventCallback OnNext { get; set; }
     [Parameter]
     public EventCallback OnBack { get; set; }
-    [Parameter]
-    public RegisterFormData FormData { get; set; }
+
+    public RegisterFormData FormData { get; private set; } = new();
 
     private MudForm visitorForm;
+
+    private async void Validate()
+    {
+        if (visitorForm.IsValid)
+        {
+            await OnNext.InvokeAsync();
+        }
+    }
 }
