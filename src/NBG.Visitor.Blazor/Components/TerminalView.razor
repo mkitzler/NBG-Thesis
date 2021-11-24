@@ -1,22 +1,42 @@
 ﻿@using NBG.Visitor.Storage.Dtos;
 @using MudBlazor;
+@implements IMainLayout;
 
-<MudCarousel @ref="carousel" Style="height: 100vh; margin: 0;" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
-    <MudCarouselItem>
-        <TerminalHome OnNext=@(() => carousel.Next()) />
-    </MudCarouselItem>
-    <MudCarouselItem>
-        <TerminalRegister @ref="form" OnBack=@(() => carousel.Previous()) OnNext=@(() => Console.WriteLine(form.FormData)) />
-    </MudCarouselItem>
-</MudCarousel>
+<header>
+    @header
+</header>
+
+<CascadingValue Value="this">
+    <MudCarousel @ref="carousel" Style="height: 90vh; margin: 0;" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
+        <MudCarouselItem>
+            <TerminalHome OnNext=@(() => carousel.Next()) />
+        </MudCarouselItem>
+        <MudCarouselItem>
+            <TerminalRegister @ref="form" OnBack=@(() => carousel.Previous()) OnNext=@(() => Console.WriteLine(form.FormData)) />
+        </MudCarouselItem>
+    </MudCarousel>
+</CascadingValue>
 
 <footer>
     @footer
 </footer>
 
 @code {
+    private RenderFragment header;
     private MudCarousel<object> carousel;
     private RenderFragment footer;
 
     private TerminalRegister form;
+
+    public void SetHeader(RenderFragment header)
+    {
+        this.header = header;
+        StateHasChanged();
+    }
+
+    public void SetFooter(RenderFragment footer)
+    {
+        this.footer = footer;
+        StateHasChanged();
+    }
 }

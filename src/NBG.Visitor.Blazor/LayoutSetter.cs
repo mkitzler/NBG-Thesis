@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using NBG.Visitor.Blazor.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,20 @@ namespace NBG.Visitor.Blazor
     public class LayoutSetter : ComponentBase
     {
         [CascadingParameter]
-        public MainLayout Layout { get; set; }
+        public IMainLayout layout { get; set; }
 
         [Parameter]
-        public RenderFragment Header { get; set; }
+        public RenderFragment Header { get; set; } = null;
 
         [Parameter]
-        public RenderFragment Footer { get; set; }
+        public RenderFragment Footer { get; set; } = null;
 
         protected override void OnInitialized()
         {
-            Layout.SetHeaderAndFooter(Header, Footer);
+            if (Header != null)
+                layout.SetHeader(Header);
+            if (Footer != null)
+                layout.SetFooter(Footer);
         }
     }
 

@@ -22,19 +22,21 @@
     </MudItem>
 </MudGrid>
 
-<div @ref="Footer" class="footer">
-    <MudGrid Justify=Justify.Center>
-        <MudItem lg=4>
-            <MudText Typo=Typo.h4 Style="color: #b71c1c">
-                @sidenote
-            </MudText>
-        </MudItem>
-    </MudGrid>
-</div>
+<LayoutSetter>
+    <Footer>
+        <div class="footer">
+            <MudGrid Justify=Justify.Center>
+                <MudItem lg=4>
+                    <MudText Typo=Typo.h4 Style="color: #b71c1c">
+                        @sidenote
+                    </MudText>
+                </MudItem>
+            </MudGrid>
+        </div>
+    </Footer>
+</LayoutSetter>
 
 @code {
-    [Parameter]
-    public RenderFragment Footer { get; set; }
     [Parameter]
     public EventCallback OnNext { get; set; }
 
