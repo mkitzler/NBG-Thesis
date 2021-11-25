@@ -50,6 +50,7 @@
 
     private async void Validate()
     {
+        await visitorForm.Validate();
         if (visitorForm.IsValid)
         {
             await OnNext.InvokeAsync();

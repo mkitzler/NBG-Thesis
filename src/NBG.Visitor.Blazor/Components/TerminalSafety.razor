@@ -1,5 +1,28 @@
-﻿<h3>TerminalSafety</h3>
+﻿@using MudBlazor;
+
+<MudGrid Justify=Justify.Center>
+    <MudItem lg=7>
+		<MudGrid>
+			@foreach (SafetyItem si in safetyItems)
+			{
+			<MudItem xs="6">
+				<MudPaper Class="flex-container">
+					<img style="width: 10em;" src="@(si.ImagePath)"/>
+					<a style="vertical-align: top; font-size: 2em;">@si.Text</a>
+				</MudPaper>
+			</MudItem>
+			}
+		</MudGrid>
+	</MudItem>
+</MudGrid>
 
 @code {
-
+	private SafetyItem[] safetyItems = new SafetyItem[] {
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png")
+	};
 }

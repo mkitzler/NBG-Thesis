@@ -12,7 +12,10 @@
             <TerminalHome OnNext=@(() => carousel.Next()) />
         </MudCarouselItem>
         <MudCarouselItem>
-            <TerminalRegister @ref="form" OnBack=@(() => carousel.Previous()) OnNext=@(() => Console.WriteLine(form.FormData)) />
+            <TerminalRegister @ref="form" OnBack=@(() => carousel.Previous()) OnNext=@(() => carousel.Next()) />
+        </MudCarouselItem>
+        <MudCarouselItem>
+            <TerminalSafety />
         </MudCarouselItem>
     </MudCarousel>
 </CascadingValue>
