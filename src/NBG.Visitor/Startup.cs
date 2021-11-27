@@ -83,7 +83,10 @@ namespace NBG.Visitor
 
             #endregion Authentication
 
-            services.AddRazorPages();
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizePage("/visitors");
+            });
             services.AddServerSideBlazor();
             services.AddSingleton<IVisitService, VisitService>();
 
