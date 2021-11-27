@@ -16,8 +16,41 @@
 	</MudItem>
 </MudGrid>
 
+<div class="footer">
+    <MudGrid>
+		<MudItem lg=3>
+			<MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Variant=Variant.Filled Color=@Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>Zurück</MudButton>
+		</MudItem>
+        <MudItem lg=3>
+            <MudForm @ref="form">
+				<MudCheckBox @bind-Checked="accepted" Label="Ich habe die oben angeführten Sicherheitsmaßnahmen gelesen" Required=true RequiredError="Sie müssen die Sicherheitshinweise gelesen haben"/>
+			</MudForm>
+        </MudItem>
+		<MudItem lg=3>
+            <MudButton OnClick=Register Variant=Variant.Filled Color=@Color.Secondary EndIcon=@Icons.Outlined.Check>Registrierung abschließen</MudButton>
+        </MudItem>
+    </MudGrid>
+</div>
+
 @code {
+	[Parameter]
+	public EventCallback OnRegister { get; set; }
+	[Parameter]
+	public EventCallback OnBack { get; set; }
+
 	private SafetyItem[] safetyItems = new SafetyItem[] {
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
 		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
 		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
 		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
@@ -25,4 +58,16 @@
 		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
 		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png")
 	};
+
+	private MudForm form;
+	private bool accepted;
+
+	private async void Register()
+	{
+		await form.Validate();
+		if (accepted)
+		{
+			await OnRegister.InvokeAsync();
+		}
+	}
 }

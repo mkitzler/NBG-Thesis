@@ -58,13 +58,13 @@ namespace NBG.Visitor.Services.DB
         public async Task AddVisit(DateTime start, ContactPersonDto contactPerson, CompanyDto company, string firstName, string lastName, string phoneNumber, string email = null)
         {
             using var context = _contextFactory.CreateDbContext();
-            var visitor = mapper.Map<Storage.Models.Visitor>(await ReadVisitorIfExists(firstName, lastName, phoneNumber).ConfigureAwait(false));
-            if (visitor == null)
-            {
-                visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
-                await context.AddVisitor(visitor).ConfigureAwait(false);
-            }
-            await context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = mapper.Map<ContactPerson>(contactPerson), Company = mapper.Map<Company>(company) }).ConfigureAwait(false);
+            var visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
+            context.Attach(visitor);
+            var cp = mapper.Map<ContactPerson>(contactPerson);
+            context.Attach(cp);
+            var c = mapper.Map<Company>(company);
+            context.Attach(c);
+            await context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = cp, Company = c }).ConfigureAwait(false);
         }
 
         public async Task UpdateVisit(VisitDto visit)

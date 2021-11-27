@@ -1,13 +1,25 @@
-﻿@using NBG.Visitor.Storage.Dtos;
-@using MudBlazor;
+﻿@using MudBlazor;
+@using NBG.Visitor.Storage.Dtos;
+@using NBG.Visitor.Domain;
+
+@inject IDialogService DialogService;
+@inject IVisitService vs;
 @implements IMainLayout;
+
+<style>
+    body {
+        background-color: #EEE;
+    }
+</style>
+
+<MudThemeProvider Theme="NBG"/>
 
 <header>
     @header
 </header>
 
 <CascadingValue Value="this">
-    <MudCarousel @ref="carousel" Style="height: 90vh; margin: 0;" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
+    <MudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
         <MudCarouselItem>
             <TerminalHome OnNext=@(() => carousel.Next()) />
         </MudCarouselItem>
@@ -15,7 +27,7 @@
             <TerminalRegister @ref="form" OnBack=@(() => carousel.Previous()) OnNext=@(() => carousel.Next()) />
         </MudCarouselItem>
         <MudCarouselItem>
-            <TerminalSafety />
+            <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
         </MudCarouselItem>
     </MudCarousel>
 </CascadingValue>
@@ -41,5 +53,21 @@
     {
         this.footer = footer;
         StateHasChanged();
+    }
+
+    MudTheme NBG = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            Primary = Colors.Red.Darken1,
+            Secondary = Colors.Grey.Lighten2,
+            SecondaryContrastText = Colors.Grey.Darken2
+        }
+    };
+
+    private async void Register()
+    {
+        await vs.AddVisit(DateTime.Now, new() { Name = form.FormData.ContactPerson }, new() { CompanyLabel = form.FormData.Company }, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+        DialogService.Show<MudText>("Besuch erfolgreich angelegt");
     }
 }

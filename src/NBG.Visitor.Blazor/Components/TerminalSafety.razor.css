@@ -1,14 +1,9 @@
-﻿.flag {
-    height: 10em;
-}
-
-.footer {
+﻿.footer {
     text-align: center;
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
-    color: #FFF;
     background-color: #F00C;
     padding: 2em;
 }
