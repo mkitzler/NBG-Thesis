@@ -1,9 +1,26 @@
-﻿@using MudBlazor;
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using MudBlazor;
 @using NBG.Visitor.Domain;
 @using NBG.Visitor.Storage.Dtos;
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components;
 
 @inject IVisitService DataRepository;
 @inject IDialogService DialogService
+
+<MudAppBar Class="red accent-1" Fixed="false" Dense=false>
+    <img src="/img/Logo/nbg_logo.png" style="max-height:80%; margin-right:20px;"/>
+    <NavLink href="terminal">
+        <MudButton Class="red-text text-darken-4" Icon="@Icons.Material.Filled.ConnectWithoutContact">Visitor Registration</MudButton>
+    </NavLink>   
+    <NavLink href="visitors">
+        <MudButton Class="red-text text-darken-4" Icon="@Icons.Material.Filled.EditNote" >Visitor Administration</MudButton>
+    </NavLink>
+    <MudSpacer></MudSpacer>
+    <form method="get" action="logout">
+        <button type="submit" class="nav-link btn btn-link">Log out</button>
+    </form>
+</MudAppBar>
 
 @if (!isLoaded)
 {
