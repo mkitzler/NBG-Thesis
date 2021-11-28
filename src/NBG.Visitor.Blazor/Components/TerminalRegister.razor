@@ -52,4 +52,10 @@
             await OnNext.InvokeAsync();
         }
     }
+
+    public void Reset()
+    {
+        visitorForm.Reset();
+        visitorForm.ResetValidation();
+    }
 }

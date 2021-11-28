@@ -67,7 +67,9 @@
 
     private async void Register()
     {
-        await vs.AddVisit(DateTime.Now, new() { Name = form.FormData.ContactPerson }, new() { CompanyLabel = form.FormData.Company }, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+        await vs.AddVisit(DateTime.Now, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
         DialogService.Show<MudText>("Besuch erfolgreich angelegt");
+        form.Reset();
+        carousel.MoveTo(0);
     }
 }

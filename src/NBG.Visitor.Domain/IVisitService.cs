@@ -8,7 +8,7 @@ namespace NBG.Visitor.Domain
     public interface IVisitService
     {
         Task<VisitorDto> ReadVisitorIfExists(string firstName, string lastName, string phoneNumber);
-        Task AddVisit(DateTime start, ContactPersonDto contactPerson, CompanyDto company, string firstName, string lastName, string phoneNumber, string email = null);
+        Task AddVisit(DateTime start, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null);
         Task<List<VisitDto>> ReadAllVisits();
         Task RemoveVisit(VisitDto visit);
         Task UpdateVisit(VisitDto visit);

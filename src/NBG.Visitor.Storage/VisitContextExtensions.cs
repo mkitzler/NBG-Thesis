@@ -57,6 +57,16 @@ namespace NBG.Visitor.Services.DB
             await _context.Visits.AddAsync(visit).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait (false);
         }
+
+        public static async Task<ContactPerson> AddContactPersonIfNotExists(this VisitContext _context, string name)    //removed when ContactPerson ceases to be seperate table
+        {
+            return await _context.ContactPeople.FindAsync(name).ConfigureAwait(false) ?? (await _context.ContactPeople.AddAsync(new() { Name = name}).ConfigureAwait(false)).Entity;
+        }
+
+        public static async Task<Company> AddCompanyIfNotExists(this VisitContext _context, string label)    //removed when Company ceases to be seperate table
+        {
+            return await _context.Companies.FindAsync(label).ConfigureAwait(false) ?? (await _context.Companies.AddAsync(new() { CompanyLabel = label }).ConfigureAwait(false)).Entity;
+        }
         #endregion
 
         #region Remove
