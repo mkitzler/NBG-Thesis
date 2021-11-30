@@ -6,10 +6,12 @@
 
   <ItemGroup>
     <None Remove="Components\TerminalSafety.razor.css" />
+    <None Remove="Components\VisitorOverview.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Components\TerminalSafety.razor.css" />
+    <Content Include="Components\VisitorOverview.razor.css" />
   </ItemGroup>
 
   
