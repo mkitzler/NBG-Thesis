@@ -6,11 +6,8 @@
 <MudGrid Justify=Justify.Center>
     <MudItem lg=7>
         <MudGrid Justify=Justify.Center Style="text-align: center;">
-            <MudItem xs=12>
+            <MudItem xs=12 Class="mb-4">
                 <MudText Typo="Typo.h1">@welcome</MudText>
-            </MudItem>
-            <MudItem xs=12>
-                <MudSpacer/>
             </MudItem>
             <MudItem xs=5>
                 <MudButton Style="padding: 0;" OnClick=@(() => ChangeLang("DE"))><img class="flag" src="./_content/NBG.Visitor.Blazor/images/german.jpg"/></MudButton>
@@ -18,10 +15,7 @@
             <MudItem xs=5>
                 <MudButton Style="padding: 0;" OnClick=@(() => ChangeLang("EN"))><img class="flag" src="./_content/NBG.Visitor.Blazor/images/english.jpg"/></MudButton>
             </MudItem>
-            <MudItem xs=12>
-                <MudSpacer/>
-            </MudItem>
-            <MudItem xs=12>
+            <MudItem xs=12 Class="mt-4">
                 <MudButton OnClick=@(async () => await OnNext.InvokeAsync()) Variant=Variant.Filled Size=Size.Large Color=Color.Primary EndIcon=@Icons.Outlined.ArrowForward>@register</MudButton>
             </MudItem>
         </MudGrid>

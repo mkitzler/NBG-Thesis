@@ -5,6 +5,9 @@
     <MudItem lg=7>
         <MudForm @ref="visitorForm">
             <MudGrid Justify=Justify.Center Style="text-align: center;">
+                <MudItem xs=12 Class="mb-6">
+                    <MudText Typo="Typo.h2">Besucherregistrierung</MudText>
+                </MudItem>
                 <MudItem xs=6>
                     <MudTextField T="string" @bind-Value="FormData.FirstName" Label="Vorname" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
                 </MudItem>
