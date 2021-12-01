@@ -79,12 +79,38 @@ else
                     <MudChip Color="Color.Warning" Size=Size.Small>Visit Pending</MudChip>
                 }
             </MudTd>
-            <MudTd Style = "padding-top:0px;padding-bottom:0px;">
+            @*<MudTd Style = "padding-top:0px;padding-bottom:0px;">*@
+            <MudTd Style = "padding-top:0px;padding-bottom:0px;padding-right:22px;">
+                <MudMenu Icon="@Icons.Filled.MoreVert">
+                        @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+                        {
+                            <MudMenuItem OnClick=@(()=>SignOff(@context)) Style="height:30px;"><MudText Style="font-size:15px;">Sign Off</MudText></MudMenuItem>
+                        }
+                        <MudMenuItem OnClick=@(()=>Delete(@context)) Style="height:30px;color:red;"><MudText Style="font-size:13px;">Delete</MudText></MudMenuItem>
+                </MudMenu>
+
+
+                @*<MudMenu Icon="@Icons.Filled.MoreVert">
+                    @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+                    {
+                        <MudMenuItem OnClick=@(()=>SignOff(@context))>Sign Off</MudMenuItem>
+                    }
+                    <MudMenuItem OnClick=@(()=>Delete(@context)) Style="color:red;">Delete</MudMenuItem>
+                </MudMenu>*@
+
+
+
+
+
+            @*<MudIconButton Icon="@Icons.Filled.MoreVert" OnClick="">
+
+            </MudIconButton>
+
                 <MudFab OnClick=@(()=>Delete(@context)) Size=Size.Small Class="ml-5" DisableElevation=true Icon=@Icons.Filled.Delete></MudFab>
                 @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
                 {
                     <MudFab OnClick=@(()=>SignOff(@context)) Size=Size.Small Class="ml-5" DisableElevation=true Icon=@Icons.Filled.Logout></MudFab>
-                }
+                }*@
             </MudTd>
         </RowTemplate>
         <PagerContent>
