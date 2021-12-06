@@ -8,19 +8,6 @@
 @inject IVisitService DataRepository;
 @inject IDialogService DialogService;
 
-<MudAppBar Class="red darken-4" Fixed="false" Dense=false>
-    <img src="/img/Logo/nbg_logo.png" style="max-height:80%; margin-right:20px;"/>
-    <NavLink href="terminal">
-        <MudButton Class="red-text text-lighten-5" Icon="@Icons.Material.Filled.ConnectWithoutContact">Visitor Registration</MudButton>
-    </NavLink>   
-    <NavLink href="visitors">
-        <MudButton Class="red-text text-lighten-5" Icon="@Icons.Material.Filled.EditNote" >Visitor Administration</MudButton>
-    </NavLink>
-    <MudSpacer></MudSpacer>
-    <form method="get" action="logout">
-        <button type="submit" class="nav-link btn btn-link" id="logoutBtn">Log out</button>
-    </form>
-</MudAppBar>
 
 @if (!isLoaded)
 {
@@ -30,7 +17,7 @@ else
 {
     <MudTable Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation="0" Class="ml-0 mr-0" Filter="new Func<VisitDto,bool>(FilterFunc)">
         <ToolBarContent>
-            <MudText Typo="Typo.h6">Visits</MudText>
+            <MudText Typo="Typo.h6" Style="padding-left:59px;">Visits</MudText>
             <MudSpacer />
             <!--<div id = "filterOptions">
                 <span>Filter: </span>
@@ -41,8 +28,7 @@ else
             <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Id)">Id</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
+            <MudTh Style="padding-left:100px;"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">Last Name</MudTableSortLabel></MudTh>
             <MudTh>Phone Number</MudTh>
             <MudTh>Email</MudTh>
@@ -52,10 +38,10 @@ else
             <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
             <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
             <MudTh></MudTh>
+            <MudTh Style="padding-right:100px;"></MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd>@context.Id</MudTd>
-            <MudTd>@context.Visitor.FirstName</MudTd>
+            <MudTd Style="padding-left:100px;">@context.Visitor.FirstName</MudTd>
             <MudTd>@context.Visitor.LastName</MudTd>
             <MudTd>@context.Visitor.PhoneNumber</MudTd>
             <MudTd>@context.Visitor.Email</MudTd>
@@ -79,14 +65,17 @@ else
                     <MudChip Color="Color.Warning" Size=Size.Small>Visit Pending</MudChip>
                 }
             </MudTd>
+            <MudTd>
+                @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+                {
+                    <MudFab OnClick=@(()=>SignOffVisit(@context)) Size=Size.Small Class="ml-5" DisableElevation=true Icon=@Icons.Filled.Logout></MudFab>
+                }
+            </MudTd>
             @*<MudTd Style = "padding-top:0px;padding-bottom:0px;">*@
-            <MudTd Style = "padding-top:0px;padding-bottom:0px;padding-right:22px;">
+            <MudTd Style = "padding-top:0px;padding-bottom:0px;padding-right:100px;">
                 <MudMenu Icon="@Icons.Filled.MoreVert">
-                        @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
-                        {
-                            <MudMenuItem OnClick=@(()=>SignOff(@context)) Style="height:30px;"><MudText Style="font-size:15px;">Sign Off</MudText></MudMenuItem>
-                        }
-                        <MudMenuItem OnClick=@(()=>Delete(@context)) Style="height:30px;color:red;"><MudText Style="font-size:13px;">Delete</MudText></MudMenuItem>
+                        <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">Edit</MudText></MudMenuItem>
+                        <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="color:red;"><MudText Style="font-size:15px;">Delete</MudText></MudMenuItem>
                 </MudMenu>
 
 
@@ -143,7 +132,7 @@ else
         isLoaded = true;
     }
 
-    public async Task SignOff(VisitDto visit)
+    public async Task SignOffVisit(VisitDto visit) //RENAME
     {
         var parameters = new DialogParameters { ["visit"]=visit };
         parameters.Add("ContentText", "Do you really want to manually sign off this visitor? This process cannot be undone.");
@@ -162,7 +151,7 @@ else
         }
     }
 
-    public async Task Delete(VisitDto visit)
+    public async Task DeleteVisit(VisitDto visit)
     {
         var parameters = new DialogParameters { ["visit"]=visit };
         parameters.Add("ContentText", "Do you really want to delete this visitor? This process cannot be undone.");
@@ -178,6 +167,11 @@ else
             await DataRepository.RemoveVisit(visit);
             Visits.Remove(visit);
         }
+    }
+
+    public async Task EditVisit(VisitDto visit)
+    {
+        
     }
 
     private bool FilterFunc(VisitDto visit)

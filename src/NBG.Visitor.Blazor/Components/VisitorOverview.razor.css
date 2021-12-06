@@ -1,9 +1,6 @@
-﻿#logoutBtn {
-    height: 10em;
-    color: white;
-    font-size: 15px;
-}
-
-#filterOptions{
+﻿#filterOptions {
     margin-right: 40px;
+}
+.content{
+    padding-top:0 !important;
 }
