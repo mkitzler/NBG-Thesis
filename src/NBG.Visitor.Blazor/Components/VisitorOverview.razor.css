@@ -1,6 +1,7 @@
 ﻿#filterOptions {
     margin-right: 40px;
 }
-.content{
-    padding-top:0 !important;
+
+body {
+    overflow: hidden; /* Hide scrollbars */
 }

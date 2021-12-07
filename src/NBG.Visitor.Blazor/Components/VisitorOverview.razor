@@ -8,115 +8,89 @@
 @inject IVisitService DataRepository;
 @inject IDialogService DialogService;
 
+<MudTable Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation="0" Class="ml-0 mr-0" Filter="new Func<VisitDto,bool>(FilterFunc)" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Height="77vh">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6" Style="padding-left:59px;">Visits</MudText>
+        <MudSpacer />
+        <!--<div id = "filterOptions">
+            <span>Filter: </span>
+            <MudToggleIconButton  Color="Color.Success"  Size=Size.Small @bind-Toggle=@(filterActive)></MudToggleIconButton > 
+            <MudToggleIconButton  Color="Color.Warning"  Size=Size.Small @bind-Toggle=@(filterPending)></MudToggleIconButton >
+            <MudToggleIconButton  Color="Color.Error"    Size=Size.Small @bind-Toggle=@(filterOver)></MudToggleIconButton >
+        </div>-->
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh Style="padding-left:100px;"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">Last Name</MudTableSortLabel></MudTh>
+        <MudTh>Phone Number</MudTh>
+        <MudTh>Email</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Company.CompanyLabel)">Company</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.ContactPerson.Name)">Contact Person</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<VisitDto, object>(x=>x.VisitStart)">Start</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
+        <MudTh></MudTh>
+        <MudTh Style="padding-right:100px;"></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd Style="padding-left:100px;">@context.Visitor.FirstName</MudTd>
+        <MudTd>@context.Visitor.LastName</MudTd>
+        <MudTd>@context.Visitor.PhoneNumber</MudTd>
+        <MudTd>@context.Visitor.Email</MudTd>
+        <MudTd>@context.Company.CompanyLabel</MudTd>
+        <MudTd>@context.ContactPerson.Name</MudTd>
+        <MudTd>@context.VisitStart</MudTd>
+        <MudTd>@context.VisitEnd</MudTd>
 
-@if (!isLoaded)
-{
-    <p><em>Loading Visitors...</em></p>
-}
-else
-{
-    <MudTable Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation="0" Class="ml-0 mr-0" Filter="new Func<VisitDto,bool>(FilterFunc)">
-        <ToolBarContent>
-            <MudText Typo="Typo.h6" Style="padding-left:59px;">Visits</MudText>
-            <MudSpacer />
-            <!--<div id = "filterOptions">
-                <span>Filter: </span>
-                <MudToggleIconButton  Color="Color.Success"  Size=Size.Small @bind-Toggle=@(filterActive)></MudToggleIconButton > 
-                <MudToggleIconButton  Color="Color.Warning"  Size=Size.Small @bind-Toggle=@(filterPending)></MudToggleIconButton >
-                <MudToggleIconButton  Color="Color.Error"    Size=Size.Small @bind-Toggle=@(filterOver)></MudToggleIconButton >
-            </div>-->
-            <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
-        </ToolBarContent>
-        <HeaderContent>
-            <MudTh Style="padding-left:100px;"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">Last Name</MudTableSortLabel></MudTh>
-            <MudTh>Phone Number</MudTh>
-            <MudTh>Email</MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Company.CompanyLabel)">Company</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.ContactPerson.Name)">Contact Person</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<VisitDto, object>(x=>x.VisitStart)">Start</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
-            <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
-            <MudTh></MudTh>
-            <MudTh Style="padding-right:100px;"></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd Style="padding-left:100px;">@context.Visitor.FirstName</MudTd>
-            <MudTd>@context.Visitor.LastName</MudTd>
-            <MudTd>@context.Visitor.PhoneNumber</MudTd>
-            <MudTd>@context.Visitor.Email</MudTd>
-            <MudTd>@context.Company.CompanyLabel</MudTd>
-            <MudTd>@context.ContactPerson.Name</MudTd>
-            <MudTd>@context.VisitStart</MudTd>
-            <MudTd>@context.VisitEnd</MudTd>
-            <MudTd Class = "status">
-                @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
-                {
-                    //<MudChip Color="Color.Success">@context.Status</MudChip>
-                    //<div><MudText Color="Color.Success">@context.Status</MudText></div>
-                    <MudChip Color="Color.Success" Size=Size.Small>Visit Active</MudChip> 
-                }
-                else if(@context.Status == VisitStatusDto.VISIT_OVER.ToString()){
-                    //<div><MudText Color="Color.Error">@context.Status</MudText></div>
-                    <MudChip Color="Color.Error" Size=Size.Small>Visit Over</MudChip>
-                }
-                else{
-                    //<div><MudText Color="Color.Warning">@context.Status</MudText></div>
-                    <MudChip Color="Color.Warning" Size=Size.Small>Visit Pending</MudChip>
-                }
-            </MudTd>
-            <MudTd>
-                @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
-                {
-                    <MudFab OnClick=@(()=>SignOffVisit(@context)) Size=Size.Small Class="ml-5" DisableElevation=true Icon=@Icons.Filled.Logout></MudFab>
-                }
-            </MudTd>
-            @*<MudTd Style = "padding-top:0px;padding-bottom:0px;">*@
-            <MudTd Style = "padding-top:0px;padding-bottom:0px;padding-right:100px;">
-                <MudMenu Icon="@Icons.Filled.MoreVert">
-                        <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">Edit</MudText></MudMenuItem>
-                        <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="color:red;"><MudText Style="font-size:15px;">Delete</MudText></MudMenuItem>
-                </MudMenu>
+        <MudTd Class = "status" Style = "padding-top:0px;padding-bottom:0px;">
+            @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+            {
+                //<MudChip Color="Color.Success">@context.Status</MudChip>
+                //<div><MudText Color="Color.Success">@context.Status</MudText></div>
+                <MudChip Color="Color.Success" Size=Size.Small>Visit Active</MudChip> 
+            }
+            else if(@context.Status == VisitStatusDto.VISIT_OVER.ToString()){
+                //<div><MudText Color="Color.Error">@context.Status</MudText></div>
+                <MudChip Color="Color.Error" Size=Size.Small>Visit Over</MudChip>
+            }
+            else{
+                //<div><MudText Color="Color.Warning">@context.Status</MudText></div>
+                <MudChip Color="Color.Warning" Size=Size.Small>Visit Pending</MudChip>
+            }
+        </MudTd>
 
+        <MudTd Style = "padding-top:5px;padding-bottom:5px;">
+            @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+            {
+                <MudFab OnClick=@(()=>SignOffVisit(@context)) Size=Size.Small DisableElevation=true Icon=@Icons.Filled.Logout></MudFab>
+            }
+        </MudTd>
 
-                @*<MudMenu Icon="@Icons.Filled.MoreVert">
-                    @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
-                    {
-                        <MudMenuItem OnClick=@(()=>SignOff(@context))>Sign Off</MudMenuItem>
-                    }
-                    <MudMenuItem OnClick=@(()=>Delete(@context)) Style="color:red;">Delete</MudMenuItem>
-                </MudMenu>*@
+        <MudTd Style = "padding-top:5px;padding-bottom:5px;padding-right:100px;">
+            <MudMenu Icon="@Icons.Filled.MoreVert">
+                    <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">Edit</MudText></MudMenuItem>
+                    <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="color:red;"><MudText Style="font-size:15px;">Delete</MudText></MudMenuItem>
+            </MudMenu>
+        </MudTd>
+    </RowTemplate>
 
-
-
-
-
-            @*<MudIconButton Icon="@Icons.Filled.MoreVert" OnClick="">
-
-            </MudIconButton>
-
-                <MudFab OnClick=@(()=>Delete(@context)) Size=Size.Small Class="ml-5" DisableElevation=true Icon=@Icons.Filled.Delete></MudFab>
-                @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
-                {
-                    <MudFab OnClick=@(()=>SignOff(@context)) Size=Size.Small Class="ml-5" DisableElevation=true Icon=@Icons.Filled.Logout></MudFab>
-                }*@
-            </MudTd>
-        </RowTemplate>
-        <PagerContent>
-            <MudTablePager/>
-        </PagerContent>
-    </MudTable>
-}
+    <PagerContent>
+        <MudTablePager PageSizeOptions="@pageSizeOptions"/>
+    </PagerContent>
+</MudTable>
 
 @code {
-    bool isLoaded;
+    bool _loading = true;
 
     private string searchString = "";
     private bool dense = false;
     private bool hover = true;
     private bool striped = true;
     private bool bordered = false;
-    private int[] pageSizeOptions = new int[] { 11 };
+    private bool fixedHeader = true;
+    private bool fixedFooter = true;
+    private int[] pageSizeOptions = new int[] { 10, 25, 50, 100 };
 
     //public bool filterActive { get; set; }
     //public bool filterPending { get; set; }
@@ -129,7 +103,7 @@ else
         foreach(var visit in visits){
             Visits.Add(visit);
         }
-        isLoaded = true;
+        _loading = false;
     }
 
     public async Task SignOffVisit(VisitDto visit) //RENAME
