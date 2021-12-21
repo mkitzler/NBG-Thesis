@@ -1,38 +1,60 @@
 ﻿@using MudBlazor;
 
-<MudGrid Justify=Justify.Center>
+<MudGrid Justify=Justify.Center Style="margin: 2em;">
     <MudItem lg=7>
-		<MudGrid Style="height: 100vh; overflow: scroll;">
+		<MudCarousel Style="height: 80vh;" AutoCycle="false" TData="object">
+			@for(int p = 0; p < Pages; p++)
+			{
+			<MudCarouselItem>
+				<MudGrid Style="height: 100%;">
+					@for (int i = itemsPerPage * p; i < itemsPerPage * p + itemsPerPage && i < safetyItems.Length; i++)
+					{
+					<MudItem xs="6">
+						<MudPaper Class="flex-container">
+							<img style="height: 10em;" src="@(safetyItems[i].ImagePath)"/>
+							<a style="vertical-align: top; font-size: 2em;">@safetyItems[i].Text</a>
+						</MudPaper>
+					</MudItem>
+					}
+				</MudGrid>
+			</MudCarouselItem>
+			}
+		</MudCarousel>
+		@*<MudGrid Style="height: 100vh; overflow: scroll;">
 			@foreach (SafetyItem si in safetyItems)
 			{
 			<MudItem xs="6">
 				<MudPaper Class="flex-container">
-					<img style="width: 10em;" src="@(si.ImagePath)"/>
+					<img style="height: 10em;" src="@(si.ImagePath)"/>
 					<a style="vertical-align: top; font-size: 2em;">@si.Text</a>
 				</MudPaper>
 			</MudItem>
 			}
-		</MudGrid>
+		</MudGrid>*@
 	</MudItem>
 </MudGrid>
 
 <div class="spacer"/>
 
-<div class="footer">
-    <MudGrid>
-		<MudItem lg=3>
-			<MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Variant=Variant.Filled Color=@Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>Zurück</MudButton>
+<footer class="footer">
+	<MudGrid Justify=Justify.Center>
+		<MudItem lg=7>
+			<MudGrid Justify=Justify.Center>
+				<MudItem lg=3>
+					<MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Variant=Variant.Filled Color=@Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>Zurück</MudButton>
+				</MudItem>
+				<MudItem lg=6>
+					<MudForm @ref="form">
+						<MudCheckBox @bind-Checked="accepted" Label="Ich habe die oben angeführten Sicherheitsmaßnahmen gelesen" Required=true RequiredError="Sie müssen die Sicherheitshinweise gelesen haben"/>
+					</MudForm>
+				</MudItem>
+				<MudItem lg=3>
+					<MudButton OnClick=Register Variant=Variant.Filled Color=@Color.Secondary EndIcon=@Icons.Outlined.Check>Registrierung abschließen</MudButton>
+				</MudItem>
+			</MudGrid>
 		</MudItem>
-        <MudItem lg=3>
-            <MudForm @ref="form">
-				<MudCheckBox @bind-Checked="accepted" Label="Ich habe die oben angeführten Sicherheitsmaßnahmen gelesen" Required=true RequiredError="Sie müssen die Sicherheitshinweise gelesen haben"/>
-			</MudForm>
-        </MudItem>
-		<MudItem lg=3>
-            <MudButton OnClick=Register Variant=Variant.Filled Color=@Color.Secondary EndIcon=@Icons.Outlined.Check>Registrierung abschließen</MudButton>
-        </MudItem>
-    </MudGrid>
-</div>
+	</MudGrid>
+</footer>
 
 @code {
 	[Parameter]
@@ -41,25 +63,33 @@
 	public EventCallback OnBack { get; set; }
 
 	private SafetyItem[] safetyItems = new SafetyItem[] {
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "./_content/NBG.Visitor.Blazor/images/safetyicons/sample.png")
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png")
 	};
+	private int itemsPerPage = 6;
+	private int Pages
+	{
+		get
+		{
+			return (int)Math.Ceiling((double)(safetyItems.Length / itemsPerPage));
+		}
+	}
 
 	private MudForm form;
 	private bool accepted;

@@ -3,17 +3,17 @@
 @*DEBUG*@
 @inject IDialogService DialogService;
 
-<MudGrid Justify=Justify.Center>
+<MudGrid Justify=Justify.Center Style="margin-top:20em;">
     <MudItem lg=7>
         <MudGrid Justify=Justify.Center Style="text-align: center;">
             <MudItem xs=12 Class="mb-4">
                 <MudText Typo="Typo.h1">@welcome</MudText>
             </MudItem>
             <MudItem xs=5>
-                <MudButton Style="padding: 0;" OnClick=@(() => ChangeLang("DE"))><img class="flag" src="./_content/NBG.Visitor.Blazor/images/german.jpg"/></MudButton>
+                <MudButton Style="padding: 0;" OnClick=@(() => ChangeLang("DE"))><img class="flag" src="_content/NBG.Visitor.Blazor/images/german.jpg"/></MudButton>
             </MudItem>
             <MudItem xs=5>
-                <MudButton Style="padding: 0;" OnClick=@(() => ChangeLang("EN"))><img class="flag" src="./_content/NBG.Visitor.Blazor/images/english.jpg"/></MudButton>
+                <MudButton Style="padding: 0;" OnClick=@(() => ChangeLang("EN"))><img class="flag" src="_content/NBG.Visitor.Blazor/images/english.jpg"/></MudButton>
             </MudItem>
             <MudItem xs=12 Class="mt-4">
                 <MudButton OnClick=@(async () => await OnNext.InvokeAsync()) Variant=Variant.Filled Size=Size.Large Color=Color.Primary EndIcon=@Icons.Outlined.ArrowForward>@register</MudButton>
@@ -22,21 +22,21 @@
     </MudItem>
 </MudGrid>
 
-<div class="footer">
-            <MudGrid Justify=Justify.Center>
-                <MudItem lg=4>
-                    <MudText Typo=Typo.h4>
-                        @sidenote
-                    </MudText>
-                </MudItem>
-            </MudGrid>
-        </div>
+<footer class="footer">
+    <MudGrid Justify=Justify.Center>
+        <MudItem lg=4>
+            <MudText Typo=Typo.h4>
+                @sidenote
+            </MudText>
+        </MudItem>
+    </MudGrid>
+</footer>
 
-<LayoutSetter>
+@*<LayoutSetter>
     <Footer>
-        @*TODO: Add way to remove footer; paste footer-div back here*@
+        Terminalview now proberly fullscreen, so this is obsolete
     </Footer>
-</LayoutSetter>
+</LayoutSetter>*@
 
 @code {
     [Parameter]

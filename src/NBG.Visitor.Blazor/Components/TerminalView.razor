@@ -4,21 +4,17 @@
 
 @inject IDialogService DialogService;
 @inject IVisitService vs;
-@implements IMainLayout;
+@*@implements IMainLayout;*@
 
-<style>
-    body {
-        background-color: #EEE;
-    }
-</style>
+<link href="_content/NBG.Visitor.Blazor/css/site.css" rel="stylesheet"/>
 
 <MudThemeProvider Theme="NBG"/>
 
-<header>
+@*<header>
     @header
-</header>
+</header>*@
 
-<CascadingValue Value="this">
+@*<CascadingValue Value="this">*@
     <MudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
         <MudCarouselItem>
             <TerminalHome OnNext=@(() => carousel.Next()) />
@@ -30,30 +26,30 @@
             <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
         </MudCarouselItem>
     </MudCarousel>
-</CascadingValue>
+@*</CascadingValue>*@
 
-<footer>
+@*<footer>
     @footer
-</footer>
+</footer>*@
 
 @code {
-    private RenderFragment header;
+    //private RenderFragment header;
     private MudCarousel<object> carousel;
-    private RenderFragment footer;
+    //private RenderFragment footer;
 
     private TerminalRegister form;
 
-    public void SetHeader(RenderFragment header)
-    {
-        this.header = header;
-        StateHasChanged();
-    }
+    //public void SetHeader(RenderFragment header)
+    //{
+    //    this.header = header;
+    //    StateHasChanged();
+    //}
 
-    public void SetFooter(RenderFragment footer)
-    {
-        this.footer = footer;
-        StateHasChanged();
-    }
+    //public void SetFooter(RenderFragment footer)
+    //{
+    //    this.footer = footer;
+    //    StateHasChanged();
+    //}
 
     MudTheme NBG = new MudTheme()
         {
