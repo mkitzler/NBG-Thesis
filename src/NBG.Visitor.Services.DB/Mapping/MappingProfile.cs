@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NBG.Visitor.Storage.Models;
-using NBG.Visitor.Storage.Dtos;
+using NBG.Visitor.Domain.Dtos;
 using AutoMapper;
 
 namespace NBG.Visitor.Services.DB.Mapping
@@ -29,6 +29,9 @@ namespace NBG.Visitor.Services.DB.Mapping
             CreateMap<ContactPersonDto, ContactPerson>();
             CreateMap<Storage.Models.Visitor, VisitorDto>();
             CreateMap<VisitorDto, Storage.Models.Visitor>();
+            CreateMap<VisitStatusDto, VisitStatus>();
+            CreateMap<VisitStatus, VisitStatusDto>();
+
         }
     }
 }

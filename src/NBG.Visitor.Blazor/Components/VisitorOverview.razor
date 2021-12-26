@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing;
 @using MudBlazor;
 @using NBG.Visitor.Domain;
-@using NBG.Visitor.Storage.Dtos;
+@using NBG.Visitor.Domain.Dtos;
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components;
 
@@ -44,13 +44,13 @@
         <MudTd>@context.VisitEnd</MudTd>
 
         <MudTd Class = "status" Style = "padding-top:0px;padding-bottom:0px;">
-            @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+            @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
             {
                 //<MudChip Color="Color.Success">@context.Status</MudChip>
                 //<div><MudText Color="Color.Success">@context.Status</MudText></div>
                 <MudChip Color="Color.Success" Size=Size.Small>Visit Active</MudChip> 
             }
-            else if(@context.Status == VisitStatusDto.VISIT_OVER.ToString()){
+            else if(@context.Status == VisitStatusDto.VISIT_OVER){
                 //<div><MudText Color="Color.Error">@context.Status</MudText></div>
                 <MudChip Color="Color.Error" Size=Size.Small>Visit Over</MudChip>
             }
@@ -61,7 +61,7 @@
         </MudTd>
 
         <MudTd Style = "padding-top:5px;padding-bottom:5px;">
-            @if (@context.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+            @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
             {
                 <MudFab OnClick=@(()=>SignOffVisit(@context)) Size=Size.Small DisableElevation=true Icon=@Icons.Filled.Logout></MudFab>
             }
@@ -106,7 +106,7 @@
         _loading = false;
     }
 
-    public async Task SignOffVisit(VisitDto visit) //RENAME
+    public async Task SignOffVisit(VisitDto visit)
     {
         var parameters = new DialogParameters { ["visit"]=visit };
         parameters.Add("ContentText", "Do you really want to manually sign off this visitor? This process cannot be undone.");
@@ -120,8 +120,8 @@
         if (!result.Cancelled)
         {
             visit.VisitEnd = DateTime.Now;
-            visit.Status = VisitStatusDto.VISIT_OVER.ToString();
-            await DataRepository.UpdateVisit(visit);
+            visit.Status = VisitStatusDto.VISIT_OVER;
+            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??DateTime.Now, visit.VisitEnd??DateTime.Now, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
         }
     }
 
@@ -138,7 +138,7 @@
 
         if (!result.Cancelled)
         {
-            await DataRepository.RemoveVisit(visit);
+            await DataRepository.RemoveVisit(visit.Id);
             Visits.Remove(visit);
         }
     }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NBG.Visitor.Services.DB.Mapping;
-using NBG.Visitor.Storage.Dtos;
+using NBG.Visitor.Domain.Dtos;
 using NBG.Visitor.Storage.Models;
 using System;
 using System.Collections.Generic;
@@ -64,16 +64,28 @@ namespace NBG.Visitor.Services.DB
             await context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = cp, Company = c }).ConfigureAwait(false);
         }
 
-        public async Task UpdateVisit(VisitDto visit)
+        public async Task UpdateVisit(int Id, DateTime start, DateTime end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
         {
             using var context = _contextFactory.CreateDbContext();
-            await context.UpdateVisit(mapper.Map<Visit>(visit)).ConfigureAwait(false);
+            var visit = context.Visits.Include(v => v.Visitor).First(visit => visit.Id == Id);
+            ContactPerson cp = await context.AddContactPersonIfNotExists(contactPerson).ConfigureAwait(false);
+            Company c = await context.AddCompanyIfNotExists(company).ConfigureAwait(false);
+            visit.Company = c;
+            visit.ContactPerson = cp;
+            visit.VisitStart = start;
+            visit.VisitEnd = end;
+            visit.Status = mapper.Map<VisitStatus>(status);
+            visit.Visitor.FirstName = firstName;
+            visit.Visitor.LastName = lastName;
+            visit.Visitor.PhoneNumber = phoneNumber;
+            visit.Visitor.Email = email;
+            context.SaveChanges();
         }
 
-        public async Task RemoveVisit(VisitDto visit)
+        public async Task RemoveVisit(int Id)
         {
             using var context = _contextFactory.CreateDbContext();
-            await context.RemoveVisit(mapper.Map<Visit>(visit)).ConfigureAwait(false);
+            await context.RemoveVisit(context.Visits.Find(Id)).ConfigureAwait(false);
         }
     }
 }
