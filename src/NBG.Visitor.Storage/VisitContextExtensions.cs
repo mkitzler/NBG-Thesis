@@ -49,10 +49,11 @@ namespace NBG.Visitor.Services.DB
         #endregion
 
         #region Add
-        public static async Task AddVisitor(this VisitContext _context, Storage.Models.Visitor visitor)
+        public static async Task<Storage.Models.Visitor> AddVisitor(this VisitContext _context, Storage.Models.Visitor visitor)
         {
             await _context.Visitors.AddAsync(visitor).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
+            return visitor;
         }
 
         public static async Task AddVisit(this VisitContext _context, Visit visit)

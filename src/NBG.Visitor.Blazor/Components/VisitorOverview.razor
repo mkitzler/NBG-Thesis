@@ -35,7 +35,9 @@
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
-        <MudTh Style="padding-right:100px;"><MudIconButton Icon="@Icons.Filled.Add" OnClick="AddVisit"></MudIconButton></MudTh>
+        <MudTh Style="padding-right:100px;">
+            <MudIconButton Icon="@Icons.Filled.Add" Size="@Size.Medium" OnClick="AddVisit"></MudIconButton>
+        </MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd Style="padding-left:100px;">@context.Visitor.FirstName</MudTd>
@@ -95,6 +97,7 @@
     private bool fixedHeader = true;
     private bool fixedFooter = true;
     private int[] pageSizeOptions = new int[] { 10, 25, 50, 100 };
+    private DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true };
 
     //public bool filterActive { get; set; }
     //public bool filterPending { get; set; }
@@ -153,15 +156,17 @@
 
     public async Task EditVisit(VisitDto _visit)
     {
-        var parameters = new DialogParameters { ["visit"]=_visit };
+        var parameters = new DialogParameters { ["visit"]=_visit, ["mode"]="Edit" };
 
-        var dialog = DialogService.Show<EditDialog>("Edit Visit", parameters);
+        var dialog = DialogService.Show<EditDialog>("Edit Visit", parameters, maxWidth);
         var result = await dialog.Result;
 
 
         if (!result.Cancelled)
         {
             var visit = (VisitDto)result.Data;
+            if (visit.VisitEnd != null)
+                visit.Status = VisitStatusDto.VISIT_OVER;
             await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??null, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
             Snackbar.Add("Changes Saved", Severity.Success);
 
@@ -176,20 +181,20 @@
         _visit.Visitor = new VisitorDto();
         _visit.Company = new CompanyDto();
         _visit.ContactPerson = new ContactPersonDto();
-        _visit.Status = new VisitStatusDto();
-        var parameters = new DialogParameters { ["visit"] = _visit };
+        _visit.Status = VisitStatusDto.VISIT_PENDING;
+        var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]="Add" };
 
-        var dialog = DialogService.Show<EditDialog>("Add Visit", parameters);
+        var dialog = DialogService.Show<EditDialog>("Add Visit", parameters, maxWidth);
         var result = await dialog.Result;
 
 
         if (!result.Cancelled)
         {
             var visit = (VisitDto)result.Data;
-            await DataRepository.AddVisit(visit.VisitStart??null, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null);
-            Snackbar.Add("Visit Added", Severity.Success);
-
+            await DataRepository.AddVisit(visit.VisitStart??null, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null, VisitStatusDto.VISIT_PENDING);
             Visits.Add(visit);
+
+            Snackbar.Add("Visit Added", Severity.Success);
             await JS.InvokeVoidAsync("console.log","Added visit.");
             //await JS.InvokeVoidAsync("console.log", $"{visit.Id.ToString()}\n{visit.VisitStart}\n{visit.VisitEnd}\n{visit.Status}\n{visit.ContactPerson.Name}\n{visit.Company.CompanyLabel}\n{visit.Visitor.FirstName}\n{visit.Visitor.LastName}\n{visit.Visitor.PhoneNumber}\n{visit.Visitor.Email}");
         }

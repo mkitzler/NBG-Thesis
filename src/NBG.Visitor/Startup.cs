@@ -89,7 +89,6 @@ namespace NBG.Visitor
             });
             services.AddServerSideBlazor();
             services.AddSingleton<IVisitService, VisitService>();
-
             services.AddMudServices();
 
             services.AddDbContextFactory<VisitContext>(options => 

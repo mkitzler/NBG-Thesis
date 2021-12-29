@@ -1,14 +1,23 @@
 ﻿@using Microsoft.JSInterop
 @using NBG.Visitor.Domain.Dtos;
 @using MudBlazor;
+@using Radzen.Blazor;
 @inject IJSRuntime JS;
+
 
 
 <MudDialog>
     <TitleContent>
         <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-3 mb-n1"/>
-            Edit Visitor
+            @if(mode == "Add")
+            {
+                <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Class="mr-3 mb-n1"/>
+            }
+            else if (mode == "Edit")
+            {
+                <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3 mb-n1"/>
+            }
+            @mode Visitor
         </MudText>
     </TitleContent>
     <DialogContent>
@@ -18,19 +27,48 @@
         <MudTextField @bind-Value="@visit.Visitor.Email" Label="Email"/>
         <MudTextField @bind-Value="@visit.Company.CompanyLabel" Label="Company"/>
         <MudTextField @bind-Value="@visit.ContactPerson.Name" Label="Contact Person"/>
-        <MudTextField @bind-Value="@visit.VisitStart" Label="Start"/>
-        <MudTextField @bind-Value="@visit.VisitEnd" Label="End"/>
+        <!--<MudTextField @bind-Value="@visit.VisitStart" Label="Start"/>
+        <MudTextField @bind-Value="@visit.VisitEnd" Label="End"/>-->
+        <!--<RadzenDatePicker @bind-Value="@visit.VisitStart" TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm:ss" Class="" />-->
+        <!--<RadzenDatePicker @bind-Value="@visit.VisitEnd" TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm:ss" Class="" />-->
+        <div class="datetimecontainer">
+            <MudDatePicker Label="Start Date" @bind-Date="@startDate" DisableToolbar="true" DateFormat="dd.MM.yyyy" Style="width:90%;"/>
+            <MudTimePicker Label="Start Time" @bind-Time="@startTime" DisableToolbar="true" Style="width:90%;"/>
+        </div>
+        <div class="datetimecontainer">
+            <MudDatePicker Label="End Date" @bind-Date="@endDate" DisableToolbar="true" DateFormat="dd.MM.yyyy" Style="width:90%;"/>
+            <MudTimePicker Label="End Time" @bind-Time="@endTime" DisableToolbar="true" Style="width:90%;"/>
+        </div>
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Error" OnClick="EditVisit">Save Changes</MudButton>
+        <MudButton Color="Color.Error" OnClick="EditVisit">Submit</MudButton>
     </DialogActions>
 </MudDialog>
-
+ 
 @code {
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     [Parameter] public VisitDto visit { get; set; } = new VisitDto();
+    [Parameter] public string mode { get; set; }
+    private DateTime? startDate { get; set; }
+    private TimeSpan? startTime { get; set; }
+    private DateTime? endDate { get; set; }
+    private TimeSpan? endTime { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        startDate = @visit.VisitStart ?? null;
+        endDate = @visit.VisitEnd ?? null;
+        if (@visit.VisitStart != null)
+            startTime = @visit.VisitStart.Value.TimeOfDay;
+        else
+            startTime = null;
+        if (@visit.VisitEnd != null)
+            endTime = @visit.VisitEnd.Value.TimeOfDay;
+        else
+            endTime = null;
+    }
 
     private void Cancel()
     {
@@ -39,6 +77,31 @@
 
     private void EditVisit()
     {
+        if (startTime != null)
+        {
+            startDate -= startDate.Value.TimeOfDay;
+            startDate += startTime;
+        }
+        else if (startDate != null)
+        {
+            startDate -= startDate.Value.TimeOfDay;
+            startDate += new TimeSpan(12, 0, 0);
+        }
+
+        if (endTime != null)
+        {
+            endDate -= endDate.Value.TimeOfDay;
+            endDate += endTime;
+        }
+        else if (endDate != null)
+        {
+            endDate -= endDate.Value.TimeOfDay;
+            endDate += new TimeSpan(12, 0, 0);
+        }
+        
+
+        visit.VisitStart = startDate??null;
+        visit.VisitEnd = endDate??null;
         MudDialog.Close(DialogResult.Ok(visit));
     }
 }
