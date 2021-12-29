@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Storage.Dtos
+namespace NBG.Visitor.Domain.Dtos
 {
     public class VisitDto
     {
+        public VisitDto() { }
         public VisitDto(VisitorDto visitor, ContactPersonDto contactPerson, CompanyDto company)
         {
             Company = company ?? new CompanyDto();
@@ -20,6 +21,6 @@ namespace NBG.Visitor.Storage.Dtos
         public VisitorDto Visitor { get; set; }
         public ContactPersonDto ContactPerson { get; set; }
         public CompanyDto Company { get; set; }
-        public string Status { get; set; }
+        public VisitStatusDto Status { get; set; }
     }
 }
