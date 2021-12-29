@@ -4,14 +4,6 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Components\TerminalSafety.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Components\TerminalSafety.razor.css" />
-  </ItemGroup>
-
   
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -19,11 +11,30 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.1" />
     <PackageReference Include="MudBlazor" Version="5.1.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\LangTerminal.de.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LangTerminal.de.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\LangTerminal.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\LangTerminal.de.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>LangTerminal.de.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

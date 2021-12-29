@@ -6,31 +6,31 @@
         <MudForm @ref="visitorForm">
             <MudGrid Justify=Justify.Center Style="text-align: center;">
                 <MudItem xs=12 Class="mb-6">
-                    <MudText Typo="Typo.h2">Besucherregistrierung</MudText>
+                    <MudText Typo="Typo.h2">@Loc["VisitorRegistration"]</MudText>
                 </MudItem>
                 <MudItem xs=6>
-                    <MudTextField T="string" @bind-Value="FormData.FirstName" Label="Vorname" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                    <MudTextField T="string" @bind-Value="FormData.FirstName" Label=@Loc["FirstName"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] />
                 </MudItem>
                 <MudItem xs=6>
-                    <MudTextField T="string" @bind-Value="FormData.LastName" Label="Nachname" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                    <MudTextField T="string" @bind-Value="FormData.LastName" Label=@Loc["LastName"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.PhoneNumber" Label="Telefonnummer" Variant=Variant.Outlined Required="true" Validation="@(new PhoneAttribute() {ErrorMessage = "Die Telefonnummer ist ungültig"})" />
+                    <MudTextField T="string" @bind-Value="FormData.PhoneNumber" Label=@Loc["PhoneNumber"] Variant=Variant.Outlined Required="true" Validation="@(new PhoneAttribute() {ErrorMessage = @Loc["WrongPhone"]})" />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.Email" Label="E-Mail" Variant=Variant.Outlined Validation="@(new EmailAddressAttribute() {ErrorMessage = "Die E-Mail ist ungültig"})" />
+                    <MudTextField T="string" @bind-Value="FormData.Email" Label=@Loc["Email"] Variant=Variant.Outlined Validation="@(new EmailAddressAttribute() {ErrorMessage = @Loc["WrongEmail"]})" />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.Company" Label="Unternehmen" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                    <MudTextField T="string" @bind-Value="FormData.Company" Label=@Loc["Company"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.ContactPerson" Label="Ansprechperson" Variant=Variant.Outlined Required="true" RequiredError="Pflichtfeld" />
+                    <MudTextField T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] />
                 </MudItem>
                 <MudItem xs=6 Style="text-align: left;">
-                    <MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Variant=Variant.Filled Size=Size.Large Color=Color.Primary StartIcon=@Icons.Outlined.ArrowBack>Zurück</MudButton>
+                    <MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Variant=Variant.Filled Size=Size.Large Color=Color.Primary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
                 </MudItem>
                 <MudItem xs=6 Style="text-align: right;">
-                    <MudButton OnClick=Validate Variant=Variant.Filled Size=Size.Large Color=Color.Primary EndIcon=@Icons.Outlined.ArrowForward>Weiter</MudButton>
+                    <MudButton OnClick=Validate Variant=Variant.Filled Size=Size.Large Color=Color.Primary EndIcon=@Icons.Outlined.ArrowForward>@Loc["Next"]</MudButton>
                 </MudItem>
             </MudGrid>
         </MudForm>
@@ -38,6 +38,9 @@
 </MudGrid>
 
 @code {
+    [CascadingParameter]
+    public Localizer Loc { get; set; }
+
     [Parameter]
     public EventCallback OnNext { get; set; }
     [Parameter]

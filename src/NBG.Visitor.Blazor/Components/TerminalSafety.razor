@@ -1,55 +1,47 @@
 ﻿@using MudBlazor;
 
-<MudGrid Justify=Justify.Center Style="margin: 2em;">
-    <MudItem lg=7>
-		<MudCarousel Style="height: 80vh;" AutoCycle="false" TData="object">
+<MudGrid Style="margin: 2em; height: 100%;" Justify=Justify.Center>
+    <MudItem Style="height: 100%;" lg=8>
+		<MudCarousel @ref="carousel" Style="height: 85%;" AutoCycle="false" TData="object" SelectedIndex=0>
 			@for(int p = 0; p < Pages; p++)
 			{
-			<MudCarouselItem>
-				<MudGrid Style="height: 100%;">
-					@for (int i = itemsPerPage * p; i < itemsPerPage * p + itemsPerPage && i < safetyItems.Length; i++)
-					{
-					<MudItem xs="6">
-						<MudPaper Class="flex-container">
-							<img style="height: 10em;" src="@(safetyItems[i].ImagePath)"/>
-							<a style="vertical-align: top; font-size: 2em;">@safetyItems[i].Text</a>
-						</MudPaper>
-					</MudItem>
-					}
-				</MudGrid>
-			</MudCarouselItem>
+				var localp = p;
+				<MudCarouselItem>
+					<MudGrid Style="height: 100%;">
+						@for (int i = itemsPerPage * localp; (i < itemsPerPage * localp + itemsPerPage) && i < safetyItems.Length; i++)
+						{
+							var locali = i;
+							<MudItem xs="6">
+								<MudPaper Style="height: 10em;">
+									<img style="display: inline-block; height: 100%; width: 10em;" src="@(safetyItems[locali].ImagePath)"/>
+									<div style="display: inline-block; vertical-align: top;">
+										<MudText Typo=Typo.h4>@safetyItems[locali].Text</MudText>	@*TODO: Text*@
+										<MudText>This is some sample text</MudText>
+									</div>
+								</MudPaper>
+							</MudItem>
+						}
+					</MudGrid>
+				</MudCarouselItem>
 			}
 		</MudCarousel>
-		@*<MudGrid Style="height: 100vh; overflow: scroll;">
-			@foreach (SafetyItem si in safetyItems)
-			{
-			<MudItem xs="6">
-				<MudPaper Class="flex-container">
-					<img style="height: 10em;" src="@(si.ImagePath)"/>
-					<a style="vertical-align: top; font-size: 2em;">@si.Text</a>
-				</MudPaper>
-			</MudItem>
-			}
-		</MudGrid>*@
 	</MudItem>
 </MudGrid>
 
-<div class="spacer"/>
-
 <footer class="footer">
 	<MudGrid Justify=Justify.Center>
-		<MudItem lg=7>
+		<MudItem lg=8>
 			<MudGrid Justify=Justify.Center>
 				<MudItem lg=3>
-					<MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Variant=Variant.Filled Color=@Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>Zurück</MudButton>
+					<MudButton OnClick=Back Variant=Variant.Filled Color=@Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
 				</MudItem>
 				<MudItem lg=6>
 					<MudForm @ref="form">
-						<MudCheckBox @bind-Checked="accepted" Label="Ich habe die oben angeführten Sicherheitsmaßnahmen gelesen" Required=true RequiredError="Sie müssen die Sicherheitshinweise gelesen haben"/>
+						<MudCheckBox @bind-Checked="accepted" Label=@Loc["SafetyInfoRead"] Required=true RequiredError=@Loc["SafetyInfoNotRead"]/>
 					</MudForm>
 				</MudItem>
 				<MudItem lg=3>
-					<MudButton OnClick=Register Variant=Variant.Filled Color=@Color.Secondary EndIcon=@Icons.Outlined.Check>Registrierung abschließen</MudButton>
+					<MudButton OnClick=Register Variant=Variant.Filled Color=@Color.Secondary EndIcon=@Icons.Outlined.Check>@(carousel.SelectedIndex < Pages - 1 ? Loc["Next"] : Loc["FinishRegister"])</MudButton>
 				</MudItem>
 			</MudGrid>
 		</MudItem>
@@ -57,49 +49,52 @@
 </footer>
 
 @code {
+	[CascadingParameter]
+    public Localizer Loc { get; set; }
+
 	[Parameter]
-	public EventCallback OnRegister { get; set; }
+	public EventCallback<RegisteredEventArgs> OnRegister { get; set; }
 	[Parameter]
 	public EventCallback OnBack { get; set; }
 
+	private MudCarousel<object> carousel;
+
 	private SafetyItem[] safetyItems = new SafetyItem[] {
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png")
+		new("Lorem Ipsum1", "text", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
+		new("Lorem Ipsum2", "", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png")
 	};
-	private int itemsPerPage = 6;
+	private int itemsPerPage = 10;
 	private int Pages
 	{
 		get
 		{
-			return (int)Math.Ceiling((double)(safetyItems.Length / itemsPerPage));
+			return (int)Math.Ceiling((double)safetyItems.Length / (double)itemsPerPage);
 		}
 	}
 
 	private MudForm form;
 	private bool accepted;
 
+	private async void Back()
+	{
+		if (carousel.SelectedIndex > 0)
+			carousel.Previous();
+		else
+			await OnBack.InvokeAsync();
+	}
+
 	private async void Register()
 	{
-		await form.Validate();
-		if (accepted)
+		form.ResetValidation();
+		if (carousel.SelectedIndex < Pages - 1)
+			carousel.Next();
+		else
 		{
-			await OnRegister.InvokeAsync();
+			await form.Validate();
+			if (accepted)
+			{
+				await OnRegister.InvokeAsync(new RegisteredEventArgs(Loc["RegisterSuccess"]));
+			}
 		}
 	}
 }
