@@ -1,0 +1,45 @@
+﻿@using Microsoft.JSInterop
+@using NBG.Visitor.Domain.Dtos;
+@using MudBlazor;
+@inject IJSRuntime JS;
+
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Person" Class="mr-3 mb-n1"/>
+            Edit Visitor
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField @bind-Value="@visit.Visitor.FirstName" Label="First Name"/>
+        <MudTextField @bind-Value="@visit.Visitor.LastName" Label="Last Name"/>
+        <MudTextField @bind-Value="@visit.Visitor.PhoneNumber" Label="Phone Number"/>
+        <MudTextField @bind-Value="@visit.Visitor.Email" Label="Email"/>
+        <MudTextField @bind-Value="@visit.Company.CompanyLabel" Label="Company"/>
+        <MudTextField @bind-Value="@visit.ContactPerson.Name" Label="Contact Person"/>
+        <MudTextField @bind-Value="@visit.VisitStart" Label="Start"/>
+        <MudTextField @bind-Value="@visit.VisitEnd" Label="End"/>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Error" OnClick="EditVisit">Save Changes</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public VisitDto visit { get; set; } = new VisitDto();
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private void EditVisit()
+    {
+        MudDialog.Close(DialogResult.Ok(visit));
+    }
+}
+
