@@ -1,12 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Components.Routing;
+@using Microsoft.JSInterop
 @using MudBlazor;
 @using NBG.Visitor.Domain;
 @using NBG.Visitor.Domain.Dtos;
+@using NBG.Visitor.Blazor.Components.Dialogs;
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components;
 
+@inject IJSRuntime JS;
 @inject IVisitService DataRepository;
 @inject IDialogService DialogService;
+@inject ISnackbar Snackbar;
 
 <MudTable Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation="0" Class="ml-0 mr-0" Filter="new Func<VisitDto,bool>(FilterFunc)" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Height="77vh">
     <ToolBarContent>
@@ -31,7 +35,7 @@
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
-        <MudTh Style="padding-right:100px;"></MudTh>
+        <MudTh Style="padding-right:100px;"><MudIconButton Icon="@Icons.Filled.Add" OnClick="AddVisit"></MudIconButton></MudTh>
     </HeaderContent>
     <RowTemplate>
         <MudTd Style="padding-left:100px;">@context.Visitor.FirstName</MudTd>
@@ -121,7 +125,9 @@
         {
             visit.VisitEnd = DateTime.Now;
             visit.Status = VisitStatusDto.VISIT_OVER;
-            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??DateTime.Now, visit.VisitEnd??DateTime.Now, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
+            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??DateTime.Now, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
+
+            await JS.InvokeVoidAsync("console.log","Visitor signed off.");
         }
     }
 
@@ -140,12 +146,53 @@
         {
             await DataRepository.RemoveVisit(visit.Id);
             Visits.Remove(visit);
+
+            await JS.InvokeVoidAsync("console.log","Visit deleted.");
         }
     }
 
-    public async Task EditVisit(VisitDto visit)
+    public async Task EditVisit(VisitDto _visit)
     {
-        
+        var parameters = new DialogParameters { ["visit"]=_visit };
+
+        var dialog = DialogService.Show<EditDialog>("Edit Visit", parameters);
+        var result = await dialog.Result;
+
+
+        if (!result.Cancelled)
+        {
+            var visit = (VisitDto)result.Data;
+            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??null, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
+            Snackbar.Add("Changes Saved", Severity.Success);
+
+            await JS.InvokeVoidAsync("console.log","Visit updated.");
+            //await JS.InvokeVoidAsync("console.log", $"{visit.Id.ToString()}\n{visit.VisitStart}\n{visit.VisitEnd}\n{visit.Status}\n{visit.ContactPerson.Name}\n{visit.Company.CompanyLabel}\n{visit.Visitor.FirstName}\n{visit.Visitor.LastName}\n{visit.Visitor.PhoneNumber}\n{visit.Visitor.Email}");
+        }
+    }
+
+    public async Task AddVisit()
+    {
+        VisitDto _visit = new VisitDto();
+        _visit.Visitor = new VisitorDto();
+        _visit.Company = new CompanyDto();
+        _visit.ContactPerson = new ContactPersonDto();
+        _visit.Status = new VisitStatusDto();
+        var parameters = new DialogParameters { ["visit"] = _visit };
+
+        var dialog = DialogService.Show<EditDialog>("Add Visit", parameters);
+        var result = await dialog.Result;
+
+
+        if (!result.Cancelled)
+        {
+            var visit = (VisitDto)result.Data;
+            await DataRepository.AddVisit(visit.VisitStart??null, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null);
+            Snackbar.Add("Visit Added", Severity.Success);
+
+            Visits.Add(visit);
+            await JS.InvokeVoidAsync("console.log","Added visit.");
+            //await JS.InvokeVoidAsync("console.log", $"{visit.Id.ToString()}\n{visit.VisitStart}\n{visit.VisitEnd}\n{visit.Status}\n{visit.ContactPerson.Name}\n{visit.Company.CompanyLabel}\n{visit.Visitor.FirstName}\n{visit.Visitor.LastName}\n{visit.Visitor.PhoneNumber}\n{visit.Visitor.Email}");
+        }
     }
 
     private bool FilterFunc(VisitDto visit)

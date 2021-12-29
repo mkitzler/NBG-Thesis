@@ -55,7 +55,7 @@ namespace NBG.Visitor.Services.DB
         /// <param name="email"></param>
         /// <returns></returns>
         /// 
-        public async Task AddVisit(DateTime start, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
+        public async Task AddVisit(DateTime? start, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
         {
             using var context = _contextFactory.CreateDbContext();
             var visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
@@ -64,7 +64,7 @@ namespace NBG.Visitor.Services.DB
             await context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = cp, Company = c }).ConfigureAwait(false);
         }
 
-        public async Task UpdateVisit(int Id, DateTime start, DateTime end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
+        public async Task UpdateVisit(int Id, DateTime? start, DateTime? end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
         {
             using var context = _contextFactory.CreateDbContext();
             var visit = context.Visits.Include(v => v.Visitor).First(visit => visit.Id == Id);
