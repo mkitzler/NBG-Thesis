@@ -6,7 +6,6 @@
 
   
   <ItemGroup>
-<<<<<<< HEAD
     <None Remove="Components\Dialogs\EditDialog.razor.css" />
     <None Remove="Components\TerminalSafety.razor.css" />
   </ItemGroup>
@@ -14,7 +13,6 @@
   <ItemGroup>
     <Content Include="Components\Dialogs\EditDialog.razor.css" />
     <Content Include="Components\TerminalSafety.razor.css" />
-=======
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
@@ -22,7 +20,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.1" />
     <PackageReference Include="MudBlazor" Version="5.1.5" />
->>>>>>> origin/main
   </ItemGroup>
 
   <ItemGroup>
@@ -30,17 +27,14 @@
   </ItemGroup>
 
   <ItemGroup>
-<<<<<<< HEAD
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
     <PackageReference Include="MudBlazor" Version="5.1.5" />
     <PackageReference Include="Radzen.Blazor" Version="3.13.11" />
-=======
     <Compile Update="Resources\LangTerminal.de.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>LangTerminal.de.resx</DependentUpon>
     </Compile>
->>>>>>> origin/main
   </ItemGroup>
 
   <ItemGroup>
