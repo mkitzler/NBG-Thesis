@@ -8,11 +8,13 @@ namespace NBG.Visitor.Blazor
 {
     public class SafetyItem
     {
+        public string Title { get; set; }
         public string Text { get; set; }
         public string ImagePath { get; set; }
 
-		public SafetyItem(string text, string imagePath)
+		public SafetyItem(string title, string text, string imagePath)
 		{
+            Title = title;
             Text = text;
             ImagePath = imagePath;
 		}

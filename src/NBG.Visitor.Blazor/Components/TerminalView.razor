@@ -1,6 +1,7 @@
 ﻿@using MudBlazor;
 @using NBG.Visitor.Domain.Dtos;
 @using NBG.Visitor.Domain;
+@using System.Reflection
 
 @inject IDialogService DialogService;
 @inject IVisitService vs;
@@ -15,6 +16,7 @@
 </header>*@
 
 @*<CascadingValue Value="this">*@
+<CascadingValue Value="Loc">
     <MudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
         <MudCarouselItem>
             <TerminalHome OnNext=@(() => carousel.Next()) />
@@ -26,6 +28,7 @@
             <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
         </MudCarouselItem>
     </MudCarousel>
+</CascadingValue>
 @*</CascadingValue>*@
 
 @*<footer>
@@ -33,6 +36,8 @@
 </footer>*@
 
 @code {
+    private Localizer Loc = new("NBG.Visitor.Blazor.Resources.LangTerminal", Assembly.GetExecutingAssembly(), "de-DE");
+
     //private RenderFragment header;
     private MudCarousel<object> carousel;
     //private RenderFragment footer;
@@ -62,10 +67,10 @@
         }
     };
 
-    private async void Register()
+    private async void Register(RegisteredEventArgs e)
     {
         await vs.AddVisit(DateTime.Now, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
-        DialogService.Show<MudText>("Besuch erfolgreich angelegt");
+        DialogService.Show<MudText>(e.Message);
         form.Reset();
         carousel.MoveTo(0);
     }
