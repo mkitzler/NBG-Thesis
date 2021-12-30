@@ -52,11 +52,13 @@
 
     private async void Validate()
     {
+        visitorForm.ResetValidation();
         await visitorForm.Validate();
         if (visitorForm.IsValid)
         {
             await OnNext.InvokeAsync();
         }
+        StateHasChanged();
     }
 
     public void Reset()

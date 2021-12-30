@@ -1,4 +1,5 @@
 ﻿@using MudBlazor;
+@using System.Reflection
 
 <MudGrid Style="margin: 2em; height: 100%;" Justify=Justify.Center>
     <MudItem Style="height: 100%;" lg=8>
@@ -13,10 +14,12 @@
 							var locali = i;
 							<MudItem xs="6">
 								<MudPaper Style="height: 10em;">
-									<img style="display: inline-block; height: 100%; width: 10em;" src="@(safetyItems[locali].ImagePath)"/>
+									<div style="display: inline-flex; vertical-align: middle; width: 10em; height: 100%">
+										<img style="width: 100%" src="@(safetyItems[locali].ImagePath)"/>
+									</div>
 									<div style="display: inline-block; vertical-align: top;">
-										<MudText Typo=Typo.h4>@safetyItems[locali].Text</MudText>	@*TODO: Text*@
-										<MudText>This is some sample text</MudText>
+										<MudText Typo=Typo.h4>@safetyItems[locali].Title</MudText>
+										<MudText>@safetyItems[locali].Text</MudText>
 									</div>
 								</MudPaper>
 							</MudItem>
@@ -59,10 +62,7 @@
 
 	private MudCarousel<object> carousel;
 
-	private SafetyItem[] safetyItems = new SafetyItem[] {
-		new("Lorem Ipsum1", "text", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png"),
-		new("Lorem Ipsum2", "", "_content/NBG.Visitor.Blazor/images/safetyicons/sample.png")
-	};
+	private SafetyItem[] safetyItems => SafetyItem.LoadFromResource(Assembly.GetExecutingAssembly(), Loc.Culture).ToArray();
 	private int itemsPerPage = 10;
 	private int Pages
 	{

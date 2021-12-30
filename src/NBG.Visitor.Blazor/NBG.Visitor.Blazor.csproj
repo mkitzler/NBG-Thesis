@@ -30,20 +30,17 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
     <PackageReference Include="MudBlazor" Version="5.1.5" />
     <PackageReference Include="Radzen.Blazor" Version="3.13.11" />
-    <Compile Update="Resources\LangTerminal.de.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>LangTerminal.de.resx</DependentUpon>
-    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\LangTerminal.en.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+    <EmbeddedResource Update="Resources\SafetyItems.resx">
+      <Generator></Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Resources\LangTerminal.de.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>LangTerminal.de.Designer.cs</LastGenOutput>
+    <EmbeddedResource Update="Resources\TerminalLang.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TerminalLang.de.resx">
+      <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>
 
