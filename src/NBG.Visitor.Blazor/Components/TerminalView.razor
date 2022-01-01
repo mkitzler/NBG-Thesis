@@ -1,9 +1,12 @@
 ﻿@using MudBlazor;
+@using NBG.Visitor.Blazor.Components.Dialogs
 @using NBG.Visitor.Domain.Dtos;
 @using NBG.Visitor.Domain;
 @using System.Reflection
+@using QRCoder
+@using System.Drawing
 
-@inject IDialogService DialogService;
+@inject IDialogService Dialog;
 @inject IVisitService vs;
 @*@implements IMainLayout;*@
 
@@ -62,15 +65,21 @@
             {
                 Primary = Colors.Red.Darken1,
                 Secondary = Colors.Grey.Lighten2,
-                AppbarBackground = Colors.Red.Default,  //TODO
                 SecondaryContrastText = Colors.Grey.Darken2
         }
     };
 
     private async void Register(RegisteredEventArgs e)
     {
-        await vs.AddVisit(DateTime.Now, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
-        DialogService.Show<MudText>(e.Message);
+        int id = await vs.AddVisit(DateTime.Now, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+
+        QRCodeGenerator qrGenerator = new QRCodeGenerator();
+        QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.Q);
+        QRCode qrCode = new QRCode(qrCodeData);
+        Bitmap qr = qrCode.GetGraphic(20, System.Drawing.Color.Black, System.Drawing.Color.White, false/*, (Bitmap)Bitmap.FromFile("./_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png")*/); //TODO: find out why it can't find file
+        RenderFragment rf = @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>;
+        Dialog.Show<MudDialog>(e.Message, new DialogParameters() {["DialogContent"] = rf});
+
         form.Reset();
         carousel.MoveTo(0);
     }

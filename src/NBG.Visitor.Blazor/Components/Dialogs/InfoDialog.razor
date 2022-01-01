@@ -1,0 +1,18 @@
+﻿@using MudBlazor;
+
+<MudDialog>
+    <DialogContent>
+        <MudText>@Content</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" OnClick="Close">OK</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public object Content { get; set; }
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+}

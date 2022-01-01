@@ -45,7 +45,6 @@ namespace NBG.Visitor.Services.DB
         /// <remarks>
         /// Will also create a new visitor if not already in Database.
         /// </remarks>
-        /// <param name="_context"></param>
         /// <param name="start"></param>
         /// <param name="contactPerson"></param>
         /// <param name="company"></param>
@@ -53,15 +52,17 @@ namespace NBG.Visitor.Services.DB
         /// <param name="lastName"></param>
         /// <param name="phoneNumber"></param>
         /// <param name="email"></param>
-        /// <returns></returns>
-        /// 
-        public async Task AddVisit(DateTime? start, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null, VisitStatusDto status = VisitStatusDto.VISIT_ACTIVE)
+        /// <param name="status"></param>
+        /// <returns>Id of the created Visit.</returns>
+        public async Task<int> AddVisit(DateTime? start, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null, VisitStatusDto status = VisitStatusDto.VISIT_ACTIVE)
         {
             using var context = _contextFactory.CreateDbContext();
             var visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
             ContactPerson cp = await context.AddContactPersonIfNotExists(contactPerson).ConfigureAwait(false);
             Company c = await context.AddCompanyIfNotExists(company).ConfigureAwait(false);
-            await context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = cp, Company = c, Status = mapper.Map<VisitStatus>(status) }).ConfigureAwait(false);
+            Visit ret = await context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = cp, Company = c, Status = mapper.Map<VisitStatus>(status) }).ConfigureAwait(false);
+            context.SaveChanges();
+            return ret.Id ?? -1;
         }
 
         public async Task UpdateVisit(int Id, DateTime? start, DateTime? end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)

@@ -56,10 +56,9 @@ namespace NBG.Visitor.Services.DB
             return visitor;
         }
 
-        public static async Task AddVisit(this VisitContext _context, Visit visit)
+        public static async Task<Visit> AddVisit(this VisitContext _context, Visit visit)
         {
-            await _context.Visits.AddAsync(visit).ConfigureAwait(false);
-            await _context.SaveChangesAsync().ConfigureAwait (false);
+            return (await _context.Visits.AddAsync(visit).ConfigureAwait(false)).Entity;
         }
 
         public static async Task<ContactPerson> AddContactPersonIfNotExists(this VisitContext _context, string name)    //removed when ContactPerson ceases to be seperate table

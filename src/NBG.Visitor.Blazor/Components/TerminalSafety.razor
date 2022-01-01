@@ -3,7 +3,7 @@
 
 <MudGrid Style="margin: 2em; height: 100%;" Justify=Justify.Center>
     <MudItem Style="height: 100%;" lg=8>
-		<MudCarousel @ref="carousel" Style="height: 85%;" AutoCycle="false" TData="object" SelectedIndex=0>
+		<MudCarousel @ref="carousel" Style="height: 85%;" AutoCycle="false" ShowArrows="false" TData="object">
 			@for(int p = 0; p < Pages; p++)
 			{
 				var localp = p;
@@ -13,7 +13,7 @@
 						{
 							var locali = i;
 							<MudItem xs="6">
-								<MudPaper Style="height: 10em;">
+								<MudPaper Style="height: 10em; overflow: scroll;">
 									<div style="display: inline-flex; vertical-align: middle; width: 10em; height: 100%">
 										<img style="width: 100%" src="@(safetyItems[locali].ImagePath)"/>
 									</div>
@@ -53,7 +53,7 @@
 
 @code {
 	[CascadingParameter]
-    public Localizer Loc { get; set; }
+	public Localizer Loc { get; set; }
 
 	[Parameter]
 	public EventCallback<RegisteredEventArgs> OnRegister { get; set; }

@@ -28,7 +28,7 @@ namespace NBG.Visitor.Blazor
         public static IEnumerable<SafetyItem> LoadFromResource(Assembly assembly, CultureInfo culture, string baseName = "NBG.Visitor.Blazor.Resources.SafetyItems")
         {
             Localizer Loc = new(baseName, assembly, culture);
-            string? data = null;
+            string data = null;
             for (int i = 1; (data = Loc["String" + i.ToString()]) != null; i++)
             {
                 yield return new(data);

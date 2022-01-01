@@ -125,7 +125,7 @@ _content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
   <data name="String10" xml:space="preserve">
     <value>Warning of high voltage
 In these areas, dangerous electrical voltages can lead to injuries or even death.
-_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+_content/NBG.Visitor.Blazor/images/safetyicons/high_voltage.svg</value>
   </data>
   <data name="String11" xml:space="preserve">
     <value>No trespassing
@@ -140,7 +140,7 @@ _content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
   <data name="String13" xml:space="preserve">
     <value>Smoking is prohibited
 Smoking is prohibited on the entire premises except in the designated areas.
-_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+_content/NBG.Visitor.Blazor/images/safetyicons/no_smoking.svg</value>
   </data>
   <data name="String14" xml:space="preserve">
     <value>No naked flame, fire, ignition source prohibited
@@ -175,16 +175,66 @@ _content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
   <data name="String2" xml:space="preserve">
     <value>Visitor registration or deregistration
 
-_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+_content/NBG.Visitor.Blazor/images/safetyicons/information.svg</value>
   </data>
   <data name="String20" xml:space="preserve">
     <value>Corrosive
 In areas with this danger sign, severe skin etching, severe eye damage can occur.
 _content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
   </data>
+  <data name="String21" xml:space="preserve">
+    <value>Oxidizing
+In areas with this danger sign, chemicals can cause or intensify fires or explosions.
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
+  <data name="String22" xml:space="preserve">
+    <value>Flammable
+Highly flammable products are used in areas with this danger sign.
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
+  <data name="String23" xml:space="preserve">
+    <value>Explosive
+In areas with this danger sign, substances can react even without atmospheric oxygen. Danger of explosion!
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
+  <data name="String24" xml:space="preserve">
+    <value>Gases under pressure
+Gases under pressure can explode and cause injury if stored incorrectly and heated up excessively.
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
+  <data name="String25" xml:space="preserve">
+    <value>Toxic
+In areas with this danger sign, chemicals in the smalles quantities can lead to life-threatening poisoning.
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
+  <data name="String26" xml:space="preserve">
+    <value>Dangerous for the environment
+Always dispose of products with this hazard symbol correctly and never throw them into household waste or sewage.
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
+  <data name="String27" xml:space="preserve">
+    <value>Use eye protection
+Signs mark areas/equipment where eye protection should be used.
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
+  <data name="String28" xml:space="preserve">
+    <value>Use hand protection
+Signs mark areas/equipment where hand protection must be used.
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
+  <data name="String29" xml:space="preserve">
+    <value>Personal protective equipment
+Observe the mandatory signs / information signs on the operating arte and tghe installations.
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
   <data name="String3" xml:space="preserve">
     <value>Travel speed
 The maximum permitted speed is 20 km/h on the entire premises.
+_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+  </data>
+  <data name="String30" xml:space="preserve">
+    <value>Using a handrail
+Use the handrail when climbing stairs.
 _content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
   </data>
   <data name="String4" xml:space="preserve">
@@ -205,16 +255,16 @@ _content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
   <data name="String7" xml:space="preserve">
     <value>Warning of laser beam
 Make sure that the safety regulations are observed.
-_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+_content/NBG.Visitor.Blazor/images/safetyicons/laser_warning.svg</value>
   </data>
   <data name="String8" xml:space="preserve">
     <value>Warning of explosive atmosphere
 Make sure that the safety regulations are observed.
-_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+_content/NBG.Visitor.Blazor/images/safetyicons/explosion_warning.svg</value>
   </data>
   <data name="String9" xml:space="preserve">
     <value>Warning of industrial trucks
 Give priority to transport vehicles and use the pavements priovided.
-_content/NBG.Visitor.Blazor/images/safetyicons/sample.png</value>
+_content/NBG.Visitor.Blazor/images/safetyicons/forklift_warning.svg</value>
   </data>
 </root>
