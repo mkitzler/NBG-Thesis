@@ -5,6 +5,7 @@
 @using System.Reflection
 @using QRCoder
 @using System.Drawing
+@using System.Net
 
 @inject IDialogService Dialog;
 @inject IVisitService vs;
@@ -69,18 +70,41 @@
         }
     };
 
-    private async void Register(RegisteredEventArgs e)
+    private async Task Register(RegisteredEventArgs e)
     {
+#if DEBUG
+        int id = 100;
+        await Task.Delay(1000);
+#else
         int id = await vs.AddVisit(DateTime.Now, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+#endif
 
         QRCodeGenerator qrGenerator = new QRCodeGenerator();
-        QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.Q);
+        QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.H);
         QRCode qrCode = new QRCode(qrCodeData);
-        Bitmap qr = qrCode.GetGraphic(20, System.Drawing.Color.Black, System.Drawing.Color.White, false/*, (Bitmap)Bitmap.FromFile("./_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png")*/); //TODO: find out why it can't find file
-        RenderFragment rf = @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>;
-        Dialog.Show<MudDialog>(e.Message, new DialogParameters() {["DialogContent"] = rf});
+        Bitmap logo = BitmapFromUrl("https://fiss.dev.nbg.tech:44303/_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png");
+        Bitmap qr = qrCode.GetGraphic(20, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 15, 15);
+        RenderFragment rf = 
+    @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
+    ;
+        IDialogReference dialog = Dialog.Show<MudDialog>(e.Message, new DialogParameters() {["DialogContent"] = rf});
 
         form.Reset();
         carousel.MoveTo(0);
+
+        if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so scroll won't get stuck
+    }
+
+    private Bitmap BitmapFromUrl(string url)
+    {
+        HttpWebRequest request = WebRequest.CreateHttp(url);
+        request.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+        using (var response = request.GetResponse())
+        {
+            using (var stream = response.GetResponseStream())
+            {
+                return (Bitmap)Bitmap.FromStream(stream);
+            }
+        }
     }
 }
