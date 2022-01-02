@@ -36,7 +36,7 @@
 		<MudItem lg=8>
 			<MudGrid Justify=Justify.Center>
 				<MudItem lg=3>
-					<MudButton OnClick=Back Variant=Variant.Filled Color=@Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
+					<MudButton OnClick=Back Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
 				</MudItem>
 				<MudItem lg=6>
 					<MudForm @ref="form">
@@ -44,7 +44,7 @@
 					</MudForm>
 				</MudItem>
 				<MudItem lg=3>
-					<MudButton OnClick=Register Variant=Variant.Filled Color=@Color.Secondary EndIcon=@Icons.Outlined.Check>@(carousel.SelectedIndex < Pages - 1 ? Loc["Next"] : Loc["FinishRegister"])</MudButton>
+					<MudButton OnClick=Register Variant=Variant.Filled Color=Color.Secondary EndIcon=@Icons.Outlined.Check Disabled=registerButtonDisabled>@(carousel.SelectedIndex < Pages - 1 ? Loc["Next"] : Loc["FinishRegister"])</MudButton>
 				</MudItem>
 			</MudGrid>
 		</MudItem>
@@ -74,8 +74,9 @@
 
 	private MudForm form;
 	private bool accepted;
+	private bool registerButtonDisabled = false;
 
-	private async void Back()
+	private async Task Back()
 	{
 		if (carousel.SelectedIndex > 0)
 			carousel.Previous();
@@ -83,8 +84,9 @@
 			await OnBack.InvokeAsync();
 	}
 
-	private async void Register()
+	private async Task Register()
 	{
+		registerButtonDisabled = true;
 		form.ResetValidation();
 		if (carousel.SelectedIndex < Pages - 1)
 			carousel.Next();
@@ -96,5 +98,6 @@
 				await OnRegister.InvokeAsync(new RegisteredEventArgs(Loc["RegisterSuccess"]));
 			}
 		}
+		registerButtonDisabled = false;
 	}
 }
