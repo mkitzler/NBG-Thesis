@@ -2,24 +2,24 @@
 @using System.Reflection
 
 <MudGrid Style="margin: 2em; height: 100%;" Justify=Justify.Center>
-    <MudItem Style="height: 100%;" lg=8>
+    <MudItem Style="height: 100%;" lg=9>
 		<MudCarousel @ref="carousel" Style="height: 85%;" AutoCycle="false" ShowArrows="false" TData="object">
 			@for(int p = 0; p < Pages; p++)
 			{
 				var localp = p;
 				<MudCarouselItem>
-					<MudGrid Style="height: 100%;">
+					<MudGrid Style="height: 100%; padding: 1em;">
 						@for (int i = itemsPerPage * localp; (i < itemsPerPage * localp + itemsPerPage) && i < safetyItems.Length; i++)
 						{
 							var locali = i;
 							<MudItem xs="6">
-								<MudPaper Style="height: 10em; overflow: scroll;">
-									<div style="display: inline-flex; vertical-align: middle; width: 10em; height: 100%">
-										<img style="width: 100%" src="@(safetyItems[locali].ImagePath)"/>
-									</div>
-									<div style="display: inline-block; vertical-align: top;">
-										<MudText Typo=Typo.h4>@safetyItems[locali].Title</MudText>
-										<MudText>@safetyItems[locali].Text</MudText>
+								<MudPaper Elevation=5 Style="overflow: scroll;">
+									<div style="height: 10em; display: flex;">
+										<img style="width: 10em; align-self: center" src="@(safetyItems[locali].ImagePath)"/>
+										<div style="margin-left: 1em;">
+											<MudText Typo=Typo.h4>@safetyItems[locali].Title</MudText>
+											<MudText>@safetyItems[locali].Text</MudText>
+										</div>
 									</div>
 								</MudPaper>
 							</MudItem>
