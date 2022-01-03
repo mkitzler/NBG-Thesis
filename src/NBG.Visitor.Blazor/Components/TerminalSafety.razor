@@ -3,7 +3,7 @@
 
 <MudGrid Style="margin: 2em; height: 100%;" Justify=Justify.Center>
     <MudItem Style="height: 100%;" lg=9>
-		<MudCarousel @ref="carousel" Style="height: 85%;" AutoCycle="false" ShowArrows="false" TData="object">
+		<MudCarousel @ref="carousel" Style="height: 85%;" AutoCycle="false" ShowArrows="false"  TData="object">
 			@for(int p = 0; p < Pages; p++)
 			{
 				var localp = p;
@@ -31,20 +31,29 @@
 	</MudItem>
 </MudGrid>
 
-<footer class="footer">
+<footer class="footer" style="height: 12%;">
 	<MudGrid Justify=Justify.Center>
 		<MudItem lg=8>
 			<MudGrid Justify=Justify.Center>
 				<MudItem lg=3>
-					<MudButton OnClick=Back Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
+					<MudButton OnClick=Back Size=Size.Large Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
 				</MudItem>
 				<MudItem lg=6>
 					<MudForm @ref="form">
-						<MudCheckBox @bind-Checked="accepted" Label=@Loc["SafetyInfoRead"] Required=true RequiredError=@Loc["SafetyInfoNotRead"]/>
+						@if (carousel.SelectedIndex == Pages - 1)
+						{
+							<MudCheckBox @bind-Checked="accepted" Label=@Loc["SafetyInfoRead"] Required=true RequiredError=@Loc["SafetyInfoNotRead"]/>
+						}
 					</MudForm>
 				</MudItem>
 				<MudItem lg=3>
-					<MudButton OnClick=Register Variant=Variant.Filled Color=Color.Secondary EndIcon=@Icons.Outlined.Check Disabled=registerButtonDisabled>@(carousel.SelectedIndex < Pages - 1 ? Loc["Next"] : Loc["FinishRegister"])</MudButton>
+					<MudButton OnClick=Register Size=Size.Large Variant=Variant.Filled Color=@(!LastPage ? Color.Secondary : Color.Success) EndIcon=@Icons.Outlined.Check Disabled=@(registering || LastPage && !accepted)>
+						@if (registering)
+						{
+							<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+						}
+						@(carousel.SelectedIndex < Pages - 1 ? Loc["Next"] : Loc["FinishRegister"])
+					</MudButton>
 				</MudItem>
 			</MudGrid>
 		</MudItem>
@@ -71,10 +80,17 @@
 			return (int)Math.Ceiling((double)safetyItems.Length / (double)itemsPerPage);
 		}
 	}
+	private bool LastPage
+	{
+		get
+		{
+			return !(carousel.SelectedIndex < Pages - 1);
+		}
+	}
 
 	private MudForm form;
 	private bool accepted;
-	private bool registerButtonDisabled = false;
+	private bool registering = false;
 
 	private async Task Back()
 	{
@@ -86,9 +102,9 @@
 
 	private async Task Register()
 	{
-		registerButtonDisabled = true;
+		registering = true;
 		form.ResetValidation();
-		if (carousel.SelectedIndex < Pages - 1)
+		if (!LastPage)
 			carousel.Next();
 		else
 		{
@@ -98,6 +114,6 @@
 				await OnRegister.InvokeAsync(new RegisteredEventArgs(Loc["RegisterSuccess"]));
 			}
 		}
-		registerButtonDisabled = false;
+		registering = false;
 	}
 }

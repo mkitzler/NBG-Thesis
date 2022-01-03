@@ -20,7 +20,7 @@
 
     tr:hover .optionsMenu
     {
-        visibility: visible;
+        visibility: visible !important;
     }
 </style>
 
@@ -41,6 +41,12 @@
             </MudRadioGroup>
         </MudForm>
 
+        <!--<div id = "filterOptions">
+            <span>Filter: </span>
+            <MudToggleIconButton  Color="Color.Success"  Size=Size.Small @bind-Toggle=@(filterActive)></MudToggleIconButton > 
+            <MudToggleIconButton  Color="Color.Warning"  Size=Size.Small @bind-Toggle=@(filterPending)></MudToggleIconButton >
+            <MudToggleIconButton  Color="Color.Error"    Size=Size.Small @bind-Toggle=@(filterOver)></MudToggleIconButton >
+        </div>-->
         <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
@@ -71,12 +77,16 @@
         <MudTd Class = "status" Style = "padding-top:0px;padding-bottom:0px;">
             @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
             {
+                //<MudChip Color="Color.Success">@context.Status</MudChip>
+                //<div><MudText Color="Color.Success">@context.Status</MudText></div>
                 <MudChip Color="Color.Success" Size=Size.Small>Visit Active</MudChip> 
             }
             else if(@context.Status == VisitStatusDto.VISIT_OVER){
+                //<div><MudText Color="Color.Error">@context.Status</MudText></div>
                 <MudChip Color="Color.Error" Size=Size.Small>Visit Over</MudChip>
             }
             else{
+                //<div><MudText Color="Color.Warning">@context.Status</MudText></div>
                 <MudChip Color="Color.Warning" Size=Size.Small>Visit Pending</MudChip>
             }
         </MudTd>
@@ -88,7 +98,7 @@
             }
         </MudTd>
 
-        <MudTd Style = "padding-top:5px;padding-bottom:5px;padding-right:40px;">
+        <MudTd Style = "padding-top:5px;padding-bottom:5px;padding-right:40px;" >
             <MudMenu Icon="@Icons.Filled.MoreVert" class="optionsMenu" Size=Size.Medium>
                 <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">Edit</MudText></MudMenuItem>
                 <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="color:red;"><MudText Style="font-size:15px;">Delete</MudText></MudMenuItem>
@@ -102,10 +112,9 @@
 </MudTable>
 
 @code {
-    private List<VisitDto> Visits = new List<VisitDto>();
-    
-    // MudTable configuration
     bool _loading = true;
+
+    private string searchString = "";
     private bool dense = false;
     private bool hover = true;
     private bool striped = true;
@@ -113,12 +122,7 @@
     private bool fixedHeader = true;
     private bool fixedFooter = true;
     private int[] pageSizeOptions = new int[] { 10, 25, 50, 100 };
-
-    // Dialog configuration
     private DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true };
-
-    // Filtering
-    private string searchString = "";
     private VisitStatusDto? ActiveFilter { get; set; }
     private string statusFilterStr { get; set; } = "None";
 
@@ -152,28 +156,23 @@
         }
     }
 
-    public async Task AddVisit()
+    public async Task DeleteVisit(VisitDto visit)
     {
-        VisitDto _visit = new VisitDto();
-        _visit.Visitor = new VisitorDto();
-        _visit.Company = new CompanyDto();
-        _visit.ContactPerson = new ContactPersonDto();
-        _visit.Status = VisitStatusDto.VISIT_PENDING;
-        var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]="Add" };
+        var parameters = new DialogParameters { ["visit"]=visit };
+        parameters.Add("ContentText", "Do you really want to delete this visitor? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
 
-        var dialog = DialogService.Show<EditDialog>("Add Visit", parameters, maxWidth);
+        var dialog = DialogService.Show<Dialog>("Delete Visitor", parameters);
+
         var result = await dialog.Result;
-
 
         if (!result.Cancelled)
         {
-            var visit = (VisitDto)result.Data;
-            await DataRepository.AddVisit(visit.VisitStart??null, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null, VisitStatusDto.VISIT_PENDING);
-            Visits.Add(visit);
+            await DataRepository.RemoveVisit(visit.Id);
+            Visits.Remove(visit);
 
-            Snackbar.Add("Visit Added", Severity.Success);
-            await JS.InvokeVoidAsync("console.log","Added visit.");
-            //await JS.InvokeVoidAsync("console.log", $"{visit.Id.ToString()}\n{visit.VisitStart}\n{visit.VisitEnd}\n{visit.Status}\n{visit.ContactPerson.Name}\n{visit.Company.CompanyLabel}\n{visit.Visitor.FirstName}\n{visit.Visitor.LastName}\n{visit.Visitor.PhoneNumber}\n{visit.Visitor.Email}");
+            await JS.InvokeVoidAsync("console.log","Visit deleted.");
         }
     }
 
@@ -198,23 +197,58 @@
         }
     }
 
-    public async Task DeleteVisit(VisitDto visit)
+    public async Task FilterVisitsByStatus()
     {
-        var parameters = new DialogParameters { ["visit"]=visit };
-        parameters.Add("ContentText", "Do you really want to delete this visitor? This process cannot be undone.");
-        parameters.Add("ButtonText", "Delete");
-        parameters.Add("Color", Color.Error);
+        await JS.InvokeVoidAsync("console.log","Visits filtered.");
+        switch (ActiveFilter){
+            case(VisitStatusDto.VISIT_ACTIVE):
+                ActiveFilter = VisitStatusDto.VISIT_PENDING;
+                break;
+            case(VisitStatusDto.VISIT_PENDING):
+                ActiveFilter = VisitStatusDto.VISIT_OVER;
+                break;
+            case(VisitStatusDto.VISIT_OVER):
+                ActiveFilter = null;
+                break;
+            case(null):
+                ActiveFilter = VisitStatusDto.VISIT_ACTIVE;
+                break;
+            default:
+                break;
+        }
+        if (ActiveFilter != null)
+            statusFilterStr = ActiveFilter.Value.ToString();
+        else
+            statusFilterStr = "None";
+    }
 
-        var dialog = DialogService.Show<Dialog>("Delete Visitor", parameters);
+    public void ResetFilters()
+    {
+        ActiveFilter = null;
+    }
 
+    public async Task AddVisit()
+    {
+        VisitDto _visit = new VisitDto();
+        _visit.Visitor = new VisitorDto();
+        _visit.Company = new CompanyDto();
+        _visit.ContactPerson = new ContactPersonDto();
+        _visit.Status = VisitStatusDto.VISIT_PENDING;
+        var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]="Add" };
+
+        var dialog = DialogService.Show<EditDialog>("Add Visit", parameters, maxWidth);
         var result = await dialog.Result;
+
 
         if (!result.Cancelled)
         {
-            await DataRepository.RemoveVisit(visit.Id);
-            Visits.Remove(visit);
+            var visit = (VisitDto)result.Data;
+            await DataRepository.AddVisit(visit.VisitStart??null, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null, VisitStatusDto.VISIT_PENDING);
+            Visits.Add(visit);
 
-            await JS.InvokeVoidAsync("console.log","Visit deleted.");
+            Snackbar.Add("Visit Added", Severity.Success);
+            await JS.InvokeVoidAsync("console.log","Added visit.");
+            //await JS.InvokeVoidAsync("console.log", $"{visit.Id.ToString()}\n{visit.VisitStart}\n{visit.VisitEnd}\n{visit.Status}\n{visit.ContactPerson.Name}\n{visit.Company.CompanyLabel}\n{visit.Visitor.FirstName}\n{visit.Visitor.LastName}\n{visit.Visitor.PhoneNumber}\n{visit.Visitor.Email}");
         }
     }
 
@@ -243,33 +277,5 @@
         return false;
     }
 
-    public void ResetFilters()
-    {
-        ActiveFilter = null;
-    }
-
-    //public async Task FilterVisitsByStatus()
-    //{
-    //    await JS.InvokeVoidAsync("console.log","Visits filtered.");
-    //    switch (ActiveFilter){
-    //        case(VisitStatusDto.VISIT_ACTIVE):
-    //            ActiveFilter = VisitStatusDto.VISIT_PENDING;
-    //            break;
-    //        case(VisitStatusDto.VISIT_PENDING):
-    //            ActiveFilter = VisitStatusDto.VISIT_OVER;
-    //            break;
-    //        case(VisitStatusDto.VISIT_OVER):
-    //            ActiveFilter = null;
-    //            break;
-    //        case(null):
-    //            ActiveFilter = VisitStatusDto.VISIT_ACTIVE;
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //    if (ActiveFilter != null)
-    //        statusFilterStr = ActiveFilter.Value.ToString();
-    //    else
-    //        statusFilterStr = "None";
-    //}
+    private List<VisitDto> Visits = new List<VisitDto>();
 }
