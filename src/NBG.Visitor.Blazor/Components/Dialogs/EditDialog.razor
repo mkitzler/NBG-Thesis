@@ -35,10 +35,14 @@
             <MudDatePicker Label="Start Date" @bind-Date="@startDate" DisableToolbar="true" DateFormat="dd.MM.yyyy" Style="width:90%;"/>
             <MudTimePicker Label="Start Time" @bind-Time="@startTime" DisableToolbar="true" Style="width:90%;"/>
         </div>
-        <div class="datetimecontainer">
-            <MudDatePicker Label="End Date" @bind-Date="@endDate" DisableToolbar="true" DateFormat="dd.MM.yyyy" Style="width:90%;"/>
-            <MudTimePicker Label="End Time" @bind-Time="@endTime" DisableToolbar="true" Style="width:90%;"/>
-        </div>
+        @if(mode == "Edit")
+        {
+            <div class="datetimecontainer">
+                <MudDatePicker Label="End Date" @bind-Date="@endDate" DisableToolbar="true" DateFormat="dd.MM.yyyy" Style="width:90%;"/>    
+                <MudTimePicker Label="End Time" @bind-Time="@endTime" DisableToolbar="true" Style="width:90%;"/>
+            </div>
+        }
+        
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Cancel</MudButton>

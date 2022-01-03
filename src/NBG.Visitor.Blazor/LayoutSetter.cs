@@ -11,7 +11,7 @@ namespace NBG.Visitor.Blazor
     public class LayoutSetter : ComponentBase
     {
         [CascadingParameter]
-        public IMainLayout layout { get; set; }
+        public IMainLayout Layout { get; set; }
 
         [Parameter]
         public RenderFragment Header { get; set; } = null;
@@ -22,9 +22,9 @@ namespace NBG.Visitor.Blazor
         protected override void OnInitialized()
         {
             if (Header != null)
-                layout.SetHeader(Header);
+                Layout.SetHeader(Header);
             if (Footer != null)
-                layout.SetFooter(Footer);
+                Layout.SetFooter(Footer);
         }
     }
 

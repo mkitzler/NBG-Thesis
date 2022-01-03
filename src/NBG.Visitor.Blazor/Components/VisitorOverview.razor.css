@@ -1,7 +1,13 @@
-﻿#filterOptions {
-    margin-right: 40px;
+﻿body
+{
 }
 
-body {
-    overflow: hidden; /* Hide scrollbars */
+.optionsMenu
+{
+    display: none !important;
+}
+
+tr:hover .optionsMenu
+{
+    display: block !important;
 }

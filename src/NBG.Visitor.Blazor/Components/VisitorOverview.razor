@@ -12,10 +12,35 @@
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
 
-<MudTable Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation="0" Class="ml-0 mr-0" Filter="new Func<VisitDto,bool>(FilterFunc)" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Height="77vh">
+<style>
+    .optionsMenu
+    {
+        display: none;
+    }
+
+    tr:hover .optionsMenu
+    {
+        display: block !important;
+    }
+</style>
+
+<MudTable Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation="5" Class="ml-8 mr-8 mt-8 rounded-lg" Filter="new Func<VisitDto,bool>(FilterFunc)" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Height="77vh" RowStyle="height:60px !important;"> 
     <ToolBarContent>
-        <MudText Typo="Typo.h6" Style="padding-left:59px;">Visits</MudText>
+        <MudText Typo="Typo.h5">Visits</MudText>
         <MudSpacer />
+
+        @* Variant 1 of filtering by status*@
+        @* <MudButton Style="margin-right:59px;width:115px;" OnClick="FilterVisitsByStatus" Variant="Variant.Filled" Size=@Size.Small>@statusFilterStr</MudButton> *@
+
+        <MudForm Style="margin-right:30px;">
+            <MudRadioGroup @bind-SelectedOption="@ActiveFilter">
+                <MudRadio T="VisitStatusDto?" Option="@(VisitStatusDto.VISIT_ACTIVE)" Color="Color.Success">Active</MudRadio>
+                <MudRadio T="VisitStatusDto?" Option="@(VisitStatusDto.VISIT_PENDING)" Color="Color.Warning">Pending</MudRadio>
+                <MudRadio T="VisitStatusDto?" Option="@(VisitStatusDto.VISIT_OVER)" Color="Color.Error">Over</MudRadio>
+                <MudButton Variant="Variant.Outlined" OnClick="ResetFilters" Size=Size.Small>Reset</MudButton>
+            </MudRadioGroup>
+        </MudForm>
+
         <!--<div id = "filterOptions">
             <span>Filter: </span>
             <MudToggleIconButton  Color="Color.Success"  Size=Size.Small @bind-Toggle=@(filterActive)></MudToggleIconButton > 
@@ -25,7 +50,7 @@
         <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh Style="padding-left:100px;"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
+        <MudTh Style="padding-left:40px;"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">Last Name</MudTableSortLabel></MudTh>
         <MudTh>Phone Number</MudTh>
         <MudTh>Email</MudTh>
@@ -35,12 +60,12 @@
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
-        <MudTh Style="padding-right:100px;">
+        <MudTh Style="padding-right:40px;">
             <MudIconButton Icon="@Icons.Filled.Add" Size="@Size.Medium" OnClick="AddVisit"></MudIconButton>
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd Style="padding-left:100px;">@context.Visitor.FirstName</MudTd>
+        <MudTd Style="padding-left:40px;">@context.Visitor.FirstName</MudTd>
         <MudTd>@context.Visitor.LastName</MudTd>
         <MudTd>@context.Visitor.PhoneNumber</MudTd>
         <MudTd>@context.Visitor.Email</MudTd>
@@ -73,10 +98,10 @@
             }
         </MudTd>
 
-        <MudTd Style = "padding-top:5px;padding-bottom:5px;padding-right:100px;">
-            <MudMenu Icon="@Icons.Filled.MoreVert">
-                    <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">Edit</MudText></MudMenuItem>
-                    <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="color:red;"><MudText Style="font-size:15px;">Delete</MudText></MudMenuItem>
+        <MudTd Style = "padding-top:5px;padding-bottom:5px;padding-right:40px;" >
+            <MudMenu Icon="@Icons.Filled.MoreVert" class="optionsMenu" Size=Size.Medium>
+                <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">Edit</MudText></MudMenuItem>
+                <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="color:red;"><MudText Style="font-size:15px;">Delete</MudText></MudMenuItem>
             </MudMenu>
         </MudTd>
     </RowTemplate>
@@ -98,11 +123,8 @@
     private bool fixedFooter = true;
     private int[] pageSizeOptions = new int[] { 10, 25, 50, 100 };
     private DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true };
-
-    //public bool filterActive { get; set; }
-    //public bool filterPending { get; set; }
-    //public bool filterOver { get; set; }
-
+    private VisitStatusDto? ActiveFilter { get; set; }
+    private string statusFilterStr { get; set; } = "None";
 
     protected override async Task OnInitializedAsync()
     {
@@ -175,6 +197,36 @@
         }
     }
 
+    public async Task FilterVisitsByStatus()
+    {
+        await JS.InvokeVoidAsync("console.log","Visits filtered.");
+        switch (ActiveFilter){
+            case(VisitStatusDto.VISIT_ACTIVE):
+                ActiveFilter = VisitStatusDto.VISIT_PENDING;
+                break;
+            case(VisitStatusDto.VISIT_PENDING):
+                ActiveFilter = VisitStatusDto.VISIT_OVER;
+                break;
+            case(VisitStatusDto.VISIT_OVER):
+                ActiveFilter = null;
+                break;
+            case(null):
+                ActiveFilter = VisitStatusDto.VISIT_ACTIVE;
+                break;
+            default:
+                break;
+        }
+        if (ActiveFilter != null)
+            statusFilterStr = ActiveFilter.Value.ToString();
+        else
+            statusFilterStr = "None";
+    }
+
+    public void ResetFilters()
+    {
+        ActiveFilter = null;
+    }
+
     public async Task AddVisit()
     {
         VisitDto _visit = new VisitDto();
@@ -202,39 +254,26 @@
 
     private bool FilterFunc(VisitDto visit)
     {
-        /*
-        if(filterActive == true)
+        if (visit.Status == ActiveFilter || ActiveFilter == null)
         {
-            if (visit.Status == VisitStatusDto.VISIT_ACTIVE.ToString())
+            if (string.IsNullOrWhiteSpace(searchString))
                 return true;
+            if (visit.Visitor.FirstName.ToLower().Contains(searchString.ToLower()))
+                return true;
+            if (visit.Visitor.LastName.ToLower().Contains(searchString.ToLower()))
+                return true;
+            if (visit.Visitor.Email != null)
+                if (visit.Visitor.Email.ToLower().Contains(searchString.ToLower()))
+                    return true;
+            if (visit.Visitor.PhoneNumber.ToLower().Contains(searchString.ToLower()))
+                return true;
+            if (visit.ContactPerson.Name != null)
+                if (visit.ContactPerson.Name.ToLower().Contains(searchString.ToLower()))
+                    return true;
+            if (visit.Company.CompanyLabel != null)
+                if (visit.Company.CompanyLabel.ToLower().Contains(searchString.ToLower()))
+                    return true;
         }
-        if(filterPending == true)
-        {
-            if (visit.Status == VisitStatusDto.VISIT_PENDING.ToString())
-                return true;
-        }
-        if(filterOver == true)
-        {
-            if (visit.Status == VisitStatusDto.VISIT_OVER.ToString())
-                return true;
-        }*/
-        if (string.IsNullOrWhiteSpace(searchString))
-            return true;
-        if (visit.Visitor.FirstName.ToLower().Contains(searchString.ToLower()))
-            return true;
-        if (visit.Visitor.LastName.ToLower().Contains(searchString.ToLower()))
-            return true;
-        if (visit.Visitor.Email != null)
-            if (visit.Visitor.Email.ToLower().Contains(searchString.ToLower()))
-                return true;
-        if (visit.Visitor.PhoneNumber.ToLower().Contains(searchString.ToLower()))
-            return true;
-        if (visit.ContactPerson.Name != null)
-            if (visit.ContactPerson.Name.ToLower().Contains(searchString.ToLower()))
-                return true;
-        if (visit.Company.CompanyLabel != null)
-            if (visit.Company.CompanyLabel.ToLower().Contains(searchString.ToLower()))
-                return true;
         return false;
     }
 

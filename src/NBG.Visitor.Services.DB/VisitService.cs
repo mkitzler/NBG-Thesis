@@ -71,6 +71,7 @@ namespace NBG.Visitor.Services.DB
             var visit = context.Visits.Include(v => v.Visitor).First(visit => visit.Id == Id);
             ContactPerson cp = await context.AddContactPersonIfNotExists(contactPerson).ConfigureAwait(false);
             Company c = await context.AddCompanyIfNotExists(company).ConfigureAwait(false);
+
             visit.Company = c;
             visit.ContactPerson = cp;
             visit.VisitStart = start;
@@ -81,7 +82,7 @@ namespace NBG.Visitor.Services.DB
             visit.Visitor.PhoneNumber = phoneNumber;
             visit.Visitor.Email = email;
             context.SaveChanges();
-        }
+        } //UpdateVisitor?
 
         public async Task RemoveVisit(int Id)
         {
