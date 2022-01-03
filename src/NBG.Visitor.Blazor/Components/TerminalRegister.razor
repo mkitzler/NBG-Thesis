@@ -50,6 +50,18 @@
 
     private MudForm visitorForm;
 
+#if DEBUG
+    protected override void OnInitialized()
+    {
+        FormData.FirstName = "Test";
+        FormData.LastName = "Test";
+        FormData.PhoneNumber = "1234";
+        FormData.Company = "Test";
+        FormData.ContactPerson = "Test";
+        base.OnInitialized();
+    }
+#endif
+
     private async void Validate()
     {
         visitorForm.ResetValidation();
