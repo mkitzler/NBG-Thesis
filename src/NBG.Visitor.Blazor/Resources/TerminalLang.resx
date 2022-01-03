@@ -145,7 +145,7 @@
     <value>Phone Number</value>
   </data>
   <data name="QRSigninHint" xml:space="preserve">
-    <value>Scan Ticket to Sign in / Sign off</value>
+    <value>Scan ticket to Sign in / Sign off</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
