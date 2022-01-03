@@ -20,37 +20,53 @@
 
     tr:hover .optionsMenu
     {
-        visibility: visible !important;
+        visibility: visible;
+    }
+
+    .mud-table-container{
+        margin-top:20px !important;
     }
 </style>
 
-<MudTable Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation="5" Class="ml-8 mr-8 mt-8 rounded-lg" Filter="new Func<VisitDto,bool>(FilterFunc)" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Height="77vh" RowStyle="height:60px !important;"> 
+<MudTable Items=@Visits Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Elevation="5" Class="ml-8 mr-8 mt-8 rounded-lg visitTable" Filter="new Func<VisitDto,bool>(FilterFunc)" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Height="75vh" RowStyle="height:60px !important;"> 
+    <ColGroup>
+        <col style="width: 9%;"/>
+        <col style="width: 9%;"/>
+        <col style="width: 10%;"/>
+        <col style="width: 15%;"/>
+        <col style="width: 10%;"/>
+        <col style="width: 10%;"/>
+        <col style="width: 14%;"/>
+        <col style="width: 14%;"/>
+        <col style="width: 3%;"/>
+        <col style="width: 3%;"/>
+        <col style="width: 3%;"/>
+        
+    </ColGroup>
     <ToolBarContent>
-        <MudText Typo="Typo.h5">Visits</MudText>
-        <MudSpacer />
+        <MudCard Elevation="0" Class="pl-4 mt-8">
+            <MudText Class="mb-2" Typo="Typo.h5">Visits</MudText>
+            <MudText>People who have visited in the past 14 days</MudText>
+        </MudCard>
+        <MudSpacer/>
 
-        @* Variant 1 of filtering by status*@
+        @* Variant 1 of filtering by status *@
         @* <MudButton Style="margin-right:59px;width:115px;" OnClick="FilterVisitsByStatus" Variant="Variant.Filled" Size=@Size.Small>@statusFilterStr</MudButton> *@
 
-        <MudForm Style="margin-right:30px;">
+        <MudForm Class="mt-7 mr-11">
             <MudRadioGroup @bind-SelectedOption="@ActiveFilter">
                 <MudRadio T="VisitStatusDto?" Option="@(VisitStatusDto.VISIT_ACTIVE)" Color="Color.Success">Active</MudRadio>
                 <MudRadio T="VisitStatusDto?" Option="@(VisitStatusDto.VISIT_PENDING)" Color="Color.Warning">Pending</MudRadio>
                 <MudRadio T="VisitStatusDto?" Option="@(VisitStatusDto.VISIT_OVER)" Color="Color.Error">Over</MudRadio>
-                <MudButton Variant="Variant.Outlined" OnClick="ResetFilters" Size=Size.Small>Reset</MudButton>
             </MudRadioGroup>
         </MudForm>
 
-        <!--<div id = "filterOptions">
-            <span>Filter: </span>
-            <MudToggleIconButton  Color="Color.Success"  Size=Size.Small @bind-Toggle=@(filterActive)></MudToggleIconButton > 
-            <MudToggleIconButton  Color="Color.Warning"  Size=Size.Small @bind-Toggle=@(filterPending)></MudToggleIconButton >
-            <MudToggleIconButton  Color="Color.Error"    Size=Size.Small @bind-Toggle=@(filterOver)></MudToggleIconButton >
-        </div>-->
-        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        <MudTextField @bind-Value="searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-3 mr-11"></MudTextField>
+        @* <MudButton Variant="Variant.Outlined" OnClick="ResetFilters" Size=Size.Small Class="mt-5 mr-5">Reset</MudButton> *@
+        <MudIconButton Icon="@Icons.Outlined.Cancel" OnClick="ResetFilters" Class="mt-7 mr-8" Style=@resetFilterBtnStyle></MudIconButton>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh Style="padding-left:40px;"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
+        <MudTh Class="pl-10"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">Last Name</MudTableSortLabel></MudTh>
         <MudTh>Phone Number</MudTh>
         <MudTh>Email</MudTh>
@@ -60,12 +76,14 @@
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
-        <MudTh Style="padding-right:40px;">
-            <MudIconButton Icon="@Icons.Filled.Add" Size="@Size.Medium" OnClick="AddVisit"></MudIconButton>
+        <MudTh Class="pr-10">
+            <MudTooltip Text="Add Visit">
+                <MudIconButton Icon="@Icons.Filled.Add" Size="@Size.Medium" OnClick="AddVisit" Class="red darken-2" id="addVisitBtn" Style="@($"color:{Colors.Shades.White};")" DisableElevation=true></MudIconButton>
+            </MudTooltip>   
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd Style="padding-left:40px;">@context.Visitor.FirstName</MudTd>
+        <MudTd Class="pl-10 mt-10">@context.Visitor.FirstName</MudTd>
         <MudTd>@context.Visitor.LastName</MudTd>
         <MudTd>@context.Visitor.PhoneNumber</MudTd>
         <MudTd>@context.Visitor.Email</MudTd>
@@ -77,16 +95,12 @@
         <MudTd Class = "status" Style = "padding-top:0px;padding-bottom:0px;">
             @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
             {
-                //<MudChip Color="Color.Success">@context.Status</MudChip>
-                //<div><MudText Color="Color.Success">@context.Status</MudText></div>
                 <MudChip Color="Color.Success" Size=Size.Small>Visit Active</MudChip> 
             }
             else if(@context.Status == VisitStatusDto.VISIT_OVER){
-                //<div><MudText Color="Color.Error">@context.Status</MudText></div>
                 <MudChip Color="Color.Error" Size=Size.Small>Visit Over</MudChip>
             }
             else{
-                //<div><MudText Color="Color.Warning">@context.Status</MudText></div>
                 <MudChip Color="Color.Warning" Size=Size.Small>Visit Pending</MudChip>
             }
         </MudTd>
@@ -98,11 +112,11 @@
             }
         </MudTd>
 
-        <MudTd Style = "padding-top:5px;padding-bottom:5px;padding-right:40px;" >
-            <MudMenu Icon="@Icons.Filled.MoreVert" class="optionsMenu" Size=Size.Medium>
-                <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">Edit</MudText></MudMenuItem>
-                <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="color:red;"><MudText Style="font-size:15px;">Delete</MudText></MudMenuItem>
-            </MudMenu>
+        <MudTd Class="pr-10" Style="padding-bottom:5px; padding-top:5px;">
+                <MudMenu Icon="@Icons.Filled.MoreVert" class="optionsMenu" Size=Size.Medium>
+                    <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">Edit</MudText></MudMenuItem>
+                    <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="color:red;"><MudText Style="font-size:15px;">Delete</MudText></MudMenuItem>
+                </MudMenu>
         </MudTd>
     </RowTemplate>
 
@@ -112,9 +126,10 @@
 </MudTable>
 
 @code {
-    bool _loading = true;
+    private List<VisitDto> Visits = new List<VisitDto>();
 
-    private string searchString = "";
+    // MudTable configuration
+    bool _loading = true;
     private bool dense = false;
     private bool hover = true;
     private bool striped = true;
@@ -122,7 +137,13 @@
     private bool fixedHeader = true;
     private bool fixedFooter = true;
     private int[] pageSizeOptions = new int[] { 10, 25, 50, 100 };
+    private string resetFilterBtnStyle { get; set; } = "visibility:hidden;";
+
+    // Dialog configuration
     private DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true };
+
+    // Filtering
+    private string searchString = "";
     private VisitStatusDto? ActiveFilter { get; set; }
     private string statusFilterStr { get; set; } = "None";
 
@@ -156,77 +177,6 @@
         }
     }
 
-    public async Task DeleteVisit(VisitDto visit)
-    {
-        var parameters = new DialogParameters { ["visit"]=visit };
-        parameters.Add("ContentText", "Do you really want to delete this visitor? This process cannot be undone.");
-        parameters.Add("ButtonText", "Delete");
-        parameters.Add("Color", Color.Error);
-
-        var dialog = DialogService.Show<Dialog>("Delete Visitor", parameters);
-
-        var result = await dialog.Result;
-
-        if (!result.Cancelled)
-        {
-            await DataRepository.RemoveVisit(visit.Id);
-            Visits.Remove(visit);
-
-            await JS.InvokeVoidAsync("console.log","Visit deleted.");
-        }
-    }
-
-    public async Task EditVisit(VisitDto _visit)
-    {
-        var parameters = new DialogParameters { ["visit"]=_visit, ["mode"]="Edit" };
-
-        var dialog = DialogService.Show<EditDialog>("Edit Visit", parameters, maxWidth);
-        var result = await dialog.Result;
-
-
-        if (!result.Cancelled)
-        {
-            var visit = (VisitDto)result.Data;
-            if (visit.VisitEnd != null)
-                visit.Status = VisitStatusDto.VISIT_OVER;
-            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??null, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
-            Snackbar.Add("Changes Saved", Severity.Success);
-
-            await JS.InvokeVoidAsync("console.log","Visit updated.");
-            //await JS.InvokeVoidAsync("console.log", $"{visit.Id.ToString()}\n{visit.VisitStart}\n{visit.VisitEnd}\n{visit.Status}\n{visit.ContactPerson.Name}\n{visit.Company.CompanyLabel}\n{visit.Visitor.FirstName}\n{visit.Visitor.LastName}\n{visit.Visitor.PhoneNumber}\n{visit.Visitor.Email}");
-        }
-    }
-
-    public async Task FilterVisitsByStatus()
-    {
-        await JS.InvokeVoidAsync("console.log","Visits filtered.");
-        switch (ActiveFilter){
-            case(VisitStatusDto.VISIT_ACTIVE):
-                ActiveFilter = VisitStatusDto.VISIT_PENDING;
-                break;
-            case(VisitStatusDto.VISIT_PENDING):
-                ActiveFilter = VisitStatusDto.VISIT_OVER;
-                break;
-            case(VisitStatusDto.VISIT_OVER):
-                ActiveFilter = null;
-                break;
-            case(null):
-                ActiveFilter = VisitStatusDto.VISIT_ACTIVE;
-                break;
-            default:
-                break;
-        }
-        if (ActiveFilter != null)
-            statusFilterStr = ActiveFilter.Value.ToString();
-        else
-            statusFilterStr = "None";
-    }
-
-    public void ResetFilters()
-    {
-        ActiveFilter = null;
-    }
-
     public async Task AddVisit()
     {
         VisitDto _visit = new VisitDto();
@@ -252,8 +202,53 @@
         }
     }
 
+    public async Task EditVisit(VisitDto _visit)
+    {
+        var parameters = new DialogParameters { ["visit"]=_visit, ["mode"]="Edit" };
+
+        var dialog = DialogService.Show<EditDialog>("Edit Visit", parameters, maxWidth);
+        var result = await dialog.Result;
+
+
+        if (!result.Cancelled)
+        {
+            var visit = (VisitDto)result.Data;
+            if (visit.VisitEnd != null)
+                visit.Status = VisitStatusDto.VISIT_OVER;
+            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??null, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
+            Snackbar.Add("Changes Saved", Severity.Success);
+
+            await JS.InvokeVoidAsync("console.log","Visit updated.");
+            //await JS.InvokeVoidAsync("console.log", $"{visit.Id.ToString()}\n{visit.VisitStart}\n{visit.VisitEnd}\n{visit.Status}\n{visit.ContactPerson.Name}\n{visit.Company.CompanyLabel}\n{visit.Visitor.FirstName}\n{visit.Visitor.LastName}\n{visit.Visitor.PhoneNumber}\n{visit.Visitor.Email}");
+        }
+    }
+
+    public async Task DeleteVisit(VisitDto visit)
+    {
+        var parameters = new DialogParameters { ["visit"]=visit };
+        parameters.Add("ContentText", "Do you really want to delete this visitor? This process cannot be undone.");
+        parameters.Add("ButtonText", "Delete");
+        parameters.Add("Color", Color.Error);
+
+        var dialog = DialogService.Show<Dialog>("Delete Visitor", parameters);
+
+        var result = await dialog.Result;
+
+        if (!result.Cancelled)
+        {
+            await DataRepository.RemoveVisit(visit.Id);
+            Visits.Remove(visit);
+
+            await JS.InvokeVoidAsync("console.log","Visit deleted.");
+        }
+    }
+
     private bool FilterFunc(VisitDto visit)
     {
+        if(searchString != "" || ActiveFilter != null)
+        {
+            ShowCancelFilterButton();
+        }
         if (visit.Status == ActiveFilter || ActiveFilter == null)
         {
             if (string.IsNullOrWhiteSpace(searchString))
@@ -277,5 +272,40 @@
         return false;
     }
 
-    private List<VisitDto> Visits = new List<VisitDto>();
+    private void ShowCancelFilterButton()
+    {
+        resetFilterBtnStyle = "visibility:visible;";
+    }
+
+    private void ResetFilters()
+    {
+        ActiveFilter = null;
+        searchString = "";
+        resetFilterBtnStyle = "visibility:hidden;";
+    }
+
+    //public async Task FilterVisitsByStatus()
+    //{
+    //    await JS.InvokeVoidAsync("console.log","Visits filtered.");
+    //    switch (ActiveFilter){
+    //        case(VisitStatusDto.VISIT_ACTIVE):
+    //            ActiveFilter = VisitStatusDto.VISIT_PENDING;
+    //            break;
+    //        case(VisitStatusDto.VISIT_PENDING):
+    //            ActiveFilter = VisitStatusDto.VISIT_OVER;
+    //            break;
+    //        case(VisitStatusDto.VISIT_OVER):
+    //            ActiveFilter = null;
+    //            break;
+    //        case(null):
+    //            ActiveFilter = VisitStatusDto.VISIT_ACTIVE;
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    //    if (ActiveFilter != null)
+    //        statusFilterStr = ActiveFilter.Value.ToString();
+    //    else
+    //        statusFilterStr = "None";
+    //}
 }
