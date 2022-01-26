@@ -1,7 +1,7 @@
 ﻿@using MudBlazor;
 @using System.ComponentModel.DataAnnotations
 
-<MudGrid Justify=Justify.Center Style="margin-top:10em;">
+<MudGrid Justify=Justify.Center Class="center" Style="height: 88%;">
     <MudItem lg=7>
         <MudForm @ref="visitorForm">
             <MudGrid Justify=Justify.Center Style="text-align: center;">
@@ -26,16 +26,22 @@
                 <MudItem xs=12>
                     <MudTextField T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] />
                 </MudItem>
-                <MudItem xs=6 Style="text-align: left;">
-                    <MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Variant=Variant.Filled Size=Size.Large Color=Color.Primary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
-                </MudItem>
-                <MudItem xs=6 Style="text-align: right;">
-                    <MudButton OnClick=Validate Variant=Variant.Filled Size=Size.Large Color=Color.Primary EndIcon=@Icons.Outlined.ArrowForward>@Loc["Next"]</MudButton>
-                </MudItem>
             </MudGrid>
         </MudForm>
     </MudItem>
 </MudGrid>
+
+<footer class="footer">
+	<MudGrid Justify=Justify.Center>
+		<MudItem lg=2 Class="center">
+			<MudButton OnClick=@(async () => await OnBack.InvokeAsync()) Size=Size.Large Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
+		</MudItem>
+		<MudItem lg=4/>
+		<MudItem lg=2 Class="center">
+			<MudButton OnClick=Validate Size=Size.Large Variant=Variant.Filled Color=Color.Secondary EndIcon=@Icons.Outlined.ArrowForward>@Loc["Next"]</MudButton>
+		</MudItem>
+	</MudGrid>
+</footer>
 
 @code {
     [CascadingParameter]

@@ -3,12 +3,19 @@
 }
 
 .footer {
-    text-align: center;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
     color: #FFF;
     background-color: #F00C;
-    padding: 2em;
+    width: 100%;
+    height: 12%;
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    text-align: center;
+    display: flex;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -7,12 +7,10 @@
   
   <ItemGroup>
     <None Remove="Components\Dialogs\EditDialog.razor.css" />
-    <None Remove="Components\TerminalSafety.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Components\Dialogs\EditDialog.razor.css" />
-    <Content Include="Components\TerminalSafety.razor.css" />
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
