@@ -3,28 +3,28 @@
 
 <MudGrid Justify=Justify.Center Class="center" Style="height: 88%;">
     <MudItem lg=7>
-        <MudForm @ref="visitorForm">
+        <MudForm @ref="visitorForm" IsValidChanged=HandleValidChanged>
             <MudGrid Justify=Justify.Center Style="text-align: center;">
                 <MudItem xs=12 Class="mb-6">
                     <MudText Typo="Typo.h2">@Loc["VisitorRegistration"]</MudText>
                 </MudItem>
                 <MudItem xs=6>
-                    <MudTextField T="string" @bind-Value="FormData.FirstName" Label=@Loc["FirstName"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] />
+                    <MudTextField T="string" @bind-Value="FormData.FirstName" Label=@Loc["FirstName"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=@(() => valid = false) />
                 </MudItem>
                 <MudItem xs=6>
-                    <MudTextField T="string" @bind-Value="FormData.LastName" Label=@Loc["LastName"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] />
+                    <MudTextField T="string" @bind-Value="FormData.LastName" Label=@Loc["LastName"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=@(() => valid = false) />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.PhoneNumber" Label=@Loc["PhoneNumber"] Variant=Variant.Outlined Required="true" Validation="@(new PhoneAttribute() {ErrorMessage = @Loc["WrongPhone"]})" />
+                    <MudTextField T="string" @bind-Value="FormData.PhoneNumber" Label=@Loc["PhoneNumber"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Validation="@(new PhoneAttribute() {ErrorMessage = @Loc["WrongPhone"]})" Immediate=true TextChanged=@(() => valid = false) />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.Email" Label=@Loc["Email"] Variant=Variant.Outlined Validation="@(new EmailAddressAttribute() {ErrorMessage = @Loc["WrongEmail"]})" />
+                    <MudTextField T="string" @bind-Value="FormData.Email" Label=@Loc["Email"] Variant=Variant.Outlined Validation=@(new Func<string, string>(ValidateEmail)) Immediate=true TextChanged=@(() => valid = false) />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.Company" Label=@Loc["Company"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] />
+                    <MudTextField T="string" @bind-Value="FormData.Company" Label=@Loc["Company"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=@(() => valid = false) />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] />
+                    <MudTextField T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=@(() => valid = false) />
                 </MudItem>
             </MudGrid>
         </MudForm>
@@ -38,7 +38,7 @@
 		</MudItem>
 		<MudItem lg=4/>
 		<MudItem lg=2 Class="center">
-			<MudButton OnClick=Validate Size=Size.Large Variant=Variant.Filled Color=Color.Secondary EndIcon=@Icons.Outlined.ArrowForward>@Loc["Next"]</MudButton>
+			<MudButton OnClick=Next Size=Size.Large Variant=Variant.Filled Color=Color.Secondary EndIcon=@Icons.Outlined.ArrowForward Disabled=!valid>@Loc["Next"]</MudButton>
 		</MudItem>
 	</MudGrid>
 </footer>
@@ -55,28 +55,50 @@
     public RegisterFormData FormData { get; private set; } = new();
 
     private MudForm visitorForm;
+#if DEBUG
+    private bool valid = true;
+#else
+    private bool valid = false;
+#endif
 
 #if DEBUG
     protected override void OnInitialized()
     {
-        FormData.FirstName = "Test";
-        FormData.LastName = "Test";
-        FormData.PhoneNumber = "1234";
-        FormData.Company = "Test";
-        FormData.ContactPerson = "Test";
-        base.OnInitialized();
+    FormData.FirstName = "Test";
+    FormData.LastName = "Test";
+    FormData.PhoneNumber = "1234";
+    FormData.Company = "Test";
+    FormData.ContactPerson = "Test";
+    base.OnInitialized();
     }
 #endif
 
-    private async void Validate()
+    private void HandleValidChanged(bool valid)
     {
-        visitorForm.ResetValidation();
-        await visitorForm.Validate();
-        if (visitorForm.IsValid)
+        this.valid = valid;
+        StateHasChanged();
+    }
+
+    private string ValidateEmail(string email)
+    {
+        email = email.Trim();
+        if (email == "")
+            return null;
+        else
+        {
+            if (new EmailAddressAttribute().IsValid(email))
+                return null;
+            else
+                return Loc["WrongEmail"];
+        }
+    }
+
+    private async void Next()
+    {
+        if (valid)
         {
             await OnNext.InvokeAsync();
         }
-        StateHasChanged();
     }
 
     public void Reset()
