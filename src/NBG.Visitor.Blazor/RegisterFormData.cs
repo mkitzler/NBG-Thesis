@@ -15,6 +15,14 @@ namespace NBG.Visitor.Blazor
         public string Company { get; set; }
         public string ContactPerson { get; set; }
 
+        public string FullName
+        {
+            get
+            {
+                return LastName + " " + FirstName;
+            }
+        }
+
         public override string ToString()
         {
             return $"{FirstName} {LastName}, {PhoneNumber}, Email: {Email}, {Company}, {ContactPerson}";

@@ -18,6 +18,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.1" />
     <PackageReference Include="MudBlazor" Version="5.1.5" />
+    <PackageReference Include="PdfSharp" Version="1.50.5147" />
     <PackageReference Include="QRCoder" Version="1.4.3" />
   </ItemGroup>
 
@@ -39,6 +40,9 @@
       <Generator></Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\TerminalLang.de.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\TicketLang.resx">
       <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>

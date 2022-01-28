@@ -55,23 +55,25 @@
     public RegisterFormData FormData { get; private set; } = new();
 
     private MudForm visitorForm;
-#if DEBUG
-    private bool valid = true;
-#else
     private bool valid = false;
-#endif
 
-#if DEBUG
+    #if DEBUG
     protected override void OnInitialized()
     {
-    FormData.FirstName = "Test";
-    FormData.LastName = "Test";
-    FormData.PhoneNumber = "1234";
-    FormData.Company = "Test";
-    FormData.ContactPerson = "Test";
-    base.OnInitialized();
+        FormData.FirstName = "Max";
+        FormData.LastName = "Mustermann";
+        FormData.PhoneNumber = "1234";
+        FormData.Company = "Test";
+        FormData.ContactPerson = "Test";
+        base.OnInitialized();
     }
-#endif
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        visitorForm.Validate();
+        base.OnAfterRender(firstRender);
+    }
+    #endif
 
     private void HandleValidChanged(bool valid)
     {
@@ -81,8 +83,8 @@
 
     private string ValidateEmail(string email)
     {
-        email = email.Trim();
-        if (email == "")
+        email = email?.Trim();
+        if (email == null || email == "")
             return null;
         else
         {

@@ -14,9 +14,14 @@ namespace NBG.Visitor.Blazor
     {
         public static byte[] ToBytes(this Bitmap b)
         {
+            return b.ToStream().ToArray();
+        }
+
+        public static MemoryStream ToStream(this Bitmap b)
+        {
             MemoryStream ms = new MemoryStream();
             b.Save(ms, ImageFormat.Png);
-            return ms.ToArray();
+            return ms;
         }
     }
 }

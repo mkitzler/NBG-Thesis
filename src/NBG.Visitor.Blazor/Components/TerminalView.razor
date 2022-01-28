@@ -3,23 +3,18 @@
 @using NBG.Visitor.Domain.Dtos;
 @using NBG.Visitor.Domain;
 @using System.Reflection
+@using PdfSharp.Pdf
 @using QRCoder
 @using System.Drawing
 @using System.Net
 
 @inject IDialogService Dialog;
 @inject IVisitService vs;
-@*@implements IMainLayout;*@
 
 <link href="_content/NBG.Visitor.Blazor/css/site.css" rel="stylesheet"/>
 
 <MudThemeProvider Theme="NBG"/>
 
-@*<header>
-    @header
-</header>*@
-
-@*<CascadingValue Value="this">*@
 <CascadingValue Value="Loc">
     <MudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
         <MudCarouselItem>
@@ -33,32 +28,11 @@
         </MudCarouselItem>
     </MudCarousel>
 </CascadingValue>
-@*</CascadingValue>*@
-
-@*<footer>
-    @footer
-</footer>*@
 
 @code {
     private Localizer Loc = new("NBG.Visitor.Blazor.Resources.TerminalLang", Assembly.GetExecutingAssembly(), "de-DE");
-
-    //private RenderFragment header;
     private MudCarousel<object> carousel;
-    //private RenderFragment footer;
-
     private TerminalRegister form;
-
-    //public void SetHeader(RenderFragment header)
-    //{
-    //    this.header = header;
-    //    StateHasChanged();
-    //}
-
-    //public void SetFooter(RenderFragment footer)
-    //{
-    //    this.footer = footer;
-    //    StateHasChanged();
-    //}
 
     MudTheme NBG = new MudTheme()
         {
@@ -72,27 +46,31 @@
 
     private async Task Register(RegisteredEventArgs e)
     {
-#if DEBUG
+        DateTime registeredAt = new DateTime(2022, 2, 2, 15, 45, 30);
+
+        #if DEBUG
         int id = 100;
         await Task.Delay(1000);
-#else
-        int id = await vs.AddVisit(DateTime.Now, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
-#endif
+        #else
+        int id = await vs.AddVisit(registeredAt, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+        #endif
 
         QRCodeGenerator qrGenerator = new QRCodeGenerator();
         QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.H);
         QRCode qrCode = new QRCode(qrCodeData);
         Bitmap logo = BitmapFromUrl("https://fiss.dev.nbg.tech:44303/_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png");
-        Bitmap qr = qrCode.GetGraphic(20, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 15, 15);
-        RenderFragment rf = 
-    @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
-    ;
+        Bitmap qr = qrCode.GetGraphic(30, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 15, 15, false);
+
+        RenderFragment rf = @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>;
         IDialogReference dialog = Dialog.Show<MudDialog>(e.Message, new DialogParameters() {["DialogContent"] = rf});
+
+        PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
+        pdf.Save(@"C:\Users\propl\Git\NBG-Thesis\pdf.pdf");
 
         form.Reset();
         carousel.MoveTo(0);
 
-        if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so scroll won't get stuck
+        if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so scroll won't get stuck (wait until dialog is closed)
     }
 
     private Bitmap BitmapFromUrl(string url)
