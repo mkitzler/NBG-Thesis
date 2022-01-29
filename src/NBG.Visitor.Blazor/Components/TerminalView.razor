@@ -35,24 +35,24 @@
     private TerminalRegister form;
     
     MudTheme NBG = new MudTheme()
+    {
+        Palette = new Palette()
         {
-            Palette = new Palette()
-            {
-                Primary = Colors.Red.Darken1,
-                Secondary = Colors.Grey.Lighten2,
-                SecondaryContrastText = Colors.Grey.Darken2
+            Primary = Colors.Red.Darken1,
+            Secondary = Colors.Grey.Lighten2,
+            SecondaryContrastText = Colors.Grey.Darken2
         }
     };
 
     private async Task Register(RegisteredEventArgs e)
     {
-        DateTime registeredAt = new DateTime(2022, 2, 2, 15, 45, 30);
+        DateTime registeredAt = DateTime.Now;
 
         #if DEBUG
-        int id = 100;
+        Guid id = new("00000000-0000-0000-0000-000000000100");
         await Task.Delay(1000);
         #else
-        int id = await vs.AddVisit(registeredAt, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+        Guid id = await vs.AddVisit(registeredAt, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
         #endif
 
         QRCodeGenerator qrGenerator = new QRCodeGenerator();

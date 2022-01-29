@@ -18,6 +18,8 @@ namespace NBG.Visitor.Services.DB
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.HasPostgresExtension("uuid-ossp");
+
             builder.Entity<Company>(entity => {
                 entity.HasIndex(e => e.CompanyLabel).IsUnique();
             });
@@ -32,6 +34,9 @@ namespace NBG.Visitor.Services.DB
                     v => v.ToString(),
                     v => Enum.Parse<VisitStatus>(v)
                 );
+            builder.Entity<Visit>()
+                .Property(e => e.Guid)
+                .HasDefaultValueSql("uuid_generate_v4()");
         }
     }
 }
