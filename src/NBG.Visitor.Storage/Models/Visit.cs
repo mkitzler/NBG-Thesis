@@ -37,5 +37,8 @@ namespace NBG.Visitor.Storage.Models
         [Column("status")]
         [Required]
         public VisitStatus Status {  get; set; }
+
+        [Column("uuid")]
+        public Guid Guid { get; set; }
     }
 }

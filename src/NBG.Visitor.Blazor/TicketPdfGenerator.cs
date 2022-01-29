@@ -32,7 +32,7 @@ namespace NBG.Visitor.Blazor
             gfx.DrawString(Loc["VisitorTicket"], new("Consolas", 14, XFontStyle.Regular), XBrushes.Black, 75.6, 150, XStringFormats.Center);
             gfx.DrawString(name, new("Consolas", 8, XFontStyle.Regular), XBrushes.Black, 75.6, 180, XStringFormats.Center);
             gfx.DrawString((arrival > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]) + ":", new("Consolas", 8, XFontStyle.Regular), XBrushes.Black, 75.6, 200, XStringFormats.Center);
-            gfx.DrawString(arrival.ToString(), new("Consolas", 8, XFontStyle.Regular), XBrushes.Black, 75.6, 210, XStringFormats.Center);
+            gfx.DrawString(arrival.ToString("g", Loc.Culture), new("Consolas", 8, XFontStyle.Regular), XBrushes.Black, 75.6, 210, XStringFormats.Center);
             //gfx.DrawLine(new(XColor.FromArgb(0, 0, 0)), 0, 151.2, 151.2, 151.2);
 
             return doc;

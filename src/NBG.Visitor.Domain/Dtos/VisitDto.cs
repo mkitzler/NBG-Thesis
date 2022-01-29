@@ -22,5 +22,6 @@ namespace NBG.Visitor.Domain.Dtos
         public ContactPersonDto ContactPerson { get; set; }
         public CompanyDto Company { get; set; }
         public VisitStatusDto Status { get; set; }
+        public Guid Guid { get; set; }
     }
 }

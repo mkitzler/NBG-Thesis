@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NBG.Visitor.Services.DB;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NBG.Visitor.Storage.Migrations
 {
     [DbContext(typeof(VisitContext))]
-    partial class VisitContextModelSnapshot : ModelSnapshot
+    [Migration("20220129151407_AddedGuidToVisit")]
+    partial class AddedGuidToVisit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,8 +61,7 @@ namespace NBG.Visitor.Storage.Migrations
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
-                        .HasColumnName("uuid")
-                        .HasDefaultValueSql("uuid_generate_v4()");
+                        .HasColumnName("uuid");
 
                     b.Property<string>("Status")
                         .IsRequired()

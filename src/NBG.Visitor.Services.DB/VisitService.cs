@@ -54,7 +54,7 @@ namespace NBG.Visitor.Services.DB
         /// <param name="email"></param>
         /// <param name="status"></param>
         /// <returns>Id of the created Visit.</returns>
-        public async Task<int> AddVisit(DateTime? start, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null, VisitStatusDto status = VisitStatusDto.VISIT_ACTIVE)
+        public async Task<Guid> AddVisit(DateTime? start, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null, VisitStatusDto status = VisitStatusDto.VISIT_ACTIVE)
         {
             using var context = _contextFactory.CreateDbContext();
             var visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
@@ -62,7 +62,7 @@ namespace NBG.Visitor.Services.DB
             Company c = await context.AddCompanyIfNotExists(company).ConfigureAwait(false);
             Visit ret = await context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = cp, Company = c, Status = mapper.Map<VisitStatus>(status) }).ConfigureAwait(false);
             context.SaveChanges();
-            return ret.Id ?? -1;
+            return ret.Guid;
         }
 
         public async Task UpdateVisit(int Id, DateTime? start, DateTime? end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
