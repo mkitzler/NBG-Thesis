@@ -14,7 +14,7 @@ namespace NBG.Visitor.Blazor
 
         public TicketPdfGenerator(CultureInfo culture)
         {
-            Loc = new("NBG.Visitor.Blazor.Resources.TicketLang", Assembly.GetExecutingAssembly(), culture);
+            Loc = new("NBG.Visitor.Resources.TicketLang", Assembly.GetEntryAssembly(), culture);
         }
 
         public PdfDocument GetPdf(Bitmap qr, string id, string name, DateTime arrival)

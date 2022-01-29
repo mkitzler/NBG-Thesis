@@ -2,8 +2,15 @@
 @using NBG.Visitor.Domain.Dtos;
 @using MudBlazor;
 @using Radzen.Blazor;
+@using System.Reflection
 @inject IJSRuntime JS;
 
+<style>
+    .timePickerToolbar{
+        width:100%;
+
+    }
+</style>
 
 
 <MudDialog>
@@ -12,41 +19,38 @@
             @if(mode == "Add")
             {
                 <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Class="mr-3 mb-n1"/>
+                @Loc["AddVisit"]
             }
             else if (mode == "Edit")
             {
                 <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3 mb-n1"/>
+                @Loc["EditVisit"]
             }
-            @mode Visitor
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField @bind-Value="@visit.Visitor.FirstName" Label="First Name"/>
-        <MudTextField @bind-Value="@visit.Visitor.LastName" Label="Last Name"/>
-        <MudTextField @bind-Value="@visit.Visitor.PhoneNumber" Label="Phone Number"/>
-        <MudTextField @bind-Value="@visit.Visitor.Email" Label="Email"/>
-        <MudTextField @bind-Value="@visit.Company.CompanyLabel" Label="Company"/>
-        <MudTextField @bind-Value="@visit.ContactPerson.Name" Label="Contact Person"/>
-        <!--<MudTextField @bind-Value="@visit.VisitStart" Label="Start"/>
-        <MudTextField @bind-Value="@visit.VisitEnd" Label="End"/>-->
-        <!--<RadzenDatePicker @bind-Value="@visit.VisitStart" TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm:ss" Class="" />-->
-        <!--<RadzenDatePicker @bind-Value="@visit.VisitEnd" TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1.5" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm:ss" Class="" />-->
+        <MudTextField @bind-Value="@visit.Visitor.FirstName" Label=@Loc["FirstName"]/>
+        <MudTextField @bind-Value="@visit.Visitor.LastName" Label=@Loc["LastName"]/>
+        <MudTextField @bind-Value="@visit.Visitor.PhoneNumber" Label=@Loc["PhoneNr"]/>
+        <MudTextField @bind-Value="@visit.Visitor.Email" Label=@Loc["Email"]/>
+        <MudTextField @bind-Value="@visit.Company.CompanyLabel" Label=@Loc["Company"]/>
+        <MudTextField @bind-Value="@visit.ContactPerson.Name" Label=@Loc["ContactPerson"]/>
         <div class="datetimecontainer">
-            <MudDatePicker Label="Start Date" @bind-Date="@startDate" DisableToolbar="true" DateFormat="dd.MM.yyyy" Style="width:90%;"/>
-            <MudTimePicker Label="Start Time" @bind-Time="@startTime" DisableToolbar="true" Style="width:90%;"/>
+            <MudDatePicker Label=@Loc["StartDate"] @bind-Date="@startDate" DateFormat="@Loc["DateFormat"]" Style="width:90%;" DisableToolbar="true"/>
+            <MudTimePicker Label=@Loc["StartTime"] @bind-Time="@startTime" TimeFormat="@Loc["TimeFormat"]" AmPm="@((Loc.Culture.ToString() == "en-US")? true : false )"/>
         </div>
         @if(mode == "Edit")
         {
             <div class="datetimecontainer">
-                <MudDatePicker Label="End Date" @bind-Date="@endDate" DisableToolbar="true" DateFormat="dd.MM.yyyy" Style="width:90%;"/>    
-                <MudTimePicker Label="End Time" @bind-Time="@endTime" DisableToolbar="true" Style="width:90%;"/>
+                <MudDatePicker Label=@Loc["EndDate"] @bind-Date="@endDate" DateFormat="@Loc["DateFormat"]" Style="width:90%;" DisableToolbar="true"/>    
+                <MudTimePicker Label=@Loc["EndTime"] @bind-Time="@endTime" TimeFormat="@Loc["TimeFormat"]" AmPm="@((Loc.Culture.ToString() == "en-US")? true : false )"/>
             </div>
         }
         
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
-        <MudButton Color="Color.Error" OnClick="EditVisit">Submit</MudButton>
+        <MudButton OnClick="Cancel">@Loc["Cancel"]</MudButton>
+        <MudButton Color="Color.Error" OnClick="EditVisit">@Loc["Save"]</MudButton>
     </DialogActions>
 </MudDialog>
  
@@ -55,6 +59,8 @@
 
     [Parameter] public VisitDto visit { get; set; } = new VisitDto();
     [Parameter] public string mode { get; set; }
+    [Parameter] public Localizer Loc { get; set; }
+
     private DateTime? startDate { get; set; }
     private TimeSpan? startTime { get; set; }
     private DateTime? endDate { get; set; }

@@ -32,19 +32,4 @@
     <PackageReference Include="Radzen.Blazor" Version="3.13.11" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\SafetyItems.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\TerminalLang.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\TerminalLang.de.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\TicketLang.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>

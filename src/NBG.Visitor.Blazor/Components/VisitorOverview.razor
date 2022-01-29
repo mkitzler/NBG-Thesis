@@ -76,31 +76,31 @@
 @*Function/MostImportant Class ID Style Icon Color Elevation Dense *@
 <MudTable Items=@Visits Class="ml-8 mr-8 mt-8 rounded-lg visitTable" Elevation="5" Height="75vh" RowStyle="height:60px !important;" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader"> 
     <ColGroup>
-        <col style="width: 9%;"/>
-        <col style="width: 9%;"/>
+        <col style="width: 10%;"/>
+        <col style="width: 10%;"/>
         <col style="width: 10%;"/>
         <col style="width: 15%;"/>
         <col style="width: 10%;"/>
-        <col style="width: 10%;"/>
-        <col style="width: 14%;"/>
-        <col style="width: 14%;"/>
+        <col style="width: 12%;"/>
+        <col style="width: 12%;"/>
+        <col style="width: 12%;"/>
         <col style="width: 3%;"/>
         <col style="width: 3%;"/>
         <col style="width: 3%;"/>
     </ColGroup>
     <ToolBarContent>
         <MudCard Class="pl-4 mt-8" Elevation="0">
-            <MudText Class="mb-2" Typo="Typo.h5">Visits</MudText>
-            <MudText>People who have visited in the past 14 days</MudText>
+            <MudText Class="mb-2" Typo="Typo.h5">@Loc["Title"]</MudText>
+            <MudText>@Loc["Description"]</MudText>
         </MudCard>
 
         <MudSpacer/>
 
         <MudForm Class="mt-7 mr-11">
             <MudRadioGroup @bind-SelectedOption="@ActiveFilter">
-                <MudRadio Option="@(VisitStatusDto.VISIT_ACTIVE)" Color="Color.Success" T="VisitStatusDto?">Active</MudRadio>
-                <MudRadio Option="@(VisitStatusDto.VISIT_PENDING)" Color="Color.Warning" T="VisitStatusDto?">Pending</MudRadio>
-                <MudRadio Option="@(VisitStatusDto.VISIT_OVER)" Color="Color.Error" T="VisitStatusDto?">Over</MudRadio>
+                <MudRadio Option="@(VisitStatusDto.VISIT_ACTIVE)" Color="Color.Success" T="VisitStatusDto?">@Loc["Active"]</MudRadio>
+                <MudRadio Option="@(VisitStatusDto.VISIT_PENDING)" Color="Color.Warning" T="VisitStatusDto?">@Loc["Pending"]</MudRadio>
+                <MudRadio Option="@(VisitStatusDto.VISIT_OVER)" Color="Color.Error" T="VisitStatusDto?">@Loc["Over"]</MudRadio>
             </MudRadioGroup>
         </MudForm>
 
@@ -108,18 +108,18 @@
         <MudIconButton OnClick="ResetFilters" Class="mt-7 mr-8 visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh Class="pl-10"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">First Name</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">Last Name</MudTableSortLabel></MudTh>
-        <MudTh>Phone Number</MudTh>
-        <MudTh>Email</MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Company.CompanyLabel)">Company</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.ContactPerson.Name)">Contact Person</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<VisitDto, object>(x=>x.VisitStart)">Start</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">End</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">Status</MudTableSortLabel></MudTh>
+        <MudTh Class="pl-10"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">@Loc["FirstName"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">@Loc["LastName"]</MudTableSortLabel></MudTh>
+        <MudTh>@Loc["PhoneNr"]</MudTh>
+        <MudTh>@Loc["Email"]</MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Company.CompanyLabel)">@Loc["Company"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.ContactPerson.Name)">@Loc["ContactPerson"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<VisitDto, object>(x=>x.VisitStart)">@Loc["Start"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">@Loc["End"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">@Loc["Status"]</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
         <MudTh Class="pr-10">
-            <MudTooltip Text="Add Visit" id="addButtonToolTip">
+            <MudTooltip Text="@Loc["AddVisit"]" id="addButtonToolTip">
                 <MudIconButton OnClick="AddVisit" Class="visitorOverviewBtn" id="addVisitBtn" Icon="@Icons.Filled.Add"></MudIconButton>
             </MudTooltip>   
         </MudTh>
@@ -131,19 +131,19 @@
         <MudTd>@context.Visitor.Email</MudTd>
         <MudTd>@context.Company.CompanyLabel</MudTd>
         <MudTd>@context.ContactPerson.Name</MudTd>
-        <MudTd>@context.VisitStart</MudTd>
-        <MudTd>@context.VisitEnd</MudTd>
+        <MudTd>@context.VisitStart?.ToString(Loc["DateTimeFormat"])</MudTd>
+        <MudTd>@context.VisitEnd?.ToString(Loc["DateTimeFormat"])</MudTd>
 
         <MudTd Class="status pt-0 pb-0">
             @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
             {
-                <MudChip Class="visitStatusChip" Color="Color.Success" Size=Size.Small>Visit Active</MudChip> 
+                <MudChip Class="visitStatusChip" Color="Color.Success" Size=Size.Small>@Loc["ActiveLong"]</MudChip> 
             }
             else if(@context.Status == VisitStatusDto.VISIT_OVER){
-                <MudChip Class="visitStatusChip" Color="Color.Error" Size=Size.Small>Visit Over</MudChip>
+                <MudChip Class="visitStatusChip" Color="Color.Error" Size=Size.Small>@Loc["OverLong"]</MudChip>
             }
             else{
-                <MudChip Class="visitStatusChip" Color="Color.Warning" Size=Size.Small>Visit Pending</MudChip>
+                <MudChip Class="visitStatusChip" Color="Color.Warning" Size=Size.Small>@Loc["PendingLong"]</MudChip>
             }
         </MudTd>
 
@@ -156,8 +156,8 @@
 
         <MudTd Class="pr-10 pt-1 pb-1">
             <MudMenu @onclick="OpenMenu" Class="optionsMenu" Icon="@Icons.Filled.MoreVert" Dense=true>
-                <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">Edit</MudText></MudMenuItem>
-                <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="@($"color:{Colors.Red.Default};")"><MudText Style="font-size:15px;">Delete</MudText></MudMenuItem>
+                <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">@Loc["Edit"]</MudText></MudMenuItem>
+                <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="@($"color:{Colors.Red.Default};")"><MudText Style="font-size:15px;">@Loc["Delete"]</MudText></MudMenuItem>
             </MudMenu>
         </MudTd>
     </RowTemplate>
@@ -190,6 +190,12 @@
     private VisitStatusDto? ActiveFilter { get; set; }
     private string statusFilterStr { get; set; } = "None";
 
+    // Localization
+    [CascadingParameter]
+    public Localizer Loc { get; set; }
+
+    /////////////////////////////////////////////////////////////////////////// 
+
     protected override async Task OnInitializedAsync()
     {
         var visits = await DataRepository.ReadAllVisits();
@@ -208,7 +214,9 @@
         _visit.Status = VisitStatusDto.VISIT_PENDING;
 
         var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]="Add" };
-        var dialog = DialogService.Show<EditDialog>("Add Visit", parameters, maxWidth);
+        parameters.Add("Loc", Loc);
+
+        var dialog = DialogService.Show<EditDialog>(Loc["AddVisit"], parameters, maxWidth);
         var result = await dialog.Result;
 
         if (!result.Cancelled)
@@ -217,15 +225,17 @@
             await DataRepository.AddVisit(visit.VisitStart??null, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null, VisitStatusDto.VISIT_PENDING);
             Visits.Add(visit);
 
-            Snackbar.Add("Visit Added", Severity.Success);
-            await JS.InvokeVoidAsync("console.log","Added visit.");
+            Snackbar.Add(Loc["AddedVisitMsg"], Severity.Success);
+            await JS.InvokeVoidAsync("console.log",Loc["AddedVisitMsg"]);
         }
     }
 
     public async Task EditVisit(VisitDto _visit)
     {
         var parameters = new DialogParameters { ["visit"]=_visit, ["mode"]="Edit" };
-        var dialog = DialogService.Show<EditDialog>("Edit Visit", parameters, maxWidth);
+        parameters.Add("Loc", Loc);
+
+        var dialog = DialogService.Show<EditDialog>(Loc["EditVisit"], parameters, maxWidth);
         var result = await dialog.Result;
 
         if (!result.Cancelled)
@@ -235,19 +245,20 @@
                 visit.Status = VisitStatusDto.VISIT_OVER;
             await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??null, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
 
-            Snackbar.Add("Changes Saved", Severity.Success);
-            await JS.InvokeVoidAsync("console.log","Visit updated.");
+            Snackbar.Add(Loc["ChangesSavedMsg"], Severity.Success);
+            await JS.InvokeVoidAsync("console.log",Loc["ChangesSavedMsg"]);
         }
     }
 
     public async Task SignOffVisit(VisitDto visit)
     {
-        var parameters = new DialogParameters { ["visit"]=visit };
-        parameters.Add("ContentText", "Do you really want to manually sign off this visitor? This process cannot be undone.");
-        parameters.Add("ButtonText", "Sign Off");
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", Loc["SignOffPrompt"]);
+        parameters.Add("ButtonText", "OK");
         parameters.Add("Color", Color.Warning);
+        parameters.Add("Loc", Loc);
 
-        var dialog = DialogService.Show<Dialog>("Sign Off Visitor", parameters);
+        var dialog = DialogService.Show<Dialog>(Loc["SignOffVisitor"], parameters);
 
         var result = await dialog.Result;
 
@@ -257,18 +268,20 @@
             visit.Status = VisitStatusDto.VISIT_OVER;
             await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??DateTime.Now, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
 
-            await JS.InvokeVoidAsync("console.log","Visitor signed off.");
+            Snackbar.Add(Loc["SignedOffVisitor"], Severity.Success);
+            await JS.InvokeVoidAsync("console.log",Loc["SignedOffVisitor"]);
         }
     }
 
     public async Task DeleteVisit(VisitDto visit)
     {
-        var parameters = new DialogParameters { ["visit"]=visit };
-        parameters.Add("ContentText", "Do you really want to delete this visitor? This process cannot be undone.");
-        parameters.Add("ButtonText", "Delete");
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", Loc["DeleteVisitPrompt"]);
+        parameters.Add("ButtonText", "OK");
         parameters.Add("Color", Color.Error);
+        parameters.Add("Loc", Loc);
 
-        var dialog = DialogService.Show<Dialog>("Delete Visitor", parameters);
+        var dialog = DialogService.Show<Dialog>(Loc["DeleteVisit"], parameters);
 
         var result = await dialog.Result;
 
@@ -277,7 +290,8 @@
             await DataRepository.RemoveVisit(visit.Id);
             Visits.Remove(visit);
 
-            await JS.InvokeVoidAsync("console.log","Visit deleted.");
+            Snackbar.Add(Loc["DeletedVisitMsg"], Severity.Success);
+            await JS.InvokeVoidAsync("console.log",Loc["DeletedVisitMsg"]);
         }
     }
 
@@ -323,7 +337,6 @@
     }
 
     private void OpenMenu(){
-        JS.InvokeVoidAsync("console.log","TEST!");
         if (!menuOpen)
             menuOpen = true;
         else

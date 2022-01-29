@@ -15,25 +15,25 @@
 
 <MudThemeProvider Theme="NBG"/>
 
-<CascadingValue Value="Loc">
-    <MudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
-        <MudCarouselItem>
-            <TerminalHome OnNext=@(() => carousel.Next()) />
-        </MudCarouselItem>
-        <MudCarouselItem>
-            <TerminalRegister @ref="form" OnBack=@(() => carousel.Previous()) OnNext=@(() => carousel.Next()) />
-        </MudCarouselItem>
-        <MudCarouselItem>
-            <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
-        </MudCarouselItem>
-    </MudCarousel>
-</CascadingValue>
+
+<MudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
+    <MudCarouselItem>
+        <TerminalHome OnNext=@(() => carousel.Next()) />
+    </MudCarouselItem>
+    <MudCarouselItem>
+        <TerminalRegister @ref="form" OnBack=@(() => carousel.Previous()) OnNext=@(() => carousel.Next()) />
+    </MudCarouselItem>
+    <MudCarouselItem>
+        <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
+    </MudCarouselItem>
+</MudCarousel>
 
 @code {
-    private Localizer Loc = new("NBG.Visitor.Blazor.Resources.TerminalLang", Assembly.GetExecutingAssembly(), "de-DE");
+    [CascadingParameter]
+	public Localizer Loc { get; set; }
     private MudCarousel<object> carousel;
     private TerminalRegister form;
-
+    
     MudTheme NBG = new MudTheme()
         {
             Palette = new Palette()
