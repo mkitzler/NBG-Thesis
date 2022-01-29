@@ -28,7 +28,7 @@ namespace NBG.Visitor.Blazor
 
             XGraphics gfx = XGraphics.FromPdfPage(page);
             gfx.DrawImage(XImage.FromStream(qr.ToStream()), 21.6, 21.6, 108, 108);   // 1 Point == 1/72 Inch
-            gfx.DrawString(id, new("Consolas", 5, XFontStyle.Regular), XBrushes.Black, 75.6, 135, XStringFormats.Center);
+            gfx.DrawString(id, new("Consolas", 4, XFontStyle.Regular), XBrushes.Black, 75.6, 133, XStringFormats.Center);
             gfx.DrawString(Loc["VisitorTicket"], new("Consolas", 14, XFontStyle.Regular), XBrushes.Black, 75.6, 150, XStringFormats.Center);
             gfx.DrawString(name, new("Consolas", 8, XFontStyle.Regular), XBrushes.Black, 75.6, 180, XStringFormats.Center);
             gfx.DrawString((arrival > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]) + ":", new("Consolas", 8, XFontStyle.Regular), XBrushes.Black, 75.6, 200, XStringFormats.Center);
