@@ -52,7 +52,7 @@
         Guid id = new("00000000-0000-0000-0000-000000000100");
         await Task.Delay(1000);
         #else
-        Guid id = await vs.AddVisit(registeredAt, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+        Guid id = (await vs.AddVisit(registeredAt, form.FormData.ContactPerson, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company)).Guid;
         #endif
 
         QRCodeGenerator qrGenerator = new QRCodeGenerator();
