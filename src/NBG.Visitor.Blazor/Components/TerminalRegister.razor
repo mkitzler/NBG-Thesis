@@ -3,28 +3,28 @@
 
 <MudGrid Justify=Justify.Center Class="center" Style="height: 88%;">
     <MudItem lg=7>
-        <MudForm @ref="visitorForm" IsValidChanged=HandleValidChanged>
+        <MudForm @ref="visitorForm" @bind-IsValid=Valid>
             <MudGrid Justify=Justify.Center Style="text-align: center;">
                 <MudItem xs=12 Class="mb-6">
                     <MudText Typo="Typo.h2">@Loc["VisitorRegistration"]</MudText>
                 </MudItem>
                 <MudItem xs=6>
-                    <MudTextField T="string" @bind-Value="FormData.FirstName" Label=@Loc["FirstName"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=@(() => valid = false) />
+                    <MudTextField T="string" @bind-Value="FormData.FirstName" Label=@Loc["FirstName"] Variant=Variant.Outlined Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                 </MudItem>
                 <MudItem xs=6>
-                    <MudTextField T="string" @bind-Value="FormData.LastName" Label=@Loc["LastName"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=@(() => valid = false) />
+                    <MudTextField T="string" @bind-Value="FormData.LastName" Label=@Loc["LastName"] Variant=Variant.Outlined Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.PhoneNumber" Label=@Loc["PhoneNumber"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Validation="@(new PhoneAttribute() {ErrorMessage = @Loc["WrongPhone"]})" Immediate=true TextChanged=@(() => valid = false) />
+                    <MudTextField T="string" @bind-Value="FormData.PhoneNumber" Label=@Loc["PhoneNumber"] Variant=Variant.Outlined Clearable=true Required="true" RequiredError=@Loc["Required"] Validation="@(new PhoneAttribute() {ErrorMessage = Loc["WrongPhone"]})" Immediate=true TextChanged=Revalidate />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.Email" Label=@Loc["Email"] Variant=Variant.Outlined Validation=@(new Func<string, string>(ValidateEmail)) Immediate=true TextChanged=@(() => valid = false) />
+                    <MudTextField T="string" @bind-Value="FormData.Email" Label=@Loc["Email"] Variant=Variant.Outlined Clearable=true Validation=@(new Func<string, string>(ValidateEmail)) Immediate=true TextChanged=Revalidate />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.Company" Label=@Loc["Company"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=@(() => valid = false) />
+                    <MudTextField T="string" @bind-Value="FormData.Company" Label=@Loc["Company"] Variant=Variant.Outlined Clearable=true Immediate=true TextChanged=Revalidate />
                 </MudItem>
                 <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Outlined Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=@(() => valid = false) />
+                    <MudTextField T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Outlined Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                 </MudItem>
             </MudGrid>
         </MudForm>
@@ -38,7 +38,7 @@
 		</MudItem>
 		<MudItem lg=4/>
 		<MudItem lg=2 Class="center">
-			<MudButton OnClick=Next Size=Size.Large Variant=Variant.Filled Color=Color.Secondary EndIcon=@Icons.Outlined.ArrowForward Disabled=!valid>@Loc["Next"]</MudButton>
+			<MudButton OnClick=Next Size=Size.Large Variant=Variant.Filled Color=Color.Secondary EndIcon=@Icons.Outlined.ArrowForward Disabled=!Valid>@Loc["Next"]</MudButton>
 		</MudItem>
 	</MudGrid>
 </footer>
@@ -56,30 +56,36 @@
 
     private MudForm visitorForm;
     private bool valid = false;
+    private bool Valid
+    {
+        get
+        {
+            return valid;
+        }
+        set
+        {
+            valid = value;
+            StateHasChanged();
+        }
+    }
 
     #if DEBUG
     protected override void OnInitialized()
     {
-        FormData.FirstName = "Max";
-        FormData.LastName = "Mustermann";
-        FormData.PhoneNumber = "1234";
-        FormData.Company = "Test";
-        FormData.ContactPerson = "Test";
-        base.OnInitialized();
+    FormData.FirstName = "Max";
+    FormData.LastName = "Mustermann";
+    FormData.PhoneNumber = "1234";
+    FormData.Company = "Test";
+    FormData.ContactPerson = "Test";
+    base.OnInitialized();
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        visitorForm.Validate();
-        base.OnAfterRender(firstRender);
+    visitorForm.Validate();
+    base.OnAfterRender(firstRender);
     }
     #endif
-
-    private void HandleValidChanged(bool valid)
-    {
-        this.valid = valid;
-        StateHasChanged();
-    }
 
     private string ValidateEmail(string email)
     {
@@ -95,17 +101,56 @@
         }
     }
 
+    private void Revalidate() => Valid = false;
+
     private async void Next()
     {
-        if (valid)
+        if (Valid)
         {
             await OnNext.InvokeAsync();
         }
     }
 
+    /// <summary>
+    /// Resets the validation and all values of the form.
+    /// </summary>
     public void Reset()
     {
         visitorForm.Reset();
         visitorForm.ResetValidation();
+    }
+
+    public class RegisterFormData
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+        public string email = null;
+        public string Email
+        {
+            get
+            {
+                return email;
+            }
+            set
+            {
+                email = string.IsNullOrWhiteSpace(value) ? null : value;
+            }
+        }
+        public string Company { get; set; }
+        public string ContactPerson { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                return LastName + " " + FirstName;
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"{FirstName} {LastName}, {PhoneNumber}, Email: {Email}, {Company}, {ContactPerson}";
+        }
     }
 }
