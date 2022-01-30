@@ -104,7 +104,7 @@
             </MudRadioGroup>
         </MudForm>
 
-        <MudTextField @bind-Value="searchString" Class="mt-3 mr-11" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
+        <MudTextField @bind-Value="searchString" Class="mt-3 mr-11" Placeholder=@Loc["Search"] Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
         <MudIconButton OnClick="ResetFilters" Class="mt-7 mr-8 visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
     </ToolBarContent>
     <HeaderContent>

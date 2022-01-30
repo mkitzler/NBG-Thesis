@@ -195,6 +195,9 @@
   <data name="LastName" xml:space="preserve">
     <value>Nachname</value>
   </data>
+  <data name="LogOut" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
   <data name="Over" xml:space="preserve">
     <value>Vergangen</value>
   </data>
