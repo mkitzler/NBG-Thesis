@@ -29,12 +29,10 @@ namespace NBG.Visitor.Storage.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CompanyLabel")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("company_label");
 
                     b.Property<string>("ContactPerson")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("contact_person");
 

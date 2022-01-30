@@ -28,13 +28,13 @@ namespace NBG.Visitor.Storage.Models
         [Column("visitor_id")]
         [Required]
         public Visitor? Visitor {  get; set; }
+#nullable disable
 
         [Column("contact_person")]
         public string ContactPerson { get; set; }
 
         [Column("company_label")]
         public string CompanyLabel { get; set; }
-#nullable disable
 
         [Column("status")]
         [Required]

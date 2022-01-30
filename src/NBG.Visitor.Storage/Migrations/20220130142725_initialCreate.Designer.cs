@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NBG.Visitor.Storage.Migrations
 {
     [DbContext(typeof(VisitContext))]
-    [Migration("20220130135731_AddedPlannedVisitStart")]
-    partial class AddedPlannedVisitStart
+    [Migration("20220130142725_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,12 +31,10 @@ namespace NBG.Visitor.Storage.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("CompanyLabel")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("company_label");
 
                     b.Property<string>("ContactPerson")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("contact_person");
 
