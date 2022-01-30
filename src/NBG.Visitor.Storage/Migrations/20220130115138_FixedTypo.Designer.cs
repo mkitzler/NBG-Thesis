@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NBG.Visitor.Services.DB;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -9,9 +10,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NBG.Visitor.Storage.Migrations
 {
     [DbContext(typeof(VisitContext))]
-    partial class VisitContextModelSnapshot : ModelSnapshot
+    [Migration("20220130115138_FixedTypo")]
+    partial class FixedTypo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,10 +45,6 @@ namespace NBG.Visitor.Storage.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("uuid")
                         .HasDefaultValueSql("uuid_generate_v4()");
-
-                    b.Property<DateTime?>("PlannedVisitStart")
-                        .HasColumnType("timestamp without time zone")
-                        .HasColumnName("planned_visit_start");
 
                     b.Property<string>("Status")
                         .IsRequired()

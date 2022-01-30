@@ -15,8 +15,10 @@ namespace NBG.Visitor.Storage.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int? Id {  get; set; }
+#nullable enable
+        [Column("planned_visit_start")]
+        public DateTime? PlannedVisitStart { get; set; }
 
-        #nullable enable
         [Column("visit_start")]
         public DateTime? VisitStart {  get; set; }
 
@@ -28,11 +30,9 @@ namespace NBG.Visitor.Storage.Models
         public Visitor? Visitor {  get; set; }
 
         [Column("contact_person")]
-        [Required]
         public string ContactPerson { get; set; }
 
         [Column("company_label")]
-        [Required]
         public string CompanyLabel { get; set; }
 #nullable disable
 
