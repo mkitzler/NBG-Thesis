@@ -27,12 +27,14 @@ namespace NBG.Visitor.Storage.Models
         [Required]
         public Visitor? Visitor {  get; set; }
 
-        [Column("contact_person_name")]
-        public ContactPerson? ContactPerson {  get; set; }
+        [Column("contatct_person")]
+        [Required]
+        public string ContactPerson { get; set; }
 
         [Column("company_label")]
-        public Company? Company {  get; set; }
-        #nullable disable
+        [Required]
+        public string CompanyLabel { get; set; }
+#nullable disable
 
         [Column("status")]
         [Required]
@@ -40,5 +42,7 @@ namespace NBG.Visitor.Storage.Models
 
         [Column("uuid")]
         public Guid Guid { get; set; }
+
+        
     }
 }

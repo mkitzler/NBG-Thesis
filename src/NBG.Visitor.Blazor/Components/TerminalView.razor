@@ -65,7 +65,7 @@
         IDialogReference dialog = Dialog.Show<MudDialog>(e.Message, new DialogParameters() {["DialogContent"] = rf});
 
         PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
-        pdf.Save(@"C:\Users\propl\Git\NBG-Thesis\pdf.pdf");
+        pdf.Save("./pdf.pdf");
 
         form.Reset();
         carousel.MoveTo(0);

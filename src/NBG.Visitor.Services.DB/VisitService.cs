@@ -33,8 +33,6 @@ namespace NBG.Visitor.Services.DB
             using var context = _contextFactory.CreateDbContext();
             return await context.ReadAllVisits()
             .Include(v => v.Visitor)
-            .Include(v => v.ContactPerson)
-            .Include(v => v.Company)
             .Select(v => mapper.Map<VisitDto>(v))
             .ToListAsync().ConfigureAwait(false);
         }
@@ -58,9 +56,7 @@ namespace NBG.Visitor.Services.DB
         {
             using var context = _contextFactory.CreateDbContext();
             var visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
-            ContactPerson cp = await context.AddContactPersonIfNotExists(contactPerson).ConfigureAwait(false);
-            Company c = await context.AddCompanyIfNotExists(company).ConfigureAwait(false);
-            Visit ret = await context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = cp, Company = c, Status = mapper.Map<VisitStatus>(status) }).ConfigureAwait(false);
+            Visit ret = await context.AddVisit(new Visit() { VisitStart = start, Visitor = visitor, ContactPerson = contactPerson, CompanyLabel = company, Status = mapper.Map<VisitStatus>(status) }).ConfigureAwait(false);
             context.SaveChanges();
             return ret.Guid;
         }
@@ -69,11 +65,9 @@ namespace NBG.Visitor.Services.DB
         {
             using var context = _contextFactory.CreateDbContext();
             var visit = context.Visits.Include(v => v.Visitor).First(visit => visit.Id == Id);
-            ContactPerson cp = await context.AddContactPersonIfNotExists(contactPerson).ConfigureAwait(false);
-            Company c = await context.AddCompanyIfNotExists(company).ConfigureAwait(false);
 
-            visit.Company = c;
-            visit.ContactPerson = cp;
+            visit.CompanyLabel = company;
+            visit.ContactPerson = contactPerson;
             visit.VisitStart = start;
             visit.VisitEnd = end;
             visit.Status = mapper.Map<VisitStatus>(status);

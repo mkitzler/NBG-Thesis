@@ -20,34 +20,6 @@ namespace NBG.Visitor.Storage.Migrations
                 .HasAnnotation("ProductVersion", "5.0.11")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("NBG.Visitor.Storage.Models.Company", b =>
-                {
-                    b.Property<string>("CompanyLabel")
-                        .HasColumnType("text")
-                        .HasColumnName("company_label");
-
-                    b.HasKey("CompanyLabel");
-
-                    b.HasIndex("CompanyLabel")
-                        .IsUnique();
-
-                    b.ToTable("company");
-                });
-
-            modelBuilder.Entity("NBG.Visitor.Storage.Models.ContactPerson", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("text")
-                        .HasColumnName("name");
-
-                    b.HasKey("Name");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("contact_person");
-                });
-
             modelBuilder.Entity("NBG.Visitor.Storage.Models.Visit", b =>
                 {
                     b.Property<int?>("Id")
@@ -55,6 +27,16 @@ namespace NBG.Visitor.Storage.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("CompanyLabel")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("company_label");
+
+                    b.Property<string>("ContactPerson")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("contatct_person");
 
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()
@@ -75,20 +57,10 @@ namespace NBG.Visitor.Storage.Migrations
                         .HasColumnType("timestamp without time zone")
                         .HasColumnName("visit_start");
 
-                    b.Property<string>("company_label")
-                        .HasColumnType("text");
-
-                    b.Property<string>("contact_person_name")
-                        .HasColumnType("text");
-
                     b.Property<int>("visitor_id")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("company_label");
-
-                    b.HasIndex("contact_person_name");
 
                     b.HasIndex("visitor_id");
 
@@ -129,35 +101,13 @@ namespace NBG.Visitor.Storage.Migrations
 
             modelBuilder.Entity("NBG.Visitor.Storage.Models.Visit", b =>
                 {
-                    b.HasOne("NBG.Visitor.Storage.Models.Company", "Company")
-                        .WithMany("Visits")
-                        .HasForeignKey("company_label");
-
-                    b.HasOne("NBG.Visitor.Storage.Models.ContactPerson", "ContactPerson")
-                        .WithMany("Visits")
-                        .HasForeignKey("contact_person_name");
-
                     b.HasOne("NBG.Visitor.Storage.Models.Visitor", "Visitor")
                         .WithMany("Visits")
                         .HasForeignKey("visitor_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Company");
-
-                    b.Navigation("ContactPerson");
-
                     b.Navigation("Visitor");
-                });
-
-            modelBuilder.Entity("NBG.Visitor.Storage.Models.Company", b =>
-                {
-                    b.Navigation("Visits");
-                });
-
-            modelBuilder.Entity("NBG.Visitor.Storage.Models.ContactPerson", b =>
-                {
-                    b.Navigation("Visits");
                 });
 
             modelBuilder.Entity("NBG.Visitor.Storage.Models.Visitor", b =>

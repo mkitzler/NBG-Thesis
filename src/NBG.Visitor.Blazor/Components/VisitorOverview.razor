@@ -112,8 +112,8 @@
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">@Loc["LastName"]</MudTableSortLabel></MudTh>
         <MudTh>@Loc["PhoneNr"]</MudTh>
         <MudTh>@Loc["Email"]</MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Company.CompanyLabel)">@Loc["Company"]</MudTableSortLabel></MudTh>
-        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.ContactPerson.Name)">@Loc["ContactPerson"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.CompanyLabel)">@Loc["Company"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.ContactPerson)">@Loc["ContactPerson"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<VisitDto, object>(x=>x.VisitStart)">@Loc["Start"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">@Loc["End"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">@Loc["Status"]</MudTableSortLabel></MudTh>
@@ -129,8 +129,8 @@
         <MudTd>@context.Visitor.LastName</MudTd>
         <MudTd>@context.Visitor.PhoneNumber</MudTd>
         <MudTd>@context.Visitor.Email</MudTd>
-        <MudTd>@context.Company.CompanyLabel</MudTd>
-        <MudTd>@context.ContactPerson.Name</MudTd>
+        <MudTd>@context.CompanyLabel</MudTd>
+        <MudTd>@context.ContactPerson</MudTd>
         <MudTd>@context.VisitStart?.ToString(Loc["DateTimeFormat"])</MudTd>
         <MudTd>@context.VisitEnd?.ToString(Loc["DateTimeFormat"])</MudTd>
 
@@ -209,8 +209,6 @@
     {
         VisitDto _visit = new VisitDto();
         _visit.Visitor = new VisitorDto();
-        _visit.Company = new CompanyDto();
-        _visit.ContactPerson = new ContactPersonDto();
         _visit.Status = VisitStatusDto.VISIT_PENDING;
 
         var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]="Add" };
@@ -222,7 +220,7 @@
         if (!result.Cancelled)
         {
             var visit = (VisitDto)result.Data;
-            await DataRepository.AddVisit(visit.VisitStart??null, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null, VisitStatusDto.VISIT_PENDING);
+            await DataRepository.AddVisit(visit.VisitStart??null, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null, VisitStatusDto.VISIT_PENDING);
             Visits.Add(visit);
 
             Snackbar.Add(Loc["AddedVisitMsg"], Severity.Success);
@@ -243,7 +241,7 @@
             var visit = (VisitDto)result.Data;
             if (visit.VisitEnd != null)
                 visit.Status = VisitStatusDto.VISIT_OVER;
-            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??null, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
+            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??null, visit.Status, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
 
             Snackbar.Add(Loc["ChangesSavedMsg"], Severity.Success);
             await JS.InvokeVoidAsync("console.log",Loc["ChangesSavedMsg"]);
@@ -266,7 +264,7 @@
         {
             visit.VisitEnd = DateTime.Now;
             visit.Status = VisitStatusDto.VISIT_OVER;
-            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??DateTime.Now, visit.Status, visit.ContactPerson.Name, visit.Company.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
+            await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??DateTime.Now, visit.Status, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
 
             Snackbar.Add(Loc["SignedOffVisitor"], Severity.Success);
             await JS.InvokeVoidAsync("console.log",Loc["SignedOffVisitor"]);
@@ -314,11 +312,11 @@
                     return true;
             if (visit.Visitor.PhoneNumber.ToLower().Contains(searchString.ToLower()))
                 return true;
-            if (visit.ContactPerson.Name != null)
-                if (visit.ContactPerson.Name.ToLower().Contains(searchString.ToLower()))
+            if (visit.ContactPerson != null)
+                if (visit.ContactPerson.ToLower().Contains(searchString.ToLower()))
                     return true;
-            if (visit.Company.CompanyLabel != null)
-                if (visit.Company.CompanyLabel.ToLower().Contains(searchString.ToLower()))
+            if (visit.CompanyLabel != null)
+                if (visit.CompanyLabel.ToLower().Contains(searchString.ToLower()))
                     return true;
         }
         return false;
