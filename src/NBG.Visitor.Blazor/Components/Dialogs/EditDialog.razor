@@ -3,6 +3,7 @@
 @using MudBlazor;
 @using Radzen.Blazor;
 @using System.Reflection
+@using System.ComponentModel.DataAnnotations
 @inject IJSRuntime JS;
 
 <style>
@@ -29,29 +30,30 @@
         </MudText>
     </TitleContent>
     <DialogContent>
-        <MudTextField @bind-Value="@visit.Visitor.FirstName" Label=@Loc["FirstName"]/>
-        <MudTextField @bind-Value="@visit.Visitor.LastName" Label=@Loc["LastName"]/>
-        <MudTextField @bind-Value="@visit.Visitor.PhoneNumber" Label=@Loc["PhoneNr"]/>
-        <MudTextField @bind-Value="@visit.Visitor.Email" Label=@Loc["Email"]/>
-        <MudTextField @bind-Value="@visit.CompanyLabel" Label=@Loc["Company"]/>
-        <MudTextField @bind-Value="@visit.ContactPerson" Label=@Loc["ContactPerson"]/>
-        <div class="datetimecontainer">
-            <MudDatePicker Label=@Loc["StartDate"] @bind-Date="@startDate" DateFormat="@Loc["DateFormat"]" Style="width:90%;" DisableToolbar="true"/>
-            <MudTimePicker Label=@Loc["StartTime"] @bind-Time="@startTime" TimeFormat="@Loc["TimeFormat"]" AmPm="@((Loc.Culture.ToString() == "en-US")? true : false )"/>
-        </div>
-        @if(mode == "Edit")
-        {
+        <MudForm @bind-IsValid="@success">
+            <MudTextField @bind-Value="@visit.Visitor.FirstName" Label=@Loc["FirstName"] Required="true"/>
+            <MudTextField @bind-Value="@visit.Visitor.LastName" Label=@Loc["LastName"] Required="true"/>
+            <MudTextField @bind-Value="@visit.Visitor.PhoneNumber" Label=@Loc["PhoneNr"] Required="true" Validation="@(new PhoneAttribute() {ErrorMessage = @Loc["WrongPhone"]})"/>
+            <MudTextField @bind-Value="@visit.Visitor.Email" Label=@Loc["Email"] Validation=@(new Func<string, string>(ValidateEmail))/>
+            <MudTextField @bind-Value="@visit.CompanyLabel" Label=@Loc["Company"]/>
+            <MudTextField @bind-Value="@visit.ContactPerson" Label=@Loc["ContactPerson"]/>
             <div class="datetimecontainer">
-                <MudDatePicker Label=@Loc["EndDate"] @bind-Date="@endDate" DateFormat="@Loc["DateFormat"]" Style="width:90%;" DisableToolbar="true"/>    
-                <MudTimePicker Label=@Loc["EndTime"] @bind-Time="@endTime" TimeFormat="@Loc["TimeFormat"]" AmPm="@((Loc.Culture.ToString() == "en-US")? true : false )"/>
+                <MudDatePicker Label=@Loc["StartDate"] @bind-Date="@startDate" Culture="@Loc.Culture" Style="width:90%;" DisableToolbar="true"/>
+                <MudTimePicker Label=@Loc["StartTime"] @bind-Time="@startTime" Culture="@Loc.Culture" AmPm="@((Loc.Culture.ToString() == "en-US")? true : false )"/>
             </div>
-        }
-        
+            @if(mode == "Edit")
+            {
+                <div class="datetimecontainer">
+                    <MudDatePicker Label=@Loc["EndDate"] @bind-Date="@endDate" Culture="@Loc.Culture" Style="width:90%;" DisableToolbar="true"/>    
+                    <MudTimePicker Label=@Loc["EndTime"] @bind-Time="@endTime" Culture="@Loc.Culture" AmPm="@((Loc.Culture.ToString() == "en-US")? true : false )"/>
+                </div>
+            }
+            <div class="d-flex justify-end mt-6">
+                <MudButton Class="pa-2 mx-2" OnClick="Cancel" Variant="Variant.Filled">@Loc["Cancel"]</MudButton>
+                <MudButton Class="pa-2 mx-2" Color="Color.Success" OnClick="EditVisit" Disabled="@(!success)" Variant="Variant.Filled">@Loc["Save"]</MudButton>
+            </div>
+        </MudForm>  
     </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="Cancel">@Loc["Cancel"]</MudButton>
-        <MudButton Color="Color.Error" OnClick="EditVisit">@Loc["Save"]</MudButton>
-    </DialogActions>
 </MudDialog>
  
 @code {
@@ -65,6 +67,8 @@
     private TimeSpan? startTime { get; set; }
     private DateTime? endDate { get; set; }
     private TimeSpan? endTime { get; set; }
+
+    bool success { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -109,10 +113,23 @@
             endDate += new TimeSpan(12, 0, 0);
         }
         
-
         visit.VisitStart = startDate??null;
         visit.VisitEnd = endDate??null;
         MudDialog.Close(DialogResult.Ok(visit));
+    }
+
+    private string ValidateEmail(string email)
+    {
+        email = email?.Trim();
+        if (email == null || email == "")
+            return null;
+        else
+        {
+            if (new EmailAddressAttribute().IsValid(email))
+                return null;
+            else
+                return Loc["WrongEmail"];
+        }
     }
 }
 

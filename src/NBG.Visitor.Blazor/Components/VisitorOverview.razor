@@ -131,8 +131,8 @@
         <MudTd>@context.Visitor.Email</MudTd>
         <MudTd>@context.CompanyLabel</MudTd>
         <MudTd>@context.ContactPerson</MudTd>
-        <MudTd>@context.VisitStart?.ToString(Loc["DateTimeFormat"])</MudTd>
-        <MudTd>@context.VisitEnd?.ToString(Loc["DateTimeFormat"])</MudTd>
+        <MudTd>@context.VisitStart?.ToString("g", Loc.Culture)</MudTd>
+        <MudTd>@context.VisitEnd?.ToString("g", Loc.Culture)</MudTd>
 
         <MudTd Class="status pt-0 pb-0">
             @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
