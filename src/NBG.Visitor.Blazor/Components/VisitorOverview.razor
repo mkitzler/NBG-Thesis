@@ -220,7 +220,7 @@
         if (!result.Cancelled)
         {
             var visit = (VisitDto)result.Data;
-            await DataRepository.AddVisit(visit.VisitStart??null, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null, VisitStatusDto.VISIT_PENDING);
+            await DataRepository.AddVisit(visit.VisitStart??null, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null, visit.CompanyLabel, visit.ContactPerson, VisitStatusDto.VISIT_PENDING);
             Visits.Add(visit);
 
             Snackbar.Add(Loc["AddedVisitMsg"], Severity.Success);

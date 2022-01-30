@@ -4,7 +4,6 @@
 @using Radzen.Blazor;
 @using System.Reflection
 @using System.ComponentModel.DataAnnotations
-@inject IJSRuntime JS;
 
 <style>
     .timePickerToolbar{
@@ -33,7 +32,7 @@
         <MudForm @bind-IsValid="@success">
             <MudTextField @bind-Value="@visit.Visitor.FirstName" Label=@Loc["FirstName"] Required="true"/>
             <MudTextField @bind-Value="@visit.Visitor.LastName" Label=@Loc["LastName"] Required="true"/>
-            <MudTextField @bind-Value="@visit.Visitor.PhoneNumber" Label=@Loc["PhoneNr"] Required="true" Validation="@(new PhoneAttribute() {ErrorMessage = @Loc["WrongPhone"]})"/>
+            <MudTextField @bind-Value="@visit.Visitor.PhoneNumber" Label=@Loc["PhoneNr"] Required="true" Validation="@(new PhoneAttribute() {ErrorMessage = Loc["WrongPhone"]})"/>
             <MudTextField @bind-Value="@visit.Visitor.Email" Label=@Loc["Email"] Validation=@(new Func<string, string>(ValidateEmail))/>
             <MudTextField @bind-Value="@visit.CompanyLabel" Label=@Loc["Company"]/>
             <MudTextField @bind-Value="@visit.ContactPerson" Label=@Loc["ContactPerson"]/>

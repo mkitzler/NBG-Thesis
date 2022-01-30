@@ -21,7 +21,7 @@ namespace NBG.Visitor.Blazor
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             
-            PdfDocument doc = new PdfDocument();
+            PdfDocument doc = new();
             PdfPage page = doc.AddPage();
             page.Height = new(3.35, XGraphicsUnit.Inch);
             page.Width = new(2.1, XGraphicsUnit.Inch);
