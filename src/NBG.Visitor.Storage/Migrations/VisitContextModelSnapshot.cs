@@ -36,7 +36,7 @@ namespace NBG.Visitor.Storage.Migrations
                     b.Property<string>("ContactPerson")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnName("contatct_person");
+                        .HasColumnName("contact_person");
 
                     b.Property<Guid>("Guid")
                         .ValueGeneratedOnAdd()

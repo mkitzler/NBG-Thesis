@@ -27,7 +27,7 @@ namespace NBG.Visitor.Storage.Models
         [Required]
         public Visitor? Visitor {  get; set; }
 
-        [Column("contatct_person")]
+        [Column("contact_person")]
         [Required]
         public string ContactPerson { get; set; }
 
