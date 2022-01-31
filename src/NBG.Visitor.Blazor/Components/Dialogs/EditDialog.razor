@@ -36,11 +36,14 @@
             <MudTextField @bind-Value="@visit.Visitor.Email" Label=@Loc["Email"] Validation=@(new Func<string, string>(ValidateEmail))/>
             <MudTextField @bind-Value="@visit.CompanyLabel" Label=@Loc["Company"]/>
             <MudTextField @bind-Value="@visit.ContactPerson" Label=@Loc["ContactPerson"]/>
-            <div class="datetimecontainer">
-                <MudDatePicker Label=@Loc["StartDate"] @bind-Date="@startDate" Culture="@Loc.Culture" Style="width:90%;" DisableToolbar="true"/>
-                <MudTimePicker Label=@Loc["StartTime"] @bind-Time="@startTime" Culture="@Loc.Culture" AmPm="@((Loc.Culture.ToString() == "en-US")? true : false )"/>
-            </div>
-            @if(mode == "Edit")
+            @if (mode == "Add")
+            {
+                <div class="datetimecontainer">
+                    <MudDatePicker Label=@Loc["PlannedDate"] @bind-Date="@plannedDate" Culture="@Loc.Culture" Style="width:90%;" DisableToolbar="true"/>
+                    <MudTimePicker Label=@Loc["PlannedTime"] @bind-Time="@plannedTime" Culture="@Loc.Culture" AmPm="@((Loc.Culture.ToString() == "en-US")? true : false )"/>
+                </div>
+            }
+            else if(mode == "Edit" && visit.VisitEnd != null)
             {
                 <div class="datetimecontainer">
                     <MudDatePicker Label=@Loc["EndDate"] @bind-Date="@endDate" Culture="@Loc.Culture" Style="width:90%;" DisableToolbar="true"/>    
@@ -62,8 +65,8 @@
     [Parameter] public string mode { get; set; }
     [Parameter] public Localizer Loc { get; set; }
 
-    private DateTime? startDate { get; set; }
-    private TimeSpan? startTime { get; set; }
+    private DateTime? plannedDate { get; set; }
+    private TimeSpan? plannedTime { get; set; }
     private DateTime? endDate { get; set; }
     private TimeSpan? endTime { get; set; }
 
@@ -71,12 +74,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        startDate = @visit.VisitStart ?? null;
+        plannedDate = @visit.PlannedVisitStart ?? null;
         endDate = @visit.VisitEnd ?? null;
         if (@visit.VisitStart != null)
-            startTime = @visit.VisitStart.Value.TimeOfDay;
+            plannedTime = @visit.VisitStart.Value.TimeOfDay;
         else
-            startTime = null;
+            plannedTime = null;
         if (@visit.VisitEnd != null)
             endTime = @visit.VisitEnd.Value.TimeOfDay;
         else
@@ -90,29 +93,19 @@
 
     private void EditVisit()
     {
-        if (startTime != null)
+        if (plannedDate != null && plannedTime != null)
         {
-            startDate -= startDate.Value.TimeOfDay;
-            startDate += startTime;
-        }
-        else if (startDate != null)
-        {
-            startDate -= startDate.Value.TimeOfDay;
-            startDate += new TimeSpan(12, 0, 0);
+            plannedDate -= plannedDate.Value.TimeOfDay;
+            plannedDate += plannedTime;
         }
 
-        if (endTime != null)
+        if (endDate != null && endTime != null)
         {
             endDate -= endDate.Value.TimeOfDay;
             endDate += endTime;
         }
-        else if (endDate != null)
-        {
-            endDate -= endDate.Value.TimeOfDay;
-            endDate += new TimeSpan(12, 0, 0);
-        }
         
-        visit.VisitStart = startDate??null;
+        visit.PlannedVisitStart = plannedDate??null;
         visit.VisitEnd = endDate??null;
         MudDialog.Close(DialogResult.Ok(visit));
     }

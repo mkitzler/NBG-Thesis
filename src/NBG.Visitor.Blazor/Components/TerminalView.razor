@@ -30,10 +30,10 @@
 
 @code {
     [CascadingParameter]
-	public Localizer Loc { get; set; }
+    public Localizer Loc { get; set; }
     private MudCarousel<object> carousel;
     private TerminalRegister form;
-    
+
     MudTheme NBG = new MudTheme()
     {
         Palette = new Palette()
@@ -49,17 +49,13 @@
         DateTime registeredAt = DateTime.Now;
 
         #if DEBUG
-        Guid id = new("00000000-0000-0000-0000-000000000100");
-        await Task.Delay(1000);
+    Guid id = new("00000000-0000-0000-0000-000000000100");
+    await Task.Delay(1000);
         #else
         Guid id = (await vs.AddVisit(registeredAt, form.FormData.ContactPerson, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company)).Guid;
-        #endif
+#endif
 
-        QRCodeGenerator qrGenerator = new QRCodeGenerator();
-        QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.H);
-        QRCode qrCode = new QRCode(qrCodeData);
-        Bitmap logo = BitmapFromUrl("https://fiss.dev.nbg.tech:44303/_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png");
-        Bitmap qr = qrCode.GetGraphic(30, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 15, 15, false);
+        Bitmap qr = PdfExporter.GenerateQrCode(id);
 
         RenderFragment rf = @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>;
         IDialogReference dialog = Dialog.Show<MudDialog>(e.Message, new DialogParameters() {["DialogContent"] = rf});

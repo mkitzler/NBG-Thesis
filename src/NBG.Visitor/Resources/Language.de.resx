@@ -136,10 +136,10 @@
     <value>Änderungen wurden übernommen.</value>
   </data>
   <data name="Company" xml:space="preserve">
-    <value>Firma</value>
+    <value>Unternehmen</value>
   </data>
   <data name="ContactPerson" xml:space="preserve">
-    <value>Ansprechpartner</value>
+    <value>Ansprechperson</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Löschen</value>
@@ -237,23 +237,8 @@
   <data name="Back" xml:space="preserve">
     <value>Zurück</value>
   </data>
-  <data name="Company" xml:space="preserve">
-    <value>Unternehmen</value>
-  </data>
-  <data name="ContactPerson" xml:space="preserve">
-    <value>Ansprechperson</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>E-Mail</value>
-  </data>
   <data name="FinishRegister" xml:space="preserve">
     <value>Registrierung abschließen</value>
-  </data>
-  <data name="FirstName" xml:space="preserve">
-    <value>Vorname</value>
-  </data>
-  <data name="LastName" xml:space="preserve">
-    <value>Nachname</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Weiter</value>
@@ -299,5 +284,20 @@
   </data>
   <data name="VisitorTicket" xml:space="preserve">
     <value>Besucherticket</value>
+  </data>
+  <data name="PlannedDate" xml:space="preserve">
+    <value>Geplantes Datum</value>
+  </data>
+  <data name="PlannedTime" xml:space="preserve">
+    <value>Geplante Zeit</value>
+  </data>
+  <data name="MissingDataPrompt" xml:space="preserve">
+    <value>Please fill in the data.</value>
+  </data>
+  <data name="PickEndDatePrompt" xml:space="preserve">
+    <value>Geben Sie unten das Enddatum ein.</value>
+  </data>
+  <data name="PrintVisitorPass" xml:space="preserve">
+    <value>Besucherausweis drucken</value>
   </data>
 </root>

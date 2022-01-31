@@ -6,6 +6,8 @@
 @using NBG.Visitor.Blazor.Components.Dialogs;
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components;
+@using System.Drawing
+@using PdfSharp.Pdf
 
 @inject IJSRuntime JS;
 @inject IVisitService DataRepository;
@@ -52,6 +54,10 @@
     .visitorOverviewBtn:not(#addVisitBtn):hover, .optionsMenu:hover{
         background-color:#e1e1e1;
     }
+
+    .mud-table .mud-toolbar{
+        padding-right:64px;
+    }
     
     /*Add Visit Button Formatting*/
     #addButtonToolTip div button{
@@ -64,6 +70,14 @@
         color:#d32f2f;
     }
 
+    #addVisitBtn{
+        position:right;
+    }
+
+    .addVisitTh{
+        width:40px !important;
+    }
+
     #addButtonToolTip div button:hover{
         background-color:#d32f2f !important;
         color:white !important;
@@ -72,24 +86,15 @@
     .visitStatusChip{
         margin-left:0;
     }
+
+    .optionsMenuContainer{
+        max-width:125px;
+    }
 </style>
 @*Function/MostImportant Class ID Style Icon Color Elevation Dense *@
-<MudTable Items=@Visits Class="ml-8 mr-8 mt-8 rounded-lg visitTable" Elevation="5" Height="75vh" RowStyle="height:60px !important;" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader"> 
-    <ColGroup>
-        <col style="width: 10%;"/>
-        <col style="width: 10%;"/>
-        <col style="width: 10%;"/>
-        <col style="width: 15%;"/>
-        <col style="width: 10%;"/>
-        <col style="width: 12%;"/>
-        <col style="width: 12%;"/>
-        <col style="width: 12%;"/>
-        <col style="width: 3%;"/>
-        <col style="width: 3%;"/>
-        <col style="width: 3%;"/>
-    </ColGroup>
+<MudTable Items=@Visits Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Height="75vh" RowStyle="height:60px !important;" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader"> 
     <ToolBarContent>
-        <MudCard Class="pl-4 mt-8" Elevation="0">
+        <MudCard Class="pl-6 mt-8" Elevation="0">
             <MudText Class="mb-2" Typo="Typo.h5">@Loc["Title"]</MudText>
             <MudText>@Loc["Description"]</MudText>
         </MudCard>
@@ -98,52 +103,54 @@
 
         <MudForm Class="mt-7 mr-11">
             <MudRadioGroup @bind-SelectedOption="@ActiveFilter">
-                <MudRadio Option="@(VisitStatusDto.VISIT_ACTIVE)" Color="Color.Success" T="VisitStatusDto?">@Loc["Active"]</MudRadio>
-                <MudRadio Option="@(VisitStatusDto.VISIT_PENDING)" Color="Color.Warning" T="VisitStatusDto?">@Loc["Pending"]</MudRadio>
-                <MudRadio Option="@(VisitStatusDto.VISIT_OVER)" Color="Color.Error" T="VisitStatusDto?">@Loc["Over"]</MudRadio>
+                <MudRadio Option="@(VisitStatusDto.VISIT_ACTIVE)" Color="MudBlazor.Color.Success" T="VisitStatusDto?">@Loc["Active"]</MudRadio>
+                <MudRadio Option="@(VisitStatusDto.VISIT_PENDING)" Color="MudBlazor.Color.Warning" T="VisitStatusDto?">@Loc["Pending"]</MudRadio>
+                <MudRadio Option="@(VisitStatusDto.VISIT_OVER)" Color="MudBlazor.Color.Error" T="VisitStatusDto?">@Loc["Over"]</MudRadio>
             </MudRadioGroup>
         </MudForm>
 
-        <MudTextField @bind-Value="searchString" Class="mt-3 mr-11" Placeholder=@Loc["Search"] Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium"></MudTextField>
-        <MudIconButton OnClick="ResetFilters" Class="mt-7 mr-8 visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
+        <MudTextField @bind-Value="searchString" Class="mt-3 mr-11" Placeholder=@Loc["Search"] Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="MudBlazor.Size.Medium"></MudTextField>
+        <MudIconButton OnClick="ResetFilters" Class="mt-7 visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
     </ToolBarContent>
     <HeaderContent>
-        <MudTh Class="pl-10"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">@Loc["FirstName"]</MudTableSortLabel></MudTh>
+        <MudTh Class="pl-16"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">@Loc["FirstName"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">@Loc["LastName"]</MudTableSortLabel></MudTh>
         <MudTh>@Loc["PhoneNr"]</MudTh>
         <MudTh>@Loc["Email"]</MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.CompanyLabel)">@Loc["Company"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.ContactPerson)">@Loc["ContactPerson"]</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.PlannedVisitStart)">@Loc["PlannedArrival"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<VisitDto, object>(x=>x.VisitStart)">@Loc["Start"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">@Loc["End"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">@Loc["Status"]</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
-        <MudTh Class="pr-10">
+        <MudTh Class="pr-16 addVisitTh">
             <MudTooltip Text="@Loc["AddVisit"]" id="addButtonToolTip">
                 <MudIconButton OnClick="AddVisit" Class="visitorOverviewBtn" id="addVisitBtn" Icon="@Icons.Filled.Add"></MudIconButton>
             </MudTooltip>   
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd Class="pl-10 mt-10">@context.Visitor.FirstName</MudTd>
+        <MudTd Class="pl-16 mt-10">@context.Visitor.FirstName</MudTd>
         <MudTd>@context.Visitor.LastName</MudTd>
         <MudTd>@context.Visitor.PhoneNumber</MudTd>
         <MudTd>@context.Visitor.Email</MudTd>
         <MudTd>@context.CompanyLabel</MudTd>
         <MudTd>@context.ContactPerson</MudTd>
+        <MudTd>@context.PlannedVisitStart?.ToString("g", Loc.Culture)</MudTd>
         <MudTd>@context.VisitStart?.ToString("g", Loc.Culture)</MudTd>
         <MudTd>@context.VisitEnd?.ToString("g", Loc.Culture)</MudTd>
 
         <MudTd Class="status pt-0 pb-0">
             @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
             {
-                <MudChip Class="visitStatusChip" Color="Color.Success" Size=Size.Small>@Loc["ActiveLong"]</MudChip> 
+                <MudChip Class="visitStatusChip" Color="MudBlazor.Color.Success" Size=MudBlazor.Size.Small>@Loc["ActiveLong"]</MudChip> 
             }
             else if(@context.Status == VisitStatusDto.VISIT_OVER){
-                <MudChip Class="visitStatusChip" Color="Color.Error" Size=Size.Small>@Loc["OverLong"]</MudChip>
+                <MudChip Class="visitStatusChip" Color="MudBlazor.Color.Error" Size=MudBlazor.Size.Small>@Loc["OverLong"]</MudChip>
             }
             else{
-                <MudChip Class="visitStatusChip" Color="Color.Warning" Size=Size.Small>@Loc["PendingLong"]</MudChip>
+                <MudChip Class="visitStatusChip" Color="MudBlazor.Color.Warning" Size=MudBlazor.Size.Small>@Loc["PendingLong"]</MudChip>
             }
         </MudTd>
 
@@ -154,10 +161,13 @@
             }
         </MudTd>
 
-        <MudTd Class="pr-10 pt-1 pb-1">
-            <MudMenu @onclick="OpenMenu" Class="optionsMenu" Icon="@Icons.Filled.MoreVert" Dense=true>
-                <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:15px;">@Loc["Edit"]</MudText></MudMenuItem>
-                <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="@($"color:{Colors.Red.Default};")"><MudText Style="font-size:15px;">@Loc["Delete"]</MudText></MudMenuItem>
+        <MudTd Class="pr-16 pt-1 pb-1">
+            <MudMenu @onclick="OpenMenu" Class="optionsMenu" Icon="@Icons.Filled.MoreVert" Dense=true >
+                <div class = "optionsMenuContainer">
+                    <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:12px;">@Loc["Edit"]</MudText></MudMenuItem>
+                    <MudMenuItem OnClick=@(()=>PrintVisitorPass(@context))><MudText Style="font-size:12px;">@Loc["PrintVisitorPass"]</MudText></MudMenuItem>
+                    <MudMenuItem OnClick=@(()=>DeleteVisit(@context)) Style="@($"color:{Colors.Red.Default};")"><MudText Style="font-size:12px;">@Loc["Delete"]</MudText></MudMenuItem>
+                </div>
             </MudMenu>
         </MudTd>
     </RowTemplate>
@@ -239,8 +249,6 @@
         if (!result.Cancelled)
         {
             var visit = (VisitDto)result.Data;
-            if (visit.VisitEnd != null)
-                visit.Status = VisitStatusDto.VISIT_OVER;
             await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??null, visit.Status, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
 
             Snackbar.Add(Loc["ChangesSavedMsg"], Severity.Success);
@@ -248,22 +256,19 @@
         }
     }
 
-    public async Task SignOffVisit(VisitDto visit)
+    public async Task SignOffVisit(VisitDto _visit)
     {
-        var parameters = new DialogParameters();
-        parameters.Add("ContentText", Loc["SignOffPrompt"]);
-        parameters.Add("ButtonText", "OK");
-        parameters.Add("Color", Color.Warning);
+        var parameters = new DialogParameters { ["visit"] = _visit };
         parameters.Add("Loc", Loc);
 
-        var dialog = DialogService.Show<Dialog>(Loc["SignOffVisitor"], parameters);
-
+        var dialog = DialogService.Show<SignOffDialog>(Loc["SignOffVisitor"], parameters);
         var result = await dialog.Result;
 
         if (!result.Cancelled)
         {
-            visit.VisitEnd = DateTime.Now;
-            visit.Status = VisitStatusDto.VISIT_OVER;
+            var visit = (VisitDto)result.Data;
+            if (visit.VisitEnd != null)
+                visit.Status = VisitStatusDto.VISIT_OVER;
             await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??DateTime.Now, visit.Status, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
 
             Snackbar.Add(Loc["SignedOffVisitor"], Severity.Success);
@@ -271,12 +276,25 @@
         }
     }
 
+    public async Task PrintVisitorPass(VisitDto visit)
+    {
+        Bitmap qr = PdfExporter.GenerateQrCode(visit.Guid);
+
+        RenderFragment rf = @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>;
+        var dialog = DialogService.Show<MudDialog>(visit.Visitor.FirstName + " " + visit.Visitor.LastName, new DialogParameters() {["DialogContent"] = rf});
+
+        PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, visit.Guid.ToString(), visit.Visitor.FullName + " " + visit.VisitStart?.ToString("g", Loc.Culture), visit.VisitStart??DateTime.Now);
+        pdf.Save("./pdf.pdf");
+
+        if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so scroll won't get stuck (wait until dialog is closed)
+    }
+
     public async Task DeleteVisit(VisitDto visit)
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", Loc["DeleteVisitPrompt"]);
         parameters.Add("ButtonText", "OK");
-        parameters.Add("Color", Color.Error);
+        parameters.Add("Color", MudBlazor.Color.Error);
         parameters.Add("Loc", Loc);
 
         var dialog = DialogService.Show<Dialog>(Loc["DeleteVisit"], parameters);

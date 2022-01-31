@@ -14,6 +14,7 @@ namespace NBG.Visitor.Domain.Dtos
             Visitor = visitor ?? new VisitorDto();
         }
         public int Id { get; set; }
+        public DateTime? PlannedVisitStart { get; set; }
         public DateTime? VisitStart { get; set; }
         public DateTime? VisitEnd { get; set; }
         public VisitorDto Visitor { get; set; }

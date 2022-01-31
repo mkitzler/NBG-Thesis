@@ -17,7 +17,7 @@
 <div class="page">
 
     <div class="main">
-        <MudAppBar Class="red darken-4" Fixed="false" Dense=true Elevation="5">
+        <MudAppBar Class="red darken-4" Fixed="false" Dense=@dense Elevation="5">
             <img src="/img/Logo/nbg_logo.png" style="max-height:80%; margin-right:20px;"/>
             @*<NavLink href="terminal">
                 <MudButton Class="red-text text-lighten-5" Icon="@Icons.Material.Filled.ConnectWithoutContact">Visitor Registration</MudButton>
@@ -46,6 +46,7 @@
 
 @code{
     private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
+    private bool dense = true;
 
     protected override async Task OnInitializedAsync()
     {

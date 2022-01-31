@@ -237,23 +237,8 @@
   <data name="Back" xml:space="preserve">
     <value>Back</value>
   </data>
-  <data name="Company" xml:space="preserve">
-    <value>Company</value>
-  </data>
-  <data name="ContactPerson" xml:space="preserve">
-    <value>Contact Person</value>
-  </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
-  </data>
   <data name="FinishRegister" xml:space="preserve">
     <value>Finish Registration</value>
-  </data>
-  <data name="FirstName" xml:space="preserve">
-    <value>First Name</value>
-  </data>
-  <data name="LastName" xml:space="preserve">
-    <value>Last Name</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
@@ -299,5 +284,20 @@
   </data>
   <data name="VisitorTicket" xml:space="preserve">
     <value>Visitor Ticket</value>
+  </data>
+  <data name="PlannedDate" xml:space="preserve">
+    <value>Planned Date</value>
+  </data>
+  <data name="PlannedTime" xml:space="preserve">
+    <value>Planned Time</value>
+  </data>
+  <data name="MissingDataPrompt" xml:space="preserve">
+    <value>Bitte geben Sie die Daten ein.</value>
+  </data>
+  <data name="PickEndDatePrompt" xml:space="preserve">
+    <value>Fill in the end date below.</value>
+  </data>
+  <data name="PrintVisitorPass" xml:space="preserve">
+    <value>Print Visitor Pass</value>
   </data>
 </root>
