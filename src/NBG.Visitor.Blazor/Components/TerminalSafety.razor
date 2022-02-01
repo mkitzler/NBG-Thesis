@@ -1,9 +1,9 @@
 ﻿@using MudBlazor;
 @using System.Reflection
 
-<MudGrid Justify=Justify.Center Class="center" Style="height: 88%;">
+<MudGrid Justify=Justify.Center Class="center" Style="height: 88%;" SelectedIndexChanged=StateHasChanged>
     <MudItem Style="height: 100%;" lg=9>
-		<MudCarousel @ref="carousel" Style="height: 100%;" AutoCycle="false" ShowArrows="false"  TData="object">
+		<MudCarousel @ref="carousel" Style="height: 100%;" AutoCycle="false" TData="object" NextButtonTemplate=NextButton PreviousButtonTemplate=PreviousButton>
 			@for(int p = 0; p < Pages; p++)
 			{
 				var localp = p;
@@ -45,7 +45,7 @@
 			</MudForm>
 		</MudItem>
 		<MudItem lg=2 Class="center">
-			<MudButton Class="touchscreen-button" OnClick=Register Size=Size.Large Variant=Variant.Filled Color=@(!LastPage ? Color.Secondary : Color.Success) EndIcon=@Icons.Outlined.Check Disabled=@(registering || LastPage && !accepted)>
+			<MudButton Class="touchscreen-button" OnClick=NextOrRegister Size=Size.Large Variant=Variant.Filled Color=@(!LastPage ? Color.Secondary : Color.Success) EndIcon=@Icons.Outlined.Check Disabled=@(registering || LastPage && !accepted)>
 				@if (registering)
 				{
 					<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
@@ -88,21 +88,65 @@
 	private bool accepted;
 	private bool registering = false;
 
-	private async Task Back()
+	private RenderFragment PreviousButton
+	{
+		get
+		{
+			return @<button @onclick=HandlePreviousClick @onclick:stopPropagation=true><MudIcon Icon=@Icons.Outlined.ArrowBackIos /></button>
+	;
+		}
+	}
+	private void HandlePreviousClick(MouseEventArgs e) => PrevousPage();
+	private RenderFragment NextButton
+	{
+		get
+		{
+			return @<button @onclick=HandleNextClick @onclick:stopPropagation=true><MudIcon Icon=@Icons.Outlined.ArrowForwardIos /></button>
+	;
+		}
+	}
+	private void HandleNextClick(MouseEventArgs e) => NextPage();
+
+	/// <summary>
+	/// Goes back one page in the safetyitems-carousel.
+	/// </summary>
+	/// <returns>True if reached beginning.</returns>
+	private bool PrevousPage()
 	{
 		if (carousel.SelectedIndex > 0)
+		{
 			carousel.Previous();
+			return false;
+		}
 		else
+			return true;
+	}
+
+	/// <summary>
+	/// Goes forward one page in the safetyitems-carousel.
+	/// </summary>
+	/// <returns>True if reached end.</returns>
+	private bool NextPage()
+	{
+		if (!LastPage)
+		{
+			carousel.Next();
+			return false;
+		}
+		else
+			return true;
+	}
+
+	private async Task Back()
+	{
+		if (PrevousPage())
 			await OnBack.InvokeAsync();
 	}
 
-	private async Task Register()
+	private async Task NextOrRegister()
 	{
 		registering = true;
-		form.ResetValidation();
-		if (!LastPage)
-			carousel.Next();
-		else
+		if (NextPage())
 		{
 			await form.Validate();
 			if (accepted)
