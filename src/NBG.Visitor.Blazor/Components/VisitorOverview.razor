@@ -287,7 +287,7 @@
         PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, visit.Guid.ToString(), visit.Visitor.FullName + " " + visit.VisitStart?.ToString("g", Loc.Culture), visit.VisitStart??DateTime.Now);
         pdf.Save("./pdf.pdf");
 
-        if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so scroll won't get stuck (wait until dialog is closed)
+        if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so carousel scroll won't get stuck (wait until dialog is closed)
         //if (PdfExporter.PrintPDF("Microsoft Print to PDF", "A5", "./pdf.pdf", 1) == true)
         //{
         //    await JS.InvokeVoidAsync("console.log","Printing was successful.");

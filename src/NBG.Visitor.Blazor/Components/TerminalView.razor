@@ -44,7 +44,7 @@
         }
     };
 
-    private async Task Register(RegisteredEventArgs e)
+    private async Task Register()
     {
         DateTime registeredAt = DateTime.Now;
 
@@ -57,16 +57,20 @@
 
         Bitmap qr = PdfExporter.GenerateQrCode(id);
 
-        RenderFragment rf = @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>;
-        IDialogReference dialog = Dialog.Show<MudDialog>(e.Message, new DialogParameters() {["DialogContent"] = rf});
-
         PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
         pdf.Save("./pdf.pdf");
 
         form.Reset();
         carousel.MoveTo(0);
 
-        if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so scroll won't get stuck (wait until dialog is closed)
+        #if DEBUG
+        RenderFragment rf = 
+            @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
+        ;
+        await Dialog.Show<MudDialog>(Loc["RegisterSuccess"], new DialogParameters() {["DialogContent"] = rf}).Result;
+        #else
+        await Dialog.ShowMessageBox(Loc["RegisterSuccess"], null);
+        #endif
     }
 
     private Bitmap BitmapFromUrl(string url)

@@ -61,7 +61,7 @@
 	public Localizer Loc { get; set; }
 
 	[Parameter]
-	public EventCallback<RegisteredEventArgs> OnRegister { get; set; }
+	public EventCallback OnRegister { get; set; }
 	[Parameter]
 	public EventCallback OnBack { get; set; }
 
@@ -107,7 +107,7 @@
 			await form.Validate();
 			if (accepted)
 			{
-				await OnRegister.InvokeAsync(new RegisteredEventArgs(Loc["RegisterSuccess"]));
+				await OnRegister.InvokeAsync();
 			}
 		}
 		registering = false;
