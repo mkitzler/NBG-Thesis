@@ -37,12 +37,10 @@
 			<MudButton Class="touchscreen-button" OnClick=Back Size=Size.Large Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
 		</MudItem>
 		<MudItem lg=4 Class="center">
-			<MudForm @ref="form">
-				@if (carousel.SelectedIndex == Pages - 1)
-				{
-					<MudCheckBox @bind-Checked="accepted" Label=@Loc["SafetyInfoRead"] Required=true RequiredError=@Loc["SafetyInfoNotRead"]/>
-				}
-			</MudForm>
+			@if (carousel.SelectedIndex == Pages - 1)
+			{
+				<MudCheckBox @bind-Checked="accepted" Label=@Loc["SafetyInfoRead"] Required=true RequiredError=@Loc["SafetyInfoNotRead"]/>
+			}
 		</MudItem>
 		<MudItem lg=2 Class="center">
 			<MudButton Class="touchscreen-button" OnClick=NextOrRegister Size=Size.Large Variant=Variant.Filled Color=@(!LastPage ? Color.Secondary : Color.Success) EndIcon=@Icons.Outlined.Check Disabled=@(registering || LastPage && !accepted)>
@@ -66,7 +64,6 @@
 	public EventCallback OnBack { get; set; }
 
 	private MudCarousel<object> carousel;
-
 	private SafetyItem[] safetyItems => SafetyItem.LoadFromResource(Assembly.GetEntryAssembly(), Loc.Culture).ToArray();
 	private int itemsPerPage = 8;
 	private int Pages
@@ -83,11 +80,6 @@
 			return !(carousel.SelectedIndex < Pages - 1);
 		}
 	}
-
-	private MudForm form;
-	private bool accepted;
-	private bool registering = false;
-
 	private RenderFragment PreviousButton
 	{
 		get
@@ -96,7 +88,6 @@
 	;
 		}
 	}
-	private void HandlePreviousClick(MouseEventArgs e) => PrevousPage();
 	private RenderFragment NextButton
 	{
 		get
@@ -105,6 +96,11 @@
 	;
 		}
 	}
+
+	private bool accepted;
+	private bool registering = false;
+
+	private void HandlePreviousClick(MouseEventArgs e) => PrevousPage();
 	private void HandleNextClick(MouseEventArgs e) => NextPage();
 
 	/// <summary>
@@ -148,7 +144,6 @@
 		registering = true;
 		if (NextPage())
 		{
-			await form.Validate();
 			if (accepted)
 			{
 				await OnRegister.InvokeAsync();

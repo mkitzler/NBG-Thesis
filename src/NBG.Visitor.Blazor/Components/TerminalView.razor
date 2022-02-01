@@ -15,7 +15,6 @@
 
 <MudThemeProvider Theme="NBG"/>
 
-
 <MudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
     <MudCarouselItem>
         <TerminalHome OnNext=@(() => carousel.Next()) />
@@ -49,11 +48,11 @@
         DateTime registeredAt = DateTime.Now;
 
         #if DEBUG
-    Guid id = new("00000000-0000-0000-0000-000000000100");
-    await Task.Delay(1000);
+        Guid id = new("00000000-0000-0000-0000-000000000100");
+        await Task.Delay(1000);
         #else
         Guid id = (await vs.AddVisit(registeredAt, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company, form.FormData.ContactPerson)).Guid;
-#endif
+        #endif
 
         Bitmap qr = PdfExporter.GenerateQrCode(id);
 
