@@ -13,7 +13,7 @@
                 <MudButton Style="padding: 0;" OnClick=@(() => ChangeLang("en-US"))><img class="flag" src="_content/NBG.Visitor.Blazor/images/english.jpg"/></MudButton>
             </MudItem>
             <MudItem xs=12 Class="mt-4">
-                <MudButton OnClick=@(async () => await OnNext.InvokeAsync()) Variant=Variant.Filled Size=Size.Large Color=Color.Primary EndIcon=@Icons.Outlined.ArrowForward>@Loc["Register"]</MudButton>
+                <MudButton Class="touchscreen-button" OnClick=@(async () => await OnNext.InvokeAsync()) Variant=Variant.Filled Size=Size.Large Color=Color.Primary EndIcon=@Icons.Outlined.ArrowForward>@Loc["Register"]</MudButton>
             </MudItem>
         </MudGrid>
     </MudItem>

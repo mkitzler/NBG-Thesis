@@ -13,11 +13,11 @@
 						{
 							var locali = i;
 							<MudItem xs="6">
-								<MudPaper Elevation=5 Style="overflow: scroll;">
+								<MudPaper Elevation=5 Style="overflow: scroll; padding: 1em;">
 									<div style="height: 10em; display: flex;">
 										<img style="width: 10em; align-self: center" src="@(safetyItems[locali].ImagePath)"/>
-										<div style="margin-left: 1em;">
-											<MudText Typo=Typo.h4>@safetyItems[locali].Title</MudText>
+										<div style="margin-left: 2em;">
+											<MudText Style="text-decoration: underline;" Typo=Typo.h5>@safetyItems[locali].Title</MudText>
 											<MudText>@safetyItems[locali].Text</MudText>
 										</div>
 									</div>
@@ -34,7 +34,7 @@
 <footer class="footer">
 	<MudGrid Justify=Justify.Center>
 		<MudItem lg=2 Class="center">
-			<MudButton OnClick=Back Size=Size.Large Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
+			<MudButton Class="touchscreen-button" OnClick=Back Size=Size.Large Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
 		</MudItem>
 		<MudItem lg=4 Class="center">
 			<MudForm @ref="form">
@@ -45,7 +45,7 @@
 			</MudForm>
 		</MudItem>
 		<MudItem lg=2 Class="center">
-			<MudButton OnClick=Register Size=Size.Large Variant=Variant.Filled Color=@(!LastPage ? Color.Secondary : Color.Success) EndIcon=@Icons.Outlined.Check Disabled=@(registering || LastPage && !accepted)>
+			<MudButton Class="touchscreen-button" OnClick=Register Size=Size.Large Variant=Variant.Filled Color=@(!LastPage ? Color.Secondary : Color.Success) EndIcon=@Icons.Outlined.Check Disabled=@(registering || LastPage && !accepted)>
 				@if (registering)
 				{
 					<MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
