@@ -280,13 +280,21 @@
     {
         Bitmap qr = PdfExporter.GenerateQrCode(visit.Guid);
 
-        RenderFragment rf = @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>;
+        RenderFragment rf = @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
+    ;
         var dialog = DialogService.Show<MudDialog>(visit.Visitor.FirstName + " " + visit.Visitor.LastName, new DialogParameters() {["DialogContent"] = rf});
 
         PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, visit.Guid.ToString(), visit.Visitor.FullName + " " + visit.VisitStart?.ToString("g", Loc.Culture), visit.VisitStart??DateTime.Now);
         pdf.Save("./pdf.pdf");
 
         if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so scroll won't get stuck (wait until dialog is closed)
+        //if (PdfExporter.PrintPDF("Microsoft Print to PDF", "A5", "./pdf.pdf", 1) == true)
+        //{
+        //    await JS.InvokeVoidAsync("console.log","Printing was successful.");
+        //}
+        //else{
+        //    await JS.InvokeVoidAsync("console.log","Printing failed.");
+        //}
     }
 
     public async Task DeleteVisit(VisitDto visit)
