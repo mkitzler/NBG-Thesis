@@ -1,5 +1,6 @@
 ﻿@using MudBlazor;
 @using NBG.Visitor.Blazor.Components.Dialogs
+@using NBG.Visitor.Blazor.Components.TerminalSubComponents
 @using NBG.Visitor.Domain.Dtos;
 @using NBG.Visitor.Domain;
 @using System.Reflection
@@ -15,7 +16,7 @@
 
 <MudThemeProvider Theme="NBG"/>
 
-<MudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" TData="object">
+<CustomMudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object">
     <MudCarouselItem>
         <TerminalHome OnNext=@(() => carousel.Next()) />
     </MudCarouselItem>
@@ -25,7 +26,7 @@
     <MudCarouselItem>
         <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
     </MudCarouselItem>
-</MudCarousel>
+</CustomMudCarousel>
 
 @code {
     [CascadingParameter]

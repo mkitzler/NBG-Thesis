@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
-using QRCoder;
+﻿using QRCoder;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Printing;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NBG.Visitor.Blazor
@@ -17,11 +12,11 @@ namespace NBG.Visitor.Blazor
         {
             DateTime registeredAt = DateTime.Now;
 
-            #if DEBUG
-                    id = new("00000000-0000-0000-0000-000000000100");
-                    Task.Delay(1000);
-            #else
-            #endif
+#if DEBUG
+            id = new("00000000-0000-0000-0000-000000000100");
+            Task.Delay(1000);
+#else
+#endif
 
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.H);

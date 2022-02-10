@@ -1,13 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NBG.Visitor.Storage.Models;
+using System;
 
 namespace NBG.Visitor.Services.DB
 {
     public class VisitContext : DbContext
     {
-        public DbSet<Storage.Models.Visitor> Visitors {  get; set; }
+        public DbSet<Storage.Models.Visitor> Visitors { get; set; }
         public DbSet<Visit> Visits { get; set; }
 
         public VisitContext(DbContextOptions<VisitContext> options) : base(options)

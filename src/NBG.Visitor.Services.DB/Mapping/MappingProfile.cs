@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NBG.Visitor.Storage.Models;
+﻿using AutoMapper;
 using NBG.Visitor.Domain.Dtos;
-using AutoMapper;
+using NBG.Visitor.Storage.Models;
 
 namespace NBG.Visitor.Services.DB.Mapping
 {

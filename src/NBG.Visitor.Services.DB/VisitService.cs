@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using NBG.Visitor.Services.DB.Mapping;
+using NBG.Visitor.Domain;
 using NBG.Visitor.Domain.Dtos;
+using NBG.Visitor.Services.DB.Mapping;
 using NBG.Visitor.Storage.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using NBG.Visitor.Domain;
 
 namespace NBG.Visitor.Services.DB
 {
@@ -17,7 +16,7 @@ namespace NBG.Visitor.Services.DB
         private readonly IDbContextFactory<VisitContext> _contextFactory;
         private readonly IMapper mapper = AutoMapperConfiguration.Configure().CreateMapper();
 
-        public VisitService(IDbContextFactory<VisitContext> dbContextFactory) 
+        public VisitService(IDbContextFactory<VisitContext> dbContextFactory)
         {
             _contextFactory = dbContextFactory;
         }

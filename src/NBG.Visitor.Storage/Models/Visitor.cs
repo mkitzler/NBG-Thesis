@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NBG.Visitor.Storage.Models
 {
@@ -14,24 +10,24 @@ namespace NBG.Visitor.Storage.Models
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int? Id {  get; set; }
+        public int? Id { get; set; }
 
         [Column("first_name")]
         [Required]
-        public string FirstName {  get; set; }
+        public string FirstName { get; set; }
 
         [Column("last_name")]
         [Required]
-        public string LastName {  get; set; }
+        public string LastName { get; set; }
 
         [Column("phone_number")]
         [Required]
-        public string PhoneNumber {  get; set; }
+        public string PhoneNumber { get; set; }
 
-        #nullable enable
+#nullable enable
         [Column("email")]
-        public string? Email {  get; set; }
-        #nullable disable
+        public string? Email { get; set; }
+#nullable disable
 
         [ForeignKey("visitor_id")]
         public List<Visit> Visits { get; set; }

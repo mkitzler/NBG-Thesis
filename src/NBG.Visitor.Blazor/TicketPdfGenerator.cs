@@ -3,7 +3,6 @@ using PdfSharp.Pdf;
 using System;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Reflection;
 
 namespace NBG.Visitor.Blazor
@@ -20,7 +19,7 @@ namespace NBG.Visitor.Blazor
         public PdfDocument GetPdf(Bitmap qr, string id, string name, DateTime arrival)
         {
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
-            
+
             PdfDocument doc = new();
             PdfPage page = doc.AddPage();
             page.Height = new(3.35, XGraphicsUnit.Inch);

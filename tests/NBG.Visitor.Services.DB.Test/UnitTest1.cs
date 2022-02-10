@@ -1,8 +1,4 @@
-using NBG.Visitor.Storage.Models;
 using NUnit.Framework;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NBG.Visitor.Services.DB.Test
 {

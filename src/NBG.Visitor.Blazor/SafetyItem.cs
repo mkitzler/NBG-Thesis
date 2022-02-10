@@ -18,12 +18,12 @@ namespace NBG.Visitor.Blazor
             ImagePath = fields[2];
         }
 
-		public SafetyItem(string title, string text, string imagePath)
-		{
+        public SafetyItem(string title, string text, string imagePath)
+        {
             Title = title;
             Text = text;
             ImagePath = imagePath;
-		}
+        }
 
         public static IEnumerable<SafetyItem> LoadFromResource(Assembly assembly, CultureInfo culture, string baseName = "NBG.Visitor.Resources.SafetyItems")
         {
