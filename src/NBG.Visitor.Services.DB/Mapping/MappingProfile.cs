@@ -18,7 +18,6 @@ namespace NBG.Visitor.Services.DB.Mapping
             CreateMap<VisitorDto, Storage.Models.Visitor>();
             CreateMap<VisitStatusDto, VisitStatus>();
             CreateMap<VisitStatus, VisitStatusDto>();
-
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using MudBlazor;
 @using System.ComponentModel.DataAnnotations
+@using NBG.Visitor.Domain.Dtos
 
 <MudGrid Justify=Justify.Center Class="center" Style="height: 88%; overflow: auto;">
     <MudItem lg=7>
@@ -34,8 +35,11 @@
 <footer class="footer">
 	<MudGrid Justify=Justify.Center>
 		<MudItem lg=2 Class="center">
-			<MudButton Class="touchscreen-button" OnClick=@(async () => await OnBack.InvokeAsync()) Size=Size.Large Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
-		</MudItem>
+            @if (OnBack.HasDelegate)
+            {
+                <MudButton Class="touchscreen-button" OnClick=@(async () => await OnBack.InvokeAsync()) Size=Size.Large Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack>@Loc["Back"]</MudButton>
+            }
+        </MudItem>
 		<MudItem lg=4/>
 		<MudItem lg=2 Class="center">
 			<MudButton Class="touchscreen-button" OnClick=Next Size=Size.Large Variant=Variant.Filled Color=Color.Secondary EndIcon=@Icons.Outlined.ArrowForward Disabled=!Valid>@Loc["Next"]</MudButton>
@@ -51,8 +55,8 @@
     public EventCallback OnNext { get; set; }
     [Parameter]
     public EventCallback OnBack { get; set; }
-
-    public RegisterFormData FormData { get; private set; } = new();
+    [Parameter]
+    public RegisterFormDataDto FormData { get; set; } = new();
 
     private MudForm visitorForm;
     private bool valid = false;
@@ -118,39 +122,5 @@
     {
         visitorForm.Reset();
         visitorForm.ResetValidation();
-    }
-
-    public class RegisterFormData
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string email = null;
-        public string Email
-        {
-            get
-            {
-                return email;
-            }
-            set
-            {
-                email = string.IsNullOrWhiteSpace(value) ? null : value;
-            }
-        }
-        public string Company { get; set; }
-        public string ContactPerson { get; set; }
-
-        public string FullName
-        {
-            get
-            {
-                return LastName + " " + FirstName;
-            }
-        }
-
-        public override string ToString()
-        {
-            return $"{FirstName} {LastName}, {PhoneNumber}, Email: {Email}, {Company}, {ContactPerson}";
-        }
     }
 }
