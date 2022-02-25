@@ -55,8 +55,12 @@
     public EventCallback OnNext { get; set; }
     [Parameter]
     public EventCallback OnBack { get; set; }
-    [Parameter]
+    
+    #if DEBUG
+    public RegisterFormDataDto FormData { get; set; } = new() {FirstName = "Max", LastName = "Mustermann", PhoneNumber = "1234", Company = "Test", ContactPerson = "Test"};
+    #else
     public RegisterFormDataDto FormData { get; set; } = new();
+    #endif
 
     private MudForm visitorForm;
     private bool valid = false;
@@ -74,20 +78,10 @@
     }
 
     #if DEBUG
-    protected override void OnInitialized()
-    {
-    FormData.FirstName = "Max";
-    FormData.LastName = "Mustermann";
-    FormData.PhoneNumber = "1234";
-    FormData.Company = "Test";
-    FormData.ContactPerson = "Test";
-    base.OnInitialized();
-    }
-
     protected override void OnAfterRender(bool firstRender)
     {
-    visitorForm.Validate();
-    base.OnAfterRender(firstRender);
+        visitorForm.Validate();
+        base.OnAfterRender(firstRender);
     }
     #endif
 

@@ -24,7 +24,7 @@
         </MudCarouselItem>
     }
     <MudCarouselItem>
-        <TerminalRegister @ref="form" FormData=@(PreregisteredVisit == null ? new RegisterFormDataDto() : vs.ReadRegisterFormDataByGuid(PreregisteredVisit!)) OnBack=@(PreregisteredVisit == null ? () => carousel.Previous() : null) OnNext=@(() => carousel.Next()) />
+        <TerminalRegister @ref="form" OnBack=@(PreregisteredVisit == null ? carousel.Previous : null) OnNext=carousel.Next />
     </MudCarouselItem>
     <MudCarouselItem>
         <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
@@ -50,6 +50,15 @@
             SecondaryContrastText = Colors.Grey.Darken2
         }
     };
+
+    protected override void OnInitialized()
+    {
+        if (PreregisteredVisit != null)
+        {
+            form.FormData = vs.ReadRegisterFormDataByGuid(PreregisteredVisit ?? default(Guid)).Result;
+        }
+        base.OnInitialized();
+    }
 
     private async Task Register()
     {
