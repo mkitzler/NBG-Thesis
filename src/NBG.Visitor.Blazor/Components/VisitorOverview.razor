@@ -288,13 +288,13 @@
         pdf.Save("./pdf.pdf");
 
         if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so carousel scroll won't get stuck (wait until dialog is closed)
-        //if (PdfExporter.PrintPDF("Microsoft Print to PDF", "A5", "./pdf.pdf", 1) == true)
-        //{
-        //    await JS.InvokeVoidAsync("console.log","Printing was successful.");
-        //}
-        //else{
-        //    await JS.InvokeVoidAsync("console.log","Printing failed.");
-        //}
+                                                                 //if (PdfExporter.PrintPDF("Microsoft Print to PDF", "A5", "./pdf.pdf", 1) == true)
+                                                                 //{
+                                                                 //    await JS.InvokeVoidAsync("console.log","Printing was successful.");
+                                                                 //}
+                                                                 //else{
+                                                                 //    await JS.InvokeVoidAsync("console.log","Printing failed.");
+                                                                 //}
     }
 
     public async Task DeleteVisit(VisitDto visit)
@@ -311,8 +311,9 @@
 
         if (!result.Cancelled)
         {
-            await DataRepository.RemoveVisit(visit.Id);
-            Visits.Remove(visit);
+            //await DataRepository.RemoveVisit(visit.Id);
+            //Visits.Remove(visit);
+            await DataRepository.RemoveOldVisits();
 
             Snackbar.Add(Loc["DeletedVisitMsg"], Severity.Success);
             await JS.InvokeVoidAsync("console.log",Loc["DeletedVisitMsg"]);

@@ -88,5 +88,48 @@ namespace NBG.Visitor.Services.DB
             using var context = _contextFactory.CreateDbContext();
             return await context.Visits.Where(x => x.Guid == guid).Include(v => v.Visitor).Select(v => new RegisterFormDataDto() { Company = v.CompanyLabel, ContactPerson = v.ContactPerson, Email = v.Visitor.Email, PhoneNumber = v.Visitor.PhoneNumber, FirstName = v.Visitor.FirstName, LastName = v.Visitor.LastName}).FirstOrDefaultAsync().ConfigureAwait(false);
         }
+
+        public async Task RemoveOldVisits()
+        {
+            using var context = _contextFactory.CreateDbContext();
+            var visits = await context.ReadAllVisits()
+                .Include(v => v.Visitor)
+                .Select(v => mapper.Map<VisitDto>(v))
+                .ToListAsync().ConfigureAwait(false);
+            var visitors = await context.ReadAllVisitors();
+            foreach (var visitor in visitors)
+            {
+                Console.WriteLine("-------------------------------");
+                Console.WriteLine("NAME: " + visitor.FirstName);
+                var visitorVisits = from v in visits
+                                    where v.Visitor.Id == visitor.Id
+                                    select v;
+
+                int removedVisitCount = 0;
+
+                foreach (var visitorVisit in visitorVisits)
+                {
+                    Console.WriteLine("VISIT ID: " + visitorVisit.Id);
+                    Console.WriteLine("VISITOR ID: " + visitorVisit.Visitor.Id);
+                    Console.WriteLine("VISIT END: " + visitorVisit.VisitEnd);
+                    Console.WriteLine("TIME SPAN: " + ((DateTime.Now - visitorVisit.VisitEnd) ?? TimeSpan.Zero).ToString());
+                    Console.WriteLine("TOTAL DAYS: " + ((DateTime.Now - visitorVisit.VisitEnd) ?? TimeSpan.Zero).TotalDays);
+                    if (((DateTime.Now - visitorVisit.VisitEnd) ?? TimeSpan.Zero).TotalDays >= 14.0)
+                    {
+                        await context.RemoveVisit(context.Visits.Find(visitorVisit.Id)).ConfigureAwait(false);
+                        Console.WriteLine("Removed Visit with Id:" + visitorVisit.Id);
+                        removedVisitCount++;
+                    }
+                }
+
+                if (visitorVisits.Count() - removedVisitCount < 1)
+                {
+                    
+                    Console.WriteLine(visitorVisits.Count());
+                    Console.WriteLine(removedVisitCount);
+                    await context.RemoveVisitor(visitor);
+                }
+            }
+        }
     }
 }

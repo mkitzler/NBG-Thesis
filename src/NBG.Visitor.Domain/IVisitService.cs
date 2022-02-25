@@ -13,5 +13,6 @@ namespace NBG.Visitor.Domain
         Task RemoveVisit(int Id);
         Task UpdateVisit(int Id, DateTime? start, DateTime? end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null);
         Task<RegisterFormDataDto> ReadRegisterFormDataByGuid(Guid guid);
+        Task RemoveOldVisits();
     }
 }
