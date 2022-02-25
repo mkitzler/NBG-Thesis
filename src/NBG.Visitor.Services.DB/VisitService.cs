@@ -89,6 +89,12 @@ namespace NBG.Visitor.Services.DB
             return await context.Visits.Where(x => x.Guid == guid).Include(v => v.Visitor).Select(v => new RegisterFormDataDto() { Company = v.CompanyLabel, ContactPerson = v.ContactPerson, Email = v.Visitor.Email, PhoneNumber = v.Visitor.PhoneNumber, FirstName = v.Visitor.FirstName, LastName = v.Visitor.LastName}).FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
+        public async Task<VisitDto> ReadVisitByGuid(Guid guid)
+        {
+            using var context = _contextFactory.CreateDbContext();
+            return mapper.Map<VisitDto>(await context.Visits.Where(x => x.Guid == guid).FirstOrDefaultAsync());
+        }
+
         public async Task RemoveOldVisits()
         {
             using var context = _contextFactory.CreateDbContext();

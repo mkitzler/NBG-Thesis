@@ -1,0 +1,14 @@
+﻿@page "/terminal/{Guid}"
+@using NBG.Visitor.Blazor
+@using NBG.Visitor.Blazor.Components
+@using System.Reflection
+
+<CascadingValue Value="Loc">
+    <TerminalView PreregisteredVisit=new(Guid)></TerminalView>
+</CascadingValue>
+
+@code{
+    public string Guid { get; set; }
+
+    private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
+}
