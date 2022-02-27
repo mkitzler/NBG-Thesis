@@ -8,18 +8,10 @@ namespace NBG.Visitor.Blazor
 {
     internal static class PdfExporter
     {
-        public static Bitmap GenerateQrCode(Guid id)
+        public static Bitmap GenerateQrCode(string content)
         {
-            DateTime registeredAt = DateTime.Now;
-
-#if DEBUG
-            id = new("00000000-0000-0000-0000-000000000100");
-            Task.Delay(1000);
-#else
-#endif
-
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(id.ToString(), QRCodeGenerator.ECCLevel.H);
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(content, QRCodeGenerator.ECCLevel.H);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap logo = BitmapFromUrl("https://fiss.dev.nbg.tech:44303/_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png");
             Bitmap qr = qrCode.GetGraphic(30, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 15, 15, false);

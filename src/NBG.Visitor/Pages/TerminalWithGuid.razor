@@ -4,10 +4,11 @@
 @using System.Reflection
 
 <CascadingValue Value="Loc">
-    <TerminalView PreregisteredVisit=new(Guid)></TerminalView>
+    <TerminalView Style="height: 100vh;" PreregisteredVisitGuid=new(Guid)></TerminalView>
 </CascadingValue>
 
 @code{
+    [ParameterAttribute]
     public string Guid { get; set; }
 
     private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");

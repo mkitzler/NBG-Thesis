@@ -4,7 +4,7 @@
 
 <MudGrid Justify=Justify.Center Class="center" Style="height: 88%; overflow: auto;">
     <MudItem lg=7>
-        <MudForm @ref="visitorForm" @bind-IsValid=Valid>
+        <MudForm @ref="_visitorForm" @bind-IsValid=Valid>
             <MudGrid Justify=Justify.Center Style="text-align: center;">
                 <MudItem xs=12 Class="mb-6">
                     <MudText Typo="Typo.h2">@Loc["VisitorRegistration"]</MudText>
@@ -56,23 +56,24 @@
     [Parameter]
     public EventCallback OnBack { get; set; }
     
+    public RegisterFormDataDto FormData { get; set; }
     #if DEBUG
-    public RegisterFormDataDto FormData { get; set; } = new() {FirstName = "Max", LastName = "Mustermann", PhoneNumber = "1234", Company = "Test", ContactPerson = "Test"};
+    = new() {FirstName = "Max", LastName = "Mustermann", PhoneNumber = "1234", Company = "Test", ContactPerson = "Test"};
     #else
-    public RegisterFormDataDto FormData { get; set; } = new();
+    = new();
     #endif
 
-    private MudForm visitorForm;
-    private bool valid = false;
-    private bool Valid
+    private MudForm _visitorForm;
+    private bool _valid = false;
+    public bool Valid
     {
         get
         {
-            return valid;
+            return _valid;
         }
         set
         {
-            valid = value;
+            _valid = value;
             StateHasChanged();
         }
     }
@@ -80,7 +81,7 @@
     #if DEBUG
     protected override void OnAfterRender(bool firstRender)
     {
-        visitorForm.Validate();
+        _visitorForm.Validate();
         base.OnAfterRender(firstRender);
     }
     #endif
@@ -114,7 +115,7 @@
     /// </summary>
     public void Reset()
     {
-        visitorForm.Reset();
-        visitorForm.ResetValidation();
+        _visitorForm.Reset();
+        _visitorForm.ResetValidation();
     }
 }

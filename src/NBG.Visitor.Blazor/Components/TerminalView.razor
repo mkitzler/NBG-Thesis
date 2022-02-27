@@ -16,15 +16,15 @@
 
 <MudThemeProvider Theme="NBG"/>
 
-<CustomMudCarousel Style="height: 100vh;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object">
-    @if (PreregisteredVisit == null)
+<CustomMudCarousel Style=@Style @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object">
+    @if (!HideFirstPage)
     {
         <MudCarouselItem>
             <TerminalHome OnNext=@(() => carousel.Next()) />
         </MudCarouselItem>
     }
     <MudCarouselItem>
-        <TerminalRegister @ref="form" OnBack=@(PreregisteredVisit == null ? carousel.Previous : null) OnNext=carousel.Next />
+        <TerminalRegister @ref="form" OnBack=@(HideFirstPage ? null : carousel.Previous) OnNext=carousel.Next />
     </MudCarouselItem>
     <MudCarouselItem>
         <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
@@ -36,7 +36,16 @@
     public Localizer Loc { get; set; }
 
     [Parameter]
-    public Guid? PreregisteredVisit { get; set; } = null;
+    public string Style { get; set; }
+
+    [Parameter]
+    public string QRUrl { get; set; } = "https://fiss.dev.nbg.tech:44303/terminal/";
+
+    [Parameter]
+    public bool HideFirstPage { get; set; } = false;
+
+    [Parameter]
+    public Guid? PreregisteredVisitGuid { get; set; } = null;
 
     private MudCarousel<object> carousel;
     private TerminalRegister form;
@@ -51,13 +60,55 @@
         }
     };
 
-    protected override void OnInitialized()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (PreregisteredVisit != null)
+        if (firstRender)
         {
-            form.FormData = vs.ReadRegisterFormDataByGuid(PreregisteredVisit ?? default(Guid)).Result;
+            if (PreregisteredVisitGuid != null)
+                await UseGuid(PreregisteredVisitGuid ?? default(Guid));
         }
-        base.OnInitialized();
+    }
+
+    /// <summary>
+    /// Loads the visit with the specified guid and fills
+    /// the form with the information if the visit is pending or
+    /// marks the visit as over if the visit is already active.
+    /// </summary>
+    /// <param name="guid"></param>
+    public async Task UseGuid(Guid guid)
+    {
+        if (guid != default(Guid))
+        {
+            #if DEBUG
+            VisitDto visit = new VisitDto() {Status = (new Random().Next(2) == 0 ? VisitStatusDto.VISIT_ACTIVE : VisitStatusDto.VISIT_PENDING)};
+            #else
+            VisitDto visit = await vs.ReadVisitByGuid(guid);
+            #endif
+            if (visit != null)
+            {
+                if (visit.Status == VisitStatusDto.VISIT_PENDING)
+                {
+                    #if DEBUG
+                    form.FormData.ContactPerson = "Loaded from DB";
+                    #else
+                    form.FormData = await vs.ReadRegisterFormDataByGuid(guid);
+                    #endif
+                    carousel.MoveTo(HideFirstPage ? 0 : 1);
+                }
+                else if (visit.Status == VisitStatusDto.VISIT_ACTIVE)
+                {
+                    //await vs.UpdateVisit(visit.Id, visit.VisitStart, visit.VisitEnd, visit.Status, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
+                    RenderFragment content =
+                        @<div>@Loc["ConfirmSignOut"]</div>
+                    ;
+                    await Dialog.Show<MudDialog>(Loc["SignOut"], new DialogParameters() {["DialogContent"] = content}, new DialogOptions() {DisableBackdropClick = true, CloseButton = false}).Result;
+                }
+            }
+            else
+            {
+                await Dialog.ShowMessageBox(Loc["InvalidQR"], null);
+            }
+        }
     }
 
     private async Task Register()
@@ -71,17 +122,20 @@
         Guid id = (await vs.AddVisit(registeredAt, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company, form.FormData.ContactPerson)).Guid;
         #endif
 
-        Bitmap qr = PdfExporter.GenerateQrCode(id);
+        Bitmap qr = PdfExporter.GenerateQrCode(QRUrl + id.ToString());
 
         PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
         pdf.Save("./pdf.pdf");
 
+        // Reset form, scroll back to homepage and show popup
         form.Reset();
         carousel.MoveTo(0);
-
         #if DEBUG
         RenderFragment rf = 
-            @<img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
+            @<div>
+                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
+                <a href=@(QRUrl + id.ToString())>Link</a>
+            </div>
         ;
         await Dialog.Show<MudDialog>(Loc["RegisterSuccess"], new DialogParameters() {["DialogContent"] = rf}).Result;
         #else
