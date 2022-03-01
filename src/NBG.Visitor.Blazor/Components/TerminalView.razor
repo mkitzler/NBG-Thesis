@@ -82,9 +82,9 @@
         // If guid is valid
         if (guid != default(Guid))
         {
-            // Load visit
+        // Load visit
             #if DEBUG
-            VisitDto visit = new VisitDto() {Status = VisitStatusDto.VISIT_PENDING};
+            VisitDto visit = new VisitDto() {Status = VisitStatusDto.VISIT_ACTIVE};
             #else
             VisitDto visit = await vs.ReadVisitByGuid(guid);
             #endif
@@ -101,17 +101,23 @@
                     form.FormData.ContactPerson = "Loaded from DB";
                     #else
                     form.FormData = await vs.ReadRegisterFormDataByGuid(guid);
+                    form.Valid = true;
                     #endif
                 }
                 else if (visit.Status == VisitStatusDto.VISIT_ACTIVE)
                 {
                     #if DEBUG
                     Console.WriteLine("Active");
-                    #else
-                    await vs.UpdateVisit(visit.Id, visit.VisitStart, visit.VisitEnd, VisitStatusDto.VISIT_OVER, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
                     #endif
                     bool? result = await Dialog.ShowMessageBox(Loc["SignOut"], Loc["ConfirmSignOut"], Loc["Yes"], Loc["No"], options: new DialogOptions() {DisableBackdropClick = true, CloseButton = false});
-                    Console.WriteLine(result);
+                    if (result ?? false)
+                    {
+                        #if DEBUG
+                        Console.WriteLine("Ended Visit");
+                        #else
+                        await vs.UpdateVisit(visit.Id, visit.VisitStart, visit.VisitEnd, VisitStatusDto.VISIT_OVER, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
+                        #endif
+                    }
                 }
             }
             else

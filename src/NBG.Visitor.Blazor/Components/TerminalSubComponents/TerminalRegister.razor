@@ -55,7 +55,7 @@
     public EventCallback OnNext { get; set; }
     [Parameter]
     public EventCallback OnBack { get; set; }
-    
+
     public RegisterFormDataDto FormData { get; set; }
     #if DEBUG
     = new() {FirstName = "Max", LastName = "Mustermann", PhoneNumber = "1234", Company = "Test", ContactPerson = "Test"};
@@ -81,8 +81,8 @@
     #if DEBUG
     protected override void OnAfterRender(bool firstRender)
     {
-        _visitorForm.Validate();
-        base.OnAfterRender(firstRender);
+    _visitorForm.Validate();
+    base.OnAfterRender(firstRender);
     }
     #endif
 
