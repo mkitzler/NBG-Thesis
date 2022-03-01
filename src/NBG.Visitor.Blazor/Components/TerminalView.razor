@@ -60,12 +60,18 @@
         }
     };
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
             if (PreregisteredVisitGuid != null)
-                await UseGuid(PreregisteredVisitGuid ?? default(Guid));
+            {
+                Task.Run(() =>
+                {
+                    while (form == null) { }
+                    UseGuid(PreregisteredVisitGuid ?? default(Guid));
+                });
+            }
         }
     }
 
@@ -115,6 +121,7 @@
     {
         DateTime registeredAt = DateTime.Now;
 
+        // Load data
         #if DEBUG
         Guid id = new("00000000-0000-0000-0000-000000000100");
         await Task.Delay(1000);
@@ -122,9 +129,11 @@
         Guid id = (await vs.AddVisit(registeredAt, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company, form.FormData.ContactPerson)).Guid;
         #endif
 
+        // Generate qr code and pdf
         Bitmap qr = PdfExporter.GenerateQrCode(QRUrl + id.ToString());
-
         PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
+
+        // Replace with print function
         pdf.Save("./pdf.pdf");
 
         // Reset form, scroll back to homepage and show popup
