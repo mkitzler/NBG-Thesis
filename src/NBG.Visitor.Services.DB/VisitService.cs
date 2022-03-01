@@ -77,6 +77,28 @@ namespace NBG.Visitor.Services.DB
             await context.SaveChangesAsync().ConfigureAwait(false);
         } //UpdateVisitor?
 
+        public async Task UpdateVisit(int Id, Dictionary<string, object> changes)
+        {
+            using var context = _contextFactory.CreateDbContext();
+            var visit = context.Visits.Include(v => v.Visitor).First(visit => visit.Id == Id);
+
+            foreach (var p in visit.GetType().GetProperties())
+            {
+                if (changes.ContainsKey(p.Name))
+                {
+                    p.SetValue(visit, changes[p.Name]);
+                }
+            }
+            foreach (var p in visit.Visitor.GetType().GetProperties())
+            {
+                if (changes.ContainsKey("Visitor." + p.Name))
+                {
+                    p.SetValue(visit.Visitor, changes["Visitor." + p.Name]);
+                }
+            }
+            await context.SaveChangesAsync().ConfigureAwait(false);
+        } //UpdateVisitor?
+
         public async Task RemoveVisit(int Id)
         {
             using var context = _contextFactory.CreateDbContext();
@@ -86,13 +108,13 @@ namespace NBG.Visitor.Services.DB
         public async Task<RegisterFormDataDto> ReadRegisterFormDataByGuid(Guid guid)
         {
             using var context = _contextFactory.CreateDbContext();
-            return await context.Visits.Where(x => x.Guid == guid).Include(v => v.Visitor).Select(v => new RegisterFormDataDto() { Company = v.CompanyLabel, ContactPerson = v.ContactPerson, Email = v.Visitor.Email, PhoneNumber = v.Visitor.PhoneNumber, FirstName = v.Visitor.FirstName, LastName = v.Visitor.LastName}).FirstOrDefaultAsync().ConfigureAwait(false);
+            return await context.Visits.Where(x => x.Guid == guid).Include(v => v.Visitor).Select(v => new RegisterFormDataDto() { Company = v.CompanyLabel, ContactPerson = v.ContactPerson, Email = v.Visitor.Email, PhoneNumber = v.Visitor.PhoneNumber, FirstName = v.Visitor.FirstName, LastName = v.Visitor.LastName }).FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
         public async Task<VisitDto> ReadVisitByGuid(Guid guid)
         {
             using var context = _contextFactory.CreateDbContext();
-            return mapper.Map<VisitDto>(await context.Visits.Where(x => x.Guid == guid).FirstOrDefaultAsync());
+            return mapper.Map<VisitDto>(await context.Visits.Where(x => x.Guid == guid).Include(v => v.Visitor).FirstOrDefaultAsync());
         }
 
         public async Task RemoveOldVisits()
@@ -130,7 +152,7 @@ namespace NBG.Visitor.Services.DB
 
                 if (visitorVisits.Count() - removedVisitCount < 1)
                 {
-                    
+
                     Console.WriteLine(visitorVisits.Count());
                     Console.WriteLine(removedVisitCount);
                     await context.RemoveVisitor(visitor);

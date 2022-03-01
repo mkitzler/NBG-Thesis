@@ -1,8 +1,6 @@
 ﻿using QRCoder;
-using System;
 using System.Drawing;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace NBG.Visitor.Blazor
 {

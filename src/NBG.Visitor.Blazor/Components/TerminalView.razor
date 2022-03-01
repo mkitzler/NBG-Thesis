@@ -84,7 +84,7 @@
         {
         // Load visit
             #if DEBUG
-            VisitDto visit = new VisitDto() {Status = VisitStatusDto.VISIT_ACTIVE};
+    VisitDto visit = new VisitDto() {Status = VisitStatusDto.VISIT_ACTIVE};
             #else
             VisitDto visit = await vs.ReadVisitByGuid(guid);
             #endif
@@ -92,6 +92,16 @@
             // If exists
             if (visit != null)
             {
+                foreach (var p in visit.GetType().GetProperties())
+                {
+                    Console.Write(p.Name + ": ");
+                    Console.WriteLine(p.GetValue(visit));
+                }
+                foreach (var p in visit.Visitor.GetType().GetProperties())
+                {
+                    Console.Write(p.Name + ": ");
+                    Console.WriteLine(p.GetValue(visit.Visitor));
+                }
                 if (visit.Status == VisitStatusDto.VISIT_PENDING)
                 {
                     // Needs to move first or form won't be loaded
@@ -115,7 +125,7 @@
                         #if DEBUG
                         Console.WriteLine("Ended Visit");
                         #else
-                        await vs.UpdateVisit(visit.Id, visit.VisitStart, visit.VisitEnd, VisitStatusDto.VISIT_OVER, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
+                        await vs.UpdateVisit(visit.Id, new() { { "Status", VisitStatusDto.VISIT_OVER } });
                         #endif
                     }
                 }

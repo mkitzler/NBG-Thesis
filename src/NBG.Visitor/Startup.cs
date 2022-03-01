@@ -13,7 +13,6 @@ using MudBlazor.Services;
 using NBG.Visitor.Domain;
 using NBG.Visitor.Services.DB;
 using System.Threading.Tasks;
-using Quartz;
 
 namespace NBG.Visitor
 {
