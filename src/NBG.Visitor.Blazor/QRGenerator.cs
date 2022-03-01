@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NBG.Visitor.Blazor
 {
-    internal static class PdfExporter
+    internal static class QRGenerator
     {
         public static Bitmap GenerateQrCode(string content)
         {
