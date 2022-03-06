@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NBG.Visitor.Domain;
+using NBG.Visitor.Domain.Commands;
 using NBG.Visitor.Domain.Dtos;
 using NBG.Visitor.Services.DB.Mapping;
 using NBG.Visitor.Storage.Models;
@@ -60,7 +61,7 @@ namespace NBG.Visitor.Services.DB
             return mapper.Map<VisitDto>(ret);
         }
 
-        public async Task UpdateVisit(int Id, DateTime? start, DateTime? end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
+        public async Task<VisitDto> UpdateVisit(int Id, DateTime? start, DateTime? end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
         {
             using var context = _contextFactory.CreateDbContext();
             var visit = context.Visits.Include(v => v.Visitor).First(visit => visit.Id == Id);
@@ -75,28 +76,32 @@ namespace NBG.Visitor.Services.DB
             visit.Visitor.PhoneNumber = phoneNumber;
             visit.Visitor.Email = email;
             await context.SaveChangesAsync().ConfigureAwait(false);
+            return mapper.Map<VisitDto>(visit);
         } //UpdateVisitor?
 
-        public async Task UpdateVisit(int Id, Dictionary<string, object> changes)
+        public async Task<VisitDto> UpdateVisit(int Id, PatchVisitCommand changes)
         {
             using var context = _contextFactory.CreateDbContext();
             var visit = context.Visits.Include(v => v.Visitor).First(visit => visit.Id == Id);
 
             foreach (var p in visit.GetType().GetProperties())
             {
-                if (changes.ContainsKey(p.Name))
+                object nextVal = changes.GetType().GetProperty(p.Name)?.GetValue(changes);
+                if (nextVal != null)
                 {
-                    p.SetValue(visit, changes[p.Name]);
+                    p.SetValue(visit, nextVal);
                 }
             }
             foreach (var p in visit.Visitor.GetType().GetProperties())
             {
-                if (changes.ContainsKey("Visitor." + p.Name))
+                object nextVal = changes.GetType().GetProperty(p.Name)?.GetValue(changes);
+                if (nextVal != null)
                 {
-                    p.SetValue(visit.Visitor, changes["Visitor." + p.Name]);
+                    p.SetValue(visit.Visitor, nextVal);
                 }
             }
             await context.SaveChangesAsync().ConfigureAwait(false);
+            return mapper.Map<VisitDto>(visit);
         } //UpdateVisitor?
 
         public async Task RemoveVisit(int Id)

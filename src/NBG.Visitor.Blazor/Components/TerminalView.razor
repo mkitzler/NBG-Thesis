@@ -125,7 +125,7 @@
                         #if DEBUG
                         Console.WriteLine("Ended Visit");
                         #else
-                        await vs.UpdateVisit(visit.Id, new() { { "Status", VisitStatusDto.VISIT_OVER } });
+                        await vs.UpdateVisit(visit.Id, new() { Status = VisitStatusDto.VISIT_OVER });
                         #endif
                     }
                 }

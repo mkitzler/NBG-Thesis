@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj" />
     <ProjectReference Include="..\NBG.Visitor.Services.DB\NBG.Visitor.Services.DB.csproj" />
   </ItemGroup>
