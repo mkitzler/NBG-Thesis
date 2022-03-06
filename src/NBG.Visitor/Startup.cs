@@ -13,6 +13,10 @@ using MudBlazor.Services;
 using NBG.Visitor.Domain;
 using NBG.Visitor.Services.DB;
 using System.Threading.Tasks;
+using NBG.Visitor.Blazor.Scheduling;
+using Quartz.Spi;
+using Quartz;
+using Quartz.Impl;
 
 namespace NBG.Visitor
 {
@@ -93,6 +97,18 @@ namespace NBG.Visitor
 
             services.AddDbContextFactory<VisitContext>(options =>
                 options.UseNpgsql("Host=nbg.ftp.sh;Database=nbg;Username=nbg;Password=nbg1234"));
+
+
+            //Quartz scheduler
+            services.AddControllersWithViews();
+            services.AddHostedService<QuartzHostedService>();
+            services.AddSingleton<IJobFactory, SingletonJobFactory>();
+            services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+
+            services.AddSingleton<DeleteOldVisitorsJob>();
+            services.AddSingleton(new Job(type: typeof(DeleteOldVisitorsJob), expression: "0 0 0 1,15 * ?"));
+            //"0 0 0 1,15 * ?": on the 1st and the 15th at 00:00:00 (Midnight) * => every month ? => No specific day of week
+            //"0/30 0/1 * 1/1 * ? *": * ? * every 30 seconds
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
