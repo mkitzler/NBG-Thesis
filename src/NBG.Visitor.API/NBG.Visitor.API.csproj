@@ -12,8 +12,4 @@
     <ProjectReference Include="..\NBG.Visitor.Services.REST\NBG.Visitor.Services.REST.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
