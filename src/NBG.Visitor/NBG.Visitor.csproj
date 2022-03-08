@@ -14,4 +14,6 @@
     <ProjectReference Include="..\NBG.Visitor.Services.DB\NBG.Visitor.Services.DB.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>
