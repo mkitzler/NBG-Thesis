@@ -15,84 +15,257 @@
 @inject ISnackbar Snackbar;
 
 <style>
+    /*MudTable breakpoint: 960px*/
     /*Row Options Menu on Hover*/
-    .optionsMenu
-    {
-        visibility: hidden;
+    @@media only screen and (max-width:960px){
+        .mud-table-body .mud-table-cell{
+            text-align:center;
+        }
+        .mud-toolbar.mud-table-toolbar{
+            height:115px;
+        }
+
+        .mud-table.mud-elevation-5{
+            box-shadow: none;
+        }
+
+        .mud-toolbar.mud-table-toolbar .mud-paper{
+            margin:0 !important;
+            padding:0 !important;
+        }
+    
+        .mud-toolbar.mud-table-toolbar{
+            margin:0;
+            padding:0;
+        }
+        
+        .mud-toolbar.mud-table-toolbar{
+            align-items:flex-start;
+            flex-direction:column;
+        }
+
+        .mud-table{
+            margin:16px !important;
+            padding-top:0 !important;
+        }
+
+        .mud-toolbar.mud-table-toolbar .mud-form div[role] {
+            width:100vw !important;
+        }
+
+        .mud-toolbar.mud-table-toolbar form.mud-form{
+            margin-top:0 !important;
+            padding-left:0px;
+            margin-left:0px;
+        }
+        .mud-toolbar.mud-table-toolbar .mud-input-control{
+            padding-left:0px;
+            margin-left:0px;
+        }
+
+        .mud-toolbar.mud-table-toolbar .mud-input-control.mud-input-input-control{
+            margin-top:0 !important;
+        }
+        
+        .mud-toolbar.mud-table-toolbar .mud-input-control .mud-input-control-input-container .mud-input.mud-input-text{
+            margin-top:5px !important;
+        }
+
+        .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button{
+              position: absolute;
+              right: 0;
+              margin: 0 !important;
+              background-color: rgb(240,240,240);
+              padding: 5px;
+        }
+        
+        .mud-table-smalldevices-sortselect .mud-select{
+            display:none;
+        }
+
+        /*
+        .mud-table .mud-table-smalldevices-sortselect{
+            padding:0;
+        }*/
+
+        form #logoutBtn{
+            height:auto !important;
+        }
+
+        .mud-toolbar.mud-table-toolbar form.mud-form,  .mud-toolbar.mud-table-toolbar .mud-input-control{
+            transition: padding-left 0.4s linear; /*Radio Btns & Search Bar*/
+        }
+
+        .mud-toolbar, .mud-toolbar>*
+        {
+            transition: margin 0.4s linear, padding 0.4s linear;
+        }
+
+        .mud-table .mud-toolbar{
+            transition: padding-right 0.4s linear, padding-left 0.4s linear;
+        }
+
+        .mud-toolbar.mud-table-toolbar .mud-paper p{
+            display:none;
+            height:0;
+            width:0;
+        }
     }
 
-    tr:hover .optionsMenu
+    @@media only screen and (max-width:1305px) and (min-width:961px){
+        .mud-toolbar.mud-table-toolbar .mud-form div[role] {
+            display:flex;
+            align-content:flex-start;
+            flex-direction:column;
+        }
+
+        .mud-toolbar.mud-table-toolbar .mud-form div[role] .mud-radio{
+            height:27px !important;
+        }
+
+        .mud-toolbar.mud-table-toolbar .mud-form{
+            margin-top:0 !important;
+        }
+    }
+
+    @@media only screen and (min-width:961px){
+        .mud-toolbar.mud-table-toolbar .mud-form{
+            margin-left:20px !important;
+        }
+    }
+
+/*    .mud-toolbar.mud-table-toolbar form.mud-form, .mud-table-smalldevices-sortselect .mud-select, .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button, .mud-toolbar.mud-table-toolbar .mud-input-control .mud-input-control-input-container .mud-input.mud-input-text, .mud-toolbar.mud-table-toolbar .mud-input-control.mud-input-input-control, .mud-toolbar.mud-table-toolbar form.mud-form, .mud-toolbar.mud-table-toolbar .mud-form div[role], .mud-table, .mud-toolbar.mud-table-toolbar, .mud-toolbar.mud-table-toolbar .mud-paper p, .mud-toolbar.mud-table-toolbar, .mud-toolbar.mud-table-toolbar .mud-paper, .mud-table.mud-elevation-5, .mud-toolbar.mud-table-toolbar, .mud-table-body .mud-table-cell
     {
-        visibility: visible;
+        transition: all 1s ; 
+        -o-transition: all 1s linear; 
+        -moz-transition: all .25s linear; 
+        -webkit-transition: all .25s linear; 
+    }*/
+
+    .mud-toolbar.mud-table-toolbar .mud-paper{
+        margin-top:0 !important;
+    }
+
+    .mud-toolbar.mud-table-toolbar .mud-paper h5{
+        top:0;
+    }
+
+    .mud-table
+    { 
+        transition: box-shadow 0.4s linear, margin-top 0.4s linear, margin-left 0.4s linear, padding-top 0.4s linear;
+    }
+
+    /* Hide scrollbar*/
+    *::-webkit-scrollbar {
+      display: none;
+    }
+    * {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none !important;  /* Firefox */
+    }
+
+    .mud-toolbar.mud-table-toolbar{
+        /*transition: padding-left 0.4s linear, height 3s linear;*/
+    }
+
+    .mud-toolbar.mud-table-toolbar .mud-paper{
+        transition: margin-top 0.4s linear, padding-left 0.4s linear;
+
+    }
+
+    @@media only screen and (min-width: 700px) {
+        .mud-table .mud-toolbar{
+            padding-right:20px;
+        }
+    }
+
+    @@media only screen and (min-width: 961px) {
+        .mud-table{
+            padding-top: 16px !important;
+        }
+
+        .mud-table-toolbar{
+            height:90px;
+        }
+
+        .optionsMenu
+        {
+            visibility: hidden;
+        }
+
+        tr:hover .optionsMenu
+        {
+            visibility: visible;
+        }
+
+        /*Table Buttons Formatting*/
+        .visitorOverviewBtn, .optionsMenu button{
+            width:40px;
+            height:40px;
+        }
+
+        .optionsMenu, #addButtonToolTip div{
+            border-radius:100%;
+        }
+
+        .visitorOverviewBtn:not(#addVisitBtn):not(:hover), .optionsMenu:not(:hover){
+            background-color:#f0f0f0;
+        }
+
+        .visitorOverviewBtn:not(#addVisitBtn):hover, .optionsMenu:hover{
+            background-color:#e1e1e1;
+        }
+
+        .mud-table .mud-toolbar{
+            padding-right:64px;
+        }
+    
+        /*Add Visit Button Formatting*/
+        #addButtonToolTip div button{
+            width:40px;
+            height:40px;
+            border-width:2px;
+            border-style:solid;
+            border-color:#d32f2f;
+            background-color:#ffeeed;
+            color:#d32f2f;
+        }
+
+        #addVisitBtn{
+            position:right;
+        }
+
+        .addVisitTh{
+            width:40px !important;
+        }
+
+        #addButtonToolTip div button:hover{
+            background-color:#d32f2f !important;
+            color:white !important;
+        }
+
+        .visitStatusChip{
+            margin-left:0;
+        }
+
+        .optionsMenuContainer{
+            max-width:125px;
+        }
+
+        .mud-toolbar.mud-table-toolbar form.mud-form{
+            padding-left:20px;
+            margin-left:-20px;
+        }
+        .mud-toolbar.mud-table-toolbar .mud-input-control{
+            padding-left:20px !important;
+            margin-left:-20px !important;
+        }
     }
     
-    /*Hide Table Scrollbar and Table Spacing*/
-    .mud-table-container {
-        margin-top:20px !important;
-        -ms-overflow-style: none;  /* Internet Explorer 10+ */
-        scrollbar-width: none;  /* Firefox */
-    }
 
-    .mud-table-container::-webkit-scrollbar { 
-        display: none;  /* Safari and Chrome */
-    }
-
-    /*Table Buttons Formatting*/
-    .visitorOverviewBtn, .optionsMenu button{
-        width:40px;
-        height:40px;
-    }
-
-    .optionsMenu, #addButtonToolTip div{
-        border-radius:100%;
-    }
-
-    .visitorOverviewBtn:not(#addVisitBtn):not(:hover), .optionsMenu:not(:hover){
-        background-color:#f0f0f0;
-    }
-
-    .visitorOverviewBtn:not(#addVisitBtn):hover, .optionsMenu:hover{
-        background-color:#e1e1e1;
-    }
-
-    .mud-table .mud-toolbar{
-        padding-right:64px;
-    }
-    
-    /*Add Visit Button Formatting*/
-    #addButtonToolTip div button{
-        width:40px;
-        height:40px;
-        border-width:2px;
-        border-style:solid;
-        border-color:#d32f2f;
-        background-color:#ffeeed;
-        color:#d32f2f;
-    }
-
-    #addVisitBtn{
-        position:right;
-    }
-
-    .addVisitTh{
-        width:40px !important;
-    }
-
-    #addButtonToolTip div button:hover{
-        background-color:#d32f2f !important;
-        color:white !important;
-    }
-
-    .visitStatusChip{
-        margin-left:0;
-    }
-
-    .optionsMenuContainer{
-        max-width:125px;
-    }
 </style>
 @*Function/MostImportant Class ID Style Icon Color Elevation Dense *@
-<MudTable Items=@Visits Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Height="75vh" RowStyle="height:60px !important;" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader"> 
+<MudTable Items=@Visits Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Height="75vh" RowStyle="height:60px !important;" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Breakpoint="Breakpoint.Sm"> 
     <ToolBarContent>
         <MudCard Class="pl-6 mt-8" Elevation="0">
             <MudText Class="mb-2" Typo="Typo.h5">@Loc["Title"]</MudText>
