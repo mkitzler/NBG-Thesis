@@ -1,0 +1,8 @@
+﻿@page "/visitors"
+@using Microsoft.AspNetCore.Authorization
+@using NBG.Visitor.Blazor.Components
+@layout NavMenu
+
+@attribute [Authorize]
+
+<VisitorOverview></VisitorOverview>

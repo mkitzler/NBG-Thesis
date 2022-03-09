@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
+using NBG.Visitor.Clients.REST;
+using NBG.Visitor.Domain;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -25,6 +28,8 @@ namespace NBG.Visitor.WASM
                 // For more information, see https://aka.ms/blazor-standalone-auth
                 builder.Configuration.Bind("Oidc", options.ProviderOptions);
             });
+            builder.Services.AddSingleton<IVisitService, RestVisitService>();
+            builder.Services.AddMudServices();
 
             await builder.Build().RunAsync();
         }

@@ -13,7 +13,7 @@ namespace NBG.Visitor.Clients.REST
 {
     public class RestVisitService : IVisitService
     {
-        private const string API_URL = "https://localhost:44339/api/Visit";
+        private const string API_URL = "https://localhost:44323/api/Visit";
         private HttpClient _http = new HttpClient();
 
         public async Task<VisitorDto> ReadVisitorIfExists(string firstName, string lastName, string phoneNumber)

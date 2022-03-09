@@ -1,4 +1,4 @@
-﻿@inject NavigationManager Navigation
+﻿@inject NavigationManager UriHelper
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 <CascadingAuthenticationState>
@@ -6,15 +6,14 @@
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
-                    @if (!context.User.Identity.IsAuthenticated)
-                    {
-                        Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
-                    }
-                    else
-                    {
-                        <p>You are not authorized to access this resource.</p>
+                    @{
+                        var returnUrl = UriHelper.ToBaseRelativePath(UriHelper.Uri);
+                        UriHelper.NavigateTo($"login?redirectUri={returnUrl}", forceLoad: true);
                     }
                 </NotAuthorized>
+                <Authorizing>
+                    Loading...
+                </Authorizing>
             </AuthorizeRouteView>
         </Found>
         <NotFound>
