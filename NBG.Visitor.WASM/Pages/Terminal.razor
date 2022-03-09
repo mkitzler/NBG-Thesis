@@ -1,0 +1,12 @@
+﻿@page "/terminal"
+@using NBG.Visitor.Blazor
+@using NBG.Visitor.Blazor.Components
+@using System.Reflection
+
+<CascadingValue Value="Loc">
+    <TerminalView Style="height: 100vh;"></TerminalView>
+</CascadingValue>
+
+@code{
+    private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
+}

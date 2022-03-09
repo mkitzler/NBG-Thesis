@@ -1,37 +1,60 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">NBG.Visitor.WASM</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+﻿@inherits LayoutComponentBase
+@using MudBlazor;
+@using NBG.Visitor.Blazor
+@using System.Globalization
+@using System.Reflection
+
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
+
+<style>
+    #LangButton * {
+        color:white !important;
+    }
+</style>
+
+<div class="page">
+
+    <div class="main">
+        <MudAppBar Class="red darken-4" Fixed="false" Dense=@dense Elevation="5">
+            <img src="/img/Logo/nbg_logo.png" style="max-height:80%; margin-right:20px;"/>
+            @*<NavLink href="terminal">
+                <MudButton Class="red-text text-lighten-5" Icon="@Icons.Material.Filled.ConnectWithoutContact">Visitor Registration</MudButton>
+            </NavLink>   
+            <NavLink href="visitors">
+                <MudButton Class="red-text text-lighten-5" Icon="@Icons.Material.Filled.EditNote" >Visitor Administration</MudButton>
+            </NavLink>*@
+            <MudSpacer></MudSpacer>
+
+            <MudMenu id="LangButton" Label="@Loc["LangShort"]" Class="mr-5" StartIcon="@Icons.Filled.Language" Dense="true">
+                <MudMenuItem OnClick=@(() => ChangeLang("de-DE")) Style="height:24px;"><MudText>German</MudText></MudMenuItem>
+                <MudMenuItem OnClick=@(() => ChangeLang("en-US")) Style="height:24px;"><MudText>English</MudText></MudMenuItem>
+            </MudMenu>
+
+            <form method="get" action="logout">
+                <button type="submit" class="nav-link btn btn-link" id="logoutBtn">@Loc["LogOut"]</button>
+            </form>
+        </MudAppBar>
+        <CascadingValue Value="Loc">
+            <div class="content">
+                @Body
+            </div>
+        </CascadingValue>
+    </div>
 </div>
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
-    </ul>
-</div>
+@code{
+    private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
+    private bool dense = true;
 
-@code {
-    private bool collapseNavMenu = true;
-
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
+    protected override async Task OnInitializedAsync()
     {
-        collapseNavMenu = !collapseNavMenu;
+    }
+
+    public void ChangeLang(string to)
+    {
+        Loc.Culture = new(to);
+        StateHasChanged();
     }
 }

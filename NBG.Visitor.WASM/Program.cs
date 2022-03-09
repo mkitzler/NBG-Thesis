@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
+using NBG.Visitor.Domain;
+using NBG.Visitor.Clients.REST;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -18,6 +21,8 @@ namespace NBG.Visitor.WASM
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddSingleton<IVisitService, RestVisitService>();
+            builder.Services.AddMudServices();
 
             await builder.Build().RunAsync();
         }

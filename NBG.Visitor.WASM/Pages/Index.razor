@@ -1,7 +1,20 @@
 ﻿@page "/"
+@using MudBlazor
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div style="padding-top:50px;text-align:center;">
+    <AuthorizeView>
+        <Authorized>
+            <h1>Hello, @context.User.Identity.Name !</h1>
+        </Authorized>
+        <NotAuthorized>
+            <h1>Hello!</h1>
+            <p>Not Authorized</p>
+        </NotAuthorized>
+    </AuthorizeView>
+    <MudButton Link="terminal">
+        Terminal
+    </MudButton>
+    <MudButton Link="visitors">
+        Visitors
+    </MudButton>
+</div>

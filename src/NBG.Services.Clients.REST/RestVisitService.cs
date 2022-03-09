@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NBG.Visitor.Clients.REST
 {
-    internal class RestVisitService : IVisitService
+    public class RestVisitService : IVisitService
     {
         private const string API_URL = "https://localhost:44339/api/Visit";
         private HttpClient _http = new HttpClient();
