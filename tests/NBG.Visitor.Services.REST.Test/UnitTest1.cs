@@ -1,3 +1,5 @@
+using NBG.Visitor.Clients.REST;
+using NBG.Visitor.Domain;
 using NBG.Visitor.Domain.Commands;
 using NBG.Visitor.Domain.Dtos;
 using Newtonsoft.Json;
@@ -13,11 +15,13 @@ namespace NBG.Visitor.Services.REST.Test
     public class Tests
     {
         private HttpClient http;
+        private RestVisitService vs;
 
         [SetUp]
         public void Setup()
         {
             http = new HttpClient();
+            vs = new RestVisitService();
         }
 
         [Test]
@@ -49,6 +53,22 @@ namespace NBG.Visitor.Services.REST.Test
             VisitDto visit = await resp.Content.ReadFromJsonAsync<VisitDto>();
             Assert.IsNotNull(visit);
             Assert.AreEqual(VisitStatusDto.VISIT_OVER, visit.Status);
+        }
+
+        [Test]
+        public async Task TestService()
+        {
+            var list = await vs.ReadAllVisits();
+            Assert.IsNotNull(list);
+            Assert.AreEqual(23, list.Count);
+        }
+
+        [Test]
+        public async Task TestServiceAdd()
+        {
+            var max = await vs.AddVisit(DateTime.Now, "Max", "Mustermann", "8723978");
+            Assert.IsNotNull(max);
+            Assert.IsNotNull(max.Guid);
         }
     }
 }

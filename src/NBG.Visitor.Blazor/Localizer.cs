@@ -6,22 +6,24 @@ namespace NBG.Visitor.Blazor
 {
     public class Localizer
     {
-        private ResourceManager rm;
+        public ResourceManager ResourceManager { get; set; }
         public CultureInfo Culture { get; set; }
 
-        public Localizer(string baseName, Assembly assembly, CultureInfo culture)
+        public Localizer(string baseName, Assembly assembly, string culture) : this(baseName, assembly, new CultureInfo(culture)) { }
+
+        public Localizer(string baseName, Assembly assembly, CultureInfo culture) : this(new(baseName, assembly), culture) { }
+
+        public Localizer(ResourceManager rm, CultureInfo culture)
         {
-            rm = new(baseName, assembly);
+            ResourceManager = rm;
             Culture = culture;
         }
-
-        public Localizer(string baseName, Assembly assembly, string culture) : this(baseName, assembly, new CultureInfo(culture)) { }
 
         public string this[string toLocalize]
         {
             get
             {
-                return rm.GetString(toLocalize, Culture);
+                return ResourceManager.GetString(toLocalize, Culture);
             }
         }
     }

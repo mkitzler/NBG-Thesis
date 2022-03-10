@@ -26,7 +26,9 @@ namespace NBG.Visitor.WASM
             {
                 // Configure your authentication provider options here.
                 // For more information, see https://aka.ms/blazor-standalone-auth
-                builder.Configuration.Bind("Oidc", options.ProviderOptions);
+
+                //builder.Configuration.Bind("Oidc", options.ProviderOptions);
+                builder.Configuration.Bind("Local", options.ProviderOptions);
             });
             builder.Services.AddSingleton<IVisitService, RestVisitService>();
             builder.Services.AddMudServices();

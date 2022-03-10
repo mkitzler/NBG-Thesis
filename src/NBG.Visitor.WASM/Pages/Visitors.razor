@@ -1,8 +1,12 @@
 ﻿@page "/visitors"
-@using Microsoft.AspNetCore.Authorization
 @using NBG.Visitor.Blazor.Components
 @layout NavMenu
 
-@attribute [Authorize]
-
-<VisitorOverview></VisitorOverview>
+<AuthorizeView>
+	<Authorized>
+		<VisitorOverview/>
+	</Authorized>
+	<NotAuthorized>
+		<RedirectToLogin/>
+	</NotAuthorized>
+</AuthorizeView>

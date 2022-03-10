@@ -25,11 +25,10 @@ namespace NBG.Visitor.Blazor
             ImagePath = imagePath;
         }
 
-        public static IEnumerable<SafetyItem> LoadFromResource(Assembly assembly, CultureInfo culture, string baseName = "NBG.Visitor.Resources.SafetyItems")
+        public static IEnumerable<SafetyItem> LoadFromResource(Localizer loc)
         {
-            Localizer Loc = new(baseName, assembly, culture);
             string data = null;
-            for (int i = 1; (data = Loc["String" + i.ToString()]) != null; i++)
+            for (int i = 1; (data = loc["String" + i.ToString()]) != null; i++)
             {
                 yield return new(data);
             }

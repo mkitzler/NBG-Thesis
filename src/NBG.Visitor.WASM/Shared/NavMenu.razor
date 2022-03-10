@@ -3,6 +3,11 @@
 @using NBG.Visitor.Blazor
 @using System.Globalization
 @using System.Reflection
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
 
 <MudThemeProvider/>
 <MudDialogProvider/>
@@ -32,9 +37,10 @@
                 <MudMenuItem OnClick=@(() => ChangeLang("en-US")) Style="height:24px;"><MudText>English</MudText></MudMenuItem>
             </MudMenu>
 
-            <form method="get" action="logout">
+            @*<form method="get" action="logout">
                 <button type="submit" class="nav-link btn btn-link" id="logoutBtn">@Loc["LogOut"]</button>
-            </form>
+            </form>*@
+            <button @onclick=BeginSignOut class="nav-link btn btn-link" id="logoutBtn">@Loc["LogOut"]</button>
         </MudAppBar>
         <CascadingValue Value="Loc">
             <div class="content">
@@ -56,5 +62,11 @@
     {
         Loc.Culture = new(to);
         StateHasChanged();
+    }
+
+    private async Task BeginSignOut(MouseEventArgs args)
+    {
+        await SignOutManager.SetSignOutState();
+        Navigation.NavigateTo("authentication/logout");
     }
 }

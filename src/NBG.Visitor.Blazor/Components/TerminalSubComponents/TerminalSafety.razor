@@ -58,13 +58,16 @@
 	[CascadingParameter]
 	public Localizer Loc { get; set; }
 
+	[CascadingParameter]
+	public System.Resources.ResourceManager SafetyItemResource { get; set; }
+
 	[Parameter]
 	public EventCallback OnRegister { get; set; }
 	[Parameter]
 	public EventCallback OnBack { get; set; }
 
 	private CustomMudCarousel<object> carousel;
-	private SafetyItem[] safetyItems => SafetyItem.LoadFromResource(Assembly.GetEntryAssembly(), Loc.Culture).ToArray();
+	private SafetyItem[] safetyItems => SafetyItem.LoadFromResource(new Localizer(SafetyItemResource, Loc.Culture) ?? new("NBG.Visitor.Resources.SafetyItems", Assembly.GetEntryAssembly(), Loc.Culture)).ToArray();
 	private int itemsPerPage = 8;
 	private int Pages
 	{

@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Services.REST.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.API", "src\NBG.Visitor.API\NBG.Visitor.API.csproj", "{2232DAAC-1D32-4B5D-9C42-A11ECB8CC716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NBG.Visitor.WASM", "src\NBG.Visitor.WASM\NBG.Visitor.WASM.csproj", "{7872AD3F-B355-43F9-82D5-70274C90B1B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.WASM", "src\NBG.Visitor.WASM\NBG.Visitor.WASM.csproj", "{7872AD3F-B355-43F9-82D5-70274C90B1B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NBG.Visitor.Domain;
 using NBG.Visitor.Domain.Commands;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace NBG.Visitor.Services.REST
 {
-    //[EnableCors()]
+    [EnableCors()]
     [Route("api/[controller]")]
     [ApiController]
     public class VisitController : ControllerBase

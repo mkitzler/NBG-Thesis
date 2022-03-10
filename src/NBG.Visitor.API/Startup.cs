@@ -38,6 +38,13 @@ namespace NBG.Visitor.API
             services.AddDbContextFactory<VisitContext>(options =>
                 options.UseNpgsql("Host=nbg.ftp.sh;Database=nbg;Username=nbg;Password=nbg1234"));
             services.AddSingleton<IVisitService, VisitService>();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +56,8 @@ namespace NBG.Visitor.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NBG.Visitor.API v1"));
             }
+
+            app.UseCors();
 
             app.UseHttpsRedirection();
 

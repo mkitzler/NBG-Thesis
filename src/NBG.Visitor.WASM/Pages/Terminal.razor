@@ -4,9 +4,12 @@
 @using System.Reflection
 
 <CascadingValue Value="Loc">
-    <TerminalView Style="height: 100vh;"></TerminalView>
+    <CascadingValue Value="SafetyItemResource">
+        <TerminalView Style="height: 100vh;"></TerminalView>
+    </CascadingValue>
 </CascadingValue>
 
 @code{
-    private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
+    private Localizer Loc = new("NBG.Visitor.WASM.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
+    private System.Resources.ResourceManager SafetyItemResource = new("NBG.Visitor.WASM.Resources.SafetyItems", Assembly.GetExecutingAssembly());
 }
