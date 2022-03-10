@@ -16,20 +16,22 @@
 
 <MudThemeProvider Theme="NBG"/>
 
-<CustomMudCarousel Style=@Style @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object">
-    @if (!HideFirstPage)
-    {
+<div style=@Style>
+    <CustomMudCarousel Style="height: 100%; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg)" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object">
+        @if (!HideFirstPage)
+        {
+            <MudCarouselItem>
+                <TerminalHome OnNext=@(() => carousel.Next()) />
+            </MudCarouselItem>
+        }
         <MudCarouselItem>
-            <TerminalHome OnNext=@(() => carousel.Next()) />
+            <TerminalRegister @ref="form" OnBack=@(HideFirstPage ? null : carousel.Previous) OnNext=carousel.Next />
         </MudCarouselItem>
-    }
-    <MudCarouselItem>
-        <TerminalRegister @ref="form" OnBack=@(HideFirstPage ? null : carousel.Previous) OnNext=carousel.Next />
-    </MudCarouselItem>
-    <MudCarouselItem>
-        <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
-    </MudCarouselItem>
-</CustomMudCarousel>
+        <MudCarouselItem>
+            <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
+        </MudCarouselItem>
+    </CustomMudCarousel>
+</div>
 
 @code {
     [CascadingParameter]
