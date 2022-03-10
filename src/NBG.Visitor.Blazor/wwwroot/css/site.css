@@ -22,3 +22,17 @@
 .touchscreen-button {
     padding: 1em 2em;
 }
+
+.touchscreen-textfield .mud-input {
+    height: 4.5rem;
+    font-size: 1.25rem;
+}
+
+.touchscreen-textfield .mud-input-label {
+    margin-top: 0.5rem;
+    font-size: 1.25rem !important;
+}
+
+.touchscreen-textfield .mud-input-slot {
+    margin-top: 0.5rem !important;
+}

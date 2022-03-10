@@ -4,31 +4,33 @@
 
 <MudGrid Justify=Justify.Center Class="center" Style="height: 88%; padding: 0 1rem">
     <MudItem lg=7>
-        <MudForm @ref="_visitorForm" @bind-IsValid=Valid Class="pa-4" Style="background-color: #fff">
-            <MudGrid Justify=Justify.Center Style="text-align: center;">
-                <MudItem xs=12 Class="mb-6">
-                    <MudText Typo="Typo.h2">@Loc["VisitorRegistration"]</MudText>
-                </MudItem>
-                <MudItem xs=6>
-                    <MudTextField T="string" @bind-Value="FormData.FirstName" Label=@Loc["FirstName"] Variant=Variant.Outlined Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
-                </MudItem>
-                <MudItem xs=6>
-                    <MudTextField T="string" @bind-Value="FormData.LastName" Label=@Loc["LastName"] Variant=Variant.Outlined Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
-                </MudItem>
-                <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.PhoneNumber" Label=@Loc["PhoneNumber"] Variant=Variant.Outlined Clearable=true Required="true" RequiredError=@Loc["Required"] Validation="@(new PhoneAttribute() {ErrorMessage = Loc["WrongPhone"]})" Immediate=true TextChanged=Revalidate />
-                </MudItem>
-                <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.Email" Label=@Loc["Email"] Variant=Variant.Outlined Clearable=true Validation=@(new Func<string, string>(ValidateEmail)) Immediate=true TextChanged=Revalidate />
-                </MudItem>
-                <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.Company" Label=@Loc["Company"] Variant=Variant.Outlined Clearable=true Immediate=true TextChanged=Revalidate />
-                </MudItem>
-                <MudItem xs=12>
-                    <MudTextField T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Outlined Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
-                </MudItem>
-            </MudGrid>
-        </MudForm>
+        <MudPaper Style="padding: 1rem; background-color: #fffc;">
+            <MudForm @ref="_visitorForm" @bind-IsValid=Valid>
+                <MudGrid Justify=Justify.Center Style="text-align: center;">
+                    <MudItem xs=12 Class="mb-6">
+                        <MudText Typo="Typo.h2">@Loc["VisitorRegistration"]</MudText>
+                    </MudItem>
+                    <MudItem xs=6>
+                        <MudTextField Class="touchscreen-textfield" T="string" @bind-Value="FormData.FirstName" Label=@Loc["FirstName"] Variant=Variant.Filled Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
+                    </MudItem>
+                    <MudItem xs=6>
+                        <MudTextField Class="touchscreen-textfield" T="string" @bind-Value="FormData.LastName" Label=@Loc["LastName"] Variant=Variant.Filled Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
+                    </MudItem>
+                    <MudItem xs=12>
+                        <MudTextField Class="touchscreen-textfield" T="string" @bind-Value="FormData.PhoneNumber" Label=@Loc["PhoneNumber"] Variant=Variant.Filled Clearable=true Required="true" RequiredError=@Loc["Required"] Validation="@(new PhoneAttribute() {ErrorMessage = Loc["WrongPhone"]})" Immediate=true TextChanged=Revalidate />
+                    </MudItem>
+                    <MudItem xs=12>
+                        <MudTextField Class="touchscreen-textfield" T="string" @bind-Value="FormData.Email" Label=@Loc["Email"] Variant=Variant.Filled Clearable=true Validation=@(new Func<string, string>(ValidateEmail)) Immediate=true TextChanged=Revalidate />
+                    </MudItem>
+                    <MudItem xs=12>
+                        <MudTextField Class="touchscreen-textfield" T="string" @bind-Value="FormData.Company" Label=@Loc["Company"] Variant=Variant.Filled Clearable=true Immediate=true TextChanged=Revalidate />
+                    </MudItem>
+                    <MudItem xs=12>
+                        <MudTextField Class="touchscreen-textfield" T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Filled Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
+                    </MudItem>
+                </MudGrid>
+            </MudForm>
+        </MudPaper>
     </MudItem>
 </MudGrid>
 
