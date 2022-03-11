@@ -86,7 +86,7 @@
         {
         // Load visit
             #if DEBUG
-    VisitDto visit = new VisitDto() {Status = VisitStatusDto.VISIT_ACTIVE};
+            VisitDto visit = new VisitDto() {Status = VisitStatusDto.VISIT_ACTIVE};
             #else
             VisitDto visit = await vs.ReadVisitByGuid(guid);
             #endif
@@ -156,7 +156,7 @@
         PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
 
         // Replace with print function
-        pdf.Save("./pdf.pdf");
+        pdf.Save("./ticket.pdf");
 
         // Reset form, scroll back to homepage and show popup
         form.Reset();
