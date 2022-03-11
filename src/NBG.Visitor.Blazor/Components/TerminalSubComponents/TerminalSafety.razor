@@ -12,7 +12,7 @@
 						@for (int i = itemsPerPage * localp; (i < itemsPerPage * localp + itemsPerPage) && i < safetyItems.Length; i++)
 						{
 							var locali = i;
-							<MudItem xs="6">
+							<MudItem xs="6" Class="center">
 								<MudPaper Elevation=5 Style="padding: 1rem; background-color: #fffc;">
 									<div style="height: 10em; display: flex;">
 										<img style="width: 10em; align-self: center" src="@(safetyItems[locali].ImagePath)"/>
