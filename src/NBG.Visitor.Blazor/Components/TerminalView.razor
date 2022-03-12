@@ -153,7 +153,7 @@
 
         // Generate qr code and pdf
         Bitmap qr = QRGenerator.GenerateQrCode(QRUrl + id.ToString());
-        PdfDocument pdf = new TicketPdfGenerator(Loc.Culture).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
+        PdfDocument pdf = new TicketPdfGenerator(Loc).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
 
         // Replace with print function
         pdf.Save("./ticket.pdf");

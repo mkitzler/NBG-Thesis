@@ -12,7 +12,7 @@ namespace NBG.Visitor.Blazor
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(content, QRCodeGenerator.ECCLevel.H);
             QRCode qrCode = new QRCode(qrCodeData);
             Bitmap logo = BitmapFromUrl("https://fiss.dev.nbg.tech:44303/_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png");
-            Bitmap qr = qrCode.GetGraphic(30, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 15, 15, false);
+            Bitmap qr = qrCode.GetGraphic(30, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 25, 15, false);
 
             return qr;
         }
