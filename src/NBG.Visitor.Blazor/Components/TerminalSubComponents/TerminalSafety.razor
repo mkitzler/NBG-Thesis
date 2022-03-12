@@ -11,11 +11,11 @@
 			{
 				var localp = p;
 				<MudCarouselItem>
-					<MudGrid Style="height: 100%; padding: 1rem 4rem 2rem;">
+					<MudGrid Style="height: 100%; padding: 1rem 4rem 2rem;" Justify=Justify.Center>
 						@for (int i = itemsPerPage * localp; (i < itemsPerPage * localp + itemsPerPage) && i < safetyItems.Length; i++)
 						{
 							var locali = i;
-							<MudItem xs="6" Class="center">
+							<MudItem xs="5" Class="center">
 								<MudPaper Elevation=15 Style="padding: 1rem; background-color: #fffc; width: 100%;">
 									<div style="height: 10em; display: flex; width: 100%;">
 										<img style="width: 10em; align-self: center" src="@(safetyItems[locali].ImagePath)"/>
