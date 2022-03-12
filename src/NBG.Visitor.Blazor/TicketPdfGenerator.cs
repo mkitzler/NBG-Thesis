@@ -16,8 +16,17 @@ namespace NBG.Visitor.Blazor
             Loc = localizer;
         }
 
+        /// <summary>
+        /// Generates a ticket for the specified visit.
+        /// </summary>
+        /// <param name="qr">The QR Code on the ticket as a BitMap</param>
+        /// <param name="id">The Guid of the visit</param>
+        /// <param name="name">The Name of the Visitor</param>
+        /// <param name="arrival">The arrival DateTime of the Visitor. Will print "Planned Arrival" on the ticket if in the future</param>
+        /// <returns></returns>
         public PdfDocument GetPdf(Bitmap qr, string id, string name, DateTime arrival)
         {
+            // Register windows encoding
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
             PdfDocument doc = new();
