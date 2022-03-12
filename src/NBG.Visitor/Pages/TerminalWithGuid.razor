@@ -1,15 +1,24 @@
-﻿@page "/terminal/{Guid}"
+﻿@page "/terminal/{Culture}/{Guid:guid}"
 @using NBG.Visitor.Blazor
 @using NBG.Visitor.Blazor.Components
 @using System.Reflection
 
 <CascadingValue Value="Loc">
-    <TerminalView Style="height: 100vh;" PreregisteredVisitGuid=new(Guid)></TerminalView>
+    <TerminalView Style="height: 100vh;" PreregisteredVisitGuid=Guid></TerminalView>
 </CascadingValue>
 
 @code{
     [ParameterAttribute]
-    public string Guid { get; set; }
+    public Guid Guid { get; set; }
 
-    private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
+    [ParameterAttribute]
+    public string Culture { get; set; }
+
+    private Localizer Loc;
+
+    protected override void OnInitialized()
+    {
+        Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), Culture);
+        base.OnInitialized();
+    }
 }

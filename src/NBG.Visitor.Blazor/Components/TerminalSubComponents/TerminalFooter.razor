@@ -1,0 +1,50 @@
+﻿@using MudBlazor
+@using System.Globalization
+
+<footer class="footer" style="height: 12%">
+	<MudGrid Justify=Justify.Center Spacing=0>
+        <MudItem xs=2 Class="center">
+            @if (ShowLanguageSelection)
+            {
+                <div class="lang-select center">
+                    <MudSelect T=CultureInfo Variant="Variant.Outlined" Direction=Direction.Top FullWidth=true SelectedValues=@(new HashSet<CultureInfo>() { SelectedLanguage }) ValueChanged=SelectedLanguageChanged>
+                        <MudSelectItem Class="center" Value=@(new CultureInfo("de-DE"))>
+                            <img class="flag" src="_content/NBG.Visitor.Blazor/images/german.jpg"/>
+                        </MudSelectItem>
+                        <MudSelectItem Class="center" Value=@(new CultureInfo("en-US"))>
+                            <img class="flag" src="_content/NBG.Visitor.Blazor/images/english.jpg"/>
+                        </MudSelectItem>
+                    </MudSelect>
+                </div>
+            }
+        </MudItem>
+		<MudItem xs=2 Class="center">
+            @LeftItem
+        </MudItem>
+		<MudItem xs=4 Class="center">
+            @CenterItem
+        </MudItem>
+		<MudItem xs=2 Class="center">
+			@RightItem
+		</MudItem>
+        <MudItem xs=2>
+        </MudItem>
+	</MudGrid>
+</footer>
+
+@code {
+    [Parameter]
+    public RenderFragment LeftItem { get; set; }
+    [Parameter]
+    public RenderFragment CenterItem { get; set; }
+    [Parameter]
+    public RenderFragment RightItem { get; set; }
+
+    [Parameter]
+    public bool ShowLanguageSelection { get; set; } = true;
+
+    [Parameter]
+    public CultureInfo SelectedLanguage { get; set; }
+    [Parameter]
+    public EventCallback<CultureInfo> SelectedLanguageChanged { get; set; }
+}

@@ -451,12 +451,12 @@
 
     public async Task PrintVisitorPass(VisitDto visit)
     {
-        Bitmap qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + visit.Guid.ToString());
+        Bitmap qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
 
         RenderFragment rf = 
     @<div>
                 <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
-                <a href=@("https://fiss.dev.nbg.tech:44303/terminal/" + visit.Guid.ToString())>Link</a>
+                <a href=@("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString())>Link</a>
             </div>
     ;
         var dialog = DialogService.Show<MudDialog>(visit.Visitor.FirstName + " " + visit.Visitor.LastName, new DialogParameters() {["DialogContent"] = rf});

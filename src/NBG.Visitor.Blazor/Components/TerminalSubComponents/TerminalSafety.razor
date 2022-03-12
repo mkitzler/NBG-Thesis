@@ -34,28 +34,28 @@
 	</MudItem>
 </MudGrid>
 
-<footer class="footer" style="height: 12%">
-	<MudGrid Justify=Justify.Center>
-		<MudItem xs=2 Class="center">
-			<MudButton Class="touchscreen-button" OnClick=Back Size=Size.Large Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack Disabled=@(!OnBack.HasDelegate && carousel.SelectedIndex == 0)>@Loc["Back"]</MudButton>
-		</MudItem>
-		<MudItem xs=4 Class="center">
-			@if (carousel.SelectedIndex == Pages - 1)
+<TerminalFooter @bind-SelectedLanguage=Loc.Culture>
+	<LeftItem>
+		<MudButton Class="touchscreen-button" OnClick=Back Size=Size.Large Variant=Variant.Filled Color=Color.Secondary StartIcon=@Icons.Outlined.ArrowBack Disabled=@(!OnBack.HasDelegate && carousel.SelectedIndex == 0)>@Loc["Back"]</MudButton>
+	</LeftItem>
+	<CenterItem>
+		@if (carousel.SelectedIndex == Pages - 1)
+		{
+			<MudCheckBox @bind-Checked="accepted" Label=@Loc["SafetyInfoRead"] Required=true RequiredError=@Loc["SafetyInfoNotRead"]/>
+		}
+	</CenterItem>
+	<RightItem>
+		<MudButton Class="touchscreen-button" OnClick=NextOrRegister Size=Size.Large Variant=Variant.Filled Color=@(!LastPage ? Color.Secondary : Color.Success) EndIcon=@Icons.Outlined.Check Disabled=@(registering || LastPage && !accepted)>
+			@if (registering)
 			{
-				<MudCheckBox @bind-Checked="accepted" Label=@Loc["SafetyInfoRead"] Required=true RequiredError=@Loc["SafetyInfoNotRead"]/>
+				<div class="mr-4" style="height: 2rem">
+					<MudProgressCircular Indeterminate="true" Style="height: 2rem; width: 2rem;"/>
+				</div>
 			}
-		</MudItem>
-		<MudItem xs=2 Class="center">
-			<MudButton Class="touchscreen-button" OnClick=NextOrRegister Size=Size.Large Variant=Variant.Filled Color=@(!LastPage ? Color.Secondary : Color.Success) EndIcon=@Icons.Outlined.Check Disabled=@(registering || LastPage && !accepted)>
-				@if (registering)
-				{
-					<MudProgressCircular Class="ms-n1" Indeterminate="true"/>
-				}
-				@(carousel.SelectedIndex < Pages - 1 ? Loc["Next"] : Loc["FinishRegister"])
-			</MudButton>
-		</MudItem>
-	</MudGrid>
-</footer>
+			@(carousel.SelectedIndex < Pages - 1 ? Loc["Next"] : Loc["FinishRegister"])
+		</MudButton>
+	</RightItem>
+</TerminalFooter>
 
 @code {
 	[CascadingParameter]
