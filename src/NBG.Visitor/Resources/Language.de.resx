@@ -315,4 +315,10 @@
   <data name="SignOut" xml:space="preserve">
     <value>Abmelden</value>
   </data>
+  <data name="RequiredFields" xml:space="preserve">
+    <value>Pflichtfelder</value>
+  </data>
+  <data name="SafetyInfo" xml:space="preserve">
+    <value>Sicherheitshinweise</value>
+  </data>
 </root>

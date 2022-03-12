@@ -36,3 +36,8 @@
 .touchscreen-textfield .mud-input-slot {
     margin-top: 0.5rem !important;
 }
+
+.absolut-helper-container .mud-input-control-helper-container {
+    position: absolute;
+    top: 100%;
+}

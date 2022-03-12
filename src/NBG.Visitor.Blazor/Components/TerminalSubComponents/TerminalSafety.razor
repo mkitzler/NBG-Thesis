@@ -2,7 +2,10 @@
 @using System.Reflection
 
 <MudGrid Justify=Justify.Center Class="center" Style="height: 90%;">
-    <MudItem Style="height: 100%;" lg=9 xs=12>
+	<MudItem Class="center" Style="height: 15%; align-items: end;" xs=12>
+		<MudText Typo="Typo.h2">@Loc["SafetyInfo"]</MudText>
+	</MudItem>
+    <MudItem Style="height: 85%;" xs=12>
 		<CustomMudCarousel @ref="carousel" SelectedIndexChanged=StateHasChanged Style="height: 100%;" AutoCycle="false" Wrap="false" TData="object">
 			@for(int p = 0; p < Pages; p++)
 			{
@@ -68,7 +71,7 @@
 
 	private CustomMudCarousel<object> carousel;
 	private SafetyItem[] safetyItems => SafetyItem.LoadFromResource((SafetyItemResource != null) ? new Localizer(SafetyItemResource, Loc.Culture) : new("NBG.Visitor.Resources.SafetyItems", Assembly.GetEntryAssembly(), Loc.Culture)).ToArray();
-	private int itemsPerPage = 8;
+	private int itemsPerPage = 6;
 	private int Pages
 	{
 		get

@@ -27,8 +27,8 @@ namespace NBG.Visitor.Blazor
 
         public static IEnumerable<SafetyItem> LoadFromResource(Localizer loc)
         {
-            string data = null;
-            for (int i = 1; (data = loc["String" + i.ToString()]) != null; i++)
+            string data;
+            for (int i = 1; (data = loc["String" + i.ToString("00")]) != null; i++)
             {
                 yield return new(data);
             }

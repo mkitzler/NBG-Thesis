@@ -117,10 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="String1" xml:space="preserve">
+  <data name="String01" xml:space="preserve">
     <value>Visitor badge
 Please wear your visitor badge clearly visible at all times.
 _content/NBG.Visitor.Blazor/images/safetyicons/01_visitor_badge.png</value>
+  </data>
+  <data name="String02" xml:space="preserve">
+    <value>Visitor registration or deregistration
+
+_content/NBG.Visitor.Blazor/images/safetyicons/02_information.svg</value>
+  </data>
+  <data name="String03" xml:space="preserve">
+    <value>Travel speed
+The maximum permitted speed is 20 km/h on the entire premises.
+_content/NBG.Visitor.Blazor/images/safetyicons/03_travel_speed.svg</value>
+  </data>
+  <data name="String04" xml:space="preserve">
+    <value>Meeting place
+Find out more about the meeting places.
+_content/NBG.Visitor.Blazor/images/safetyicons/04_meeting_place.svg</value>
+  </data>
+  <data name="String05" xml:space="preserve">
+    <value>Escape routes and emergency exits
+Find out about escape routes and emergency exits.
+_content/NBG.Visitor.Blazor/images/safetyicons/05_emergency_exit.png</value>
+  </data>
+  <data name="String06" xml:space="preserve">
+    <value>Clean room
+Unauthorized persons are strictly forbidden to enter. All means of access are secured.
+_content/NBG.Visitor.Blazor/images/safetyicons/06_clean_room.png</value>
+  </data>
+  <data name="String07" xml:space="preserve">
+    <value>Warning of laser beam
+Make sure that the safety regulations are observed.
+_content/NBG.Visitor.Blazor/images/safetyicons/07_laser_beam.svg</value>
+  </data>
+  <data name="String08" xml:space="preserve">
+    <value>Warning of explosive atmosphere
+Make sure that the safety regulations are observed.
+_content/NBG.Visitor.Blazor/images/safetyicons/08_explosion_warning.svg</value>
+  </data>
+  <data name="String09" xml:space="preserve">
+    <value>Warning of industrial trucks
+Give priority to transport vehicles and use the pavements priovided.
+_content/NBG.Visitor.Blazor/images/safetyicons/09_forklift_warning.svg</value>
   </data>
   <data name="String10" xml:space="preserve">
     <value>Warning of high voltage
@@ -172,11 +212,6 @@ _content/NBG.Visitor.Blazor/images/safetyicons/18_health_hazard.svg</value>
 Areas with this danger sign indicate possible serious damage to health.
 _content/NBG.Visitor.Blazor/images/safetyicons/19_serious_health_hazard.png</value>
   </data>
-  <data name="String2" xml:space="preserve">
-    <value>Visitor registration or deregistration
-
-_content/NBG.Visitor.Blazor/images/safetyicons/02_information.svg</value>
-  </data>
   <data name="String20" xml:space="preserve">
     <value>Corrosive
 In areas with this danger sign, severe skin etching, severe eye damage can occur.
@@ -227,44 +262,9 @@ _content/NBG.Visitor.Blazor/images/safetyicons/28_hand_protection.svg</value>
 Observe the mandatory signs / information signs on the operating arte and tghe installations.
 _content/NBG.Visitor.Blazor/images/safetyicons/29_protective_equipment.svg</value>
   </data>
-  <data name="String3" xml:space="preserve">
-    <value>Travel speed
-The maximum permitted speed is 20 km/h on the entire premises.
-_content/NBG.Visitor.Blazor/images/safetyicons/03_travel_speed.svg</value>
-  </data>
   <data name="String30" xml:space="preserve">
     <value>Using a handrail
 Use the handrail when climbing stairs.
 _content/NBG.Visitor.Blazor/images/safetyicons/30_handrail.svg</value>
-  </data>
-  <data name="String4" xml:space="preserve">
-    <value>Meeting place
-Find out more about the meeting places.
-_content/NBG.Visitor.Blazor/images/safetyicons/04_meeting_place.svg</value>
-  </data>
-  <data name="String5" xml:space="preserve">
-    <value>Escape routes and emergency exits
-Find out about escape routes and emergency exits.
-_content/NBG.Visitor.Blazor/images/safetyicons/05_emergency_exit.png</value>
-  </data>
-  <data name="String6" xml:space="preserve">
-    <value>Clean room
-Unauthorized persons are strictly forbidden to enter. All means of access are secured.
-_content/NBG.Visitor.Blazor/images/safetyicons/06_clean_room.png</value>
-  </data>
-  <data name="String7" xml:space="preserve">
-    <value>Warning of laser beam
-Make sure that the safety regulations are observed.
-_content/NBG.Visitor.Blazor/images/safetyicons/07_laser_beam.svg</value>
-  </data>
-  <data name="String8" xml:space="preserve">
-    <value>Warning of explosive atmosphere
-Make sure that the safety regulations are observed.
-_content/NBG.Visitor.Blazor/images/safetyicons/08_explosion_warning.svg</value>
-  </data>
-  <data name="String9" xml:space="preserve">
-    <value>Warning of industrial trucks
-Give priority to transport vehicles and use the pavements priovided.
-_content/NBG.Visitor.Blazor/images/safetyicons/09_forklift_warning.svg</value>
   </data>
 </root>

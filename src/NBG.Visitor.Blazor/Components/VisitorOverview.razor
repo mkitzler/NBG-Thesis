@@ -403,10 +403,6 @@
         if (!result.Cancelled)
         {
             var visit = (VisitDto)result.Data;
-            foreach (var p in visit.GetType().GetProperties())
-            {
-                Console.WriteLine(p.Name + p.GetValue(visit));
-            }
             await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, (visit.PlannedVisitStart <= DateTime.Now) ? VisitStatusDto.VISIT_ACTIVE : VisitStatusDto.VISIT_PENDING);
             Visits.Add(visit);
 
