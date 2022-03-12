@@ -392,7 +392,7 @@
     {
         VisitDto _visit = new VisitDto();
         _visit.Visitor = new VisitorDto();
-        _visit.Status = VisitStatusDto.VISIT_PENDING;
+        //_visit.Status = VisitStatusDto.VISIT_PENDING;
 
         var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]="Add" };
         parameters.Add("Loc", Loc);
@@ -403,7 +403,11 @@
         if (!result.Cancelled)
         {
             var visit = (VisitDto)result.Data;
-            await DataRepository.AddVisit(visit.VisitStart??null, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email??null, visit.CompanyLabel, visit.ContactPerson, VisitStatusDto.VISIT_PENDING);
+            foreach (var p in visit.GetType().GetProperties())
+            {
+                Console.WriteLine(p.Name + p.GetValue(visit));
+            }
+            await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, (visit.PlannedVisitStart <= DateTime.Now) ? VisitStatusDto.VISIT_ACTIVE : VisitStatusDto.VISIT_PENDING);
             Visits.Add(visit);
 
             Snackbar.Add(Loc["AddedVisitMsg"], Severity.Success);
@@ -453,7 +457,8 @@
     {
         Bitmap qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + visit.Guid.ToString());
 
-        RenderFragment rf = @<div>
+        RenderFragment rf = 
+    @<div>
                 <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
                 <a href=@("https://fiss.dev.nbg.tech:44303/terminal/" + visit.Guid.ToString())>Link</a>
             </div>
