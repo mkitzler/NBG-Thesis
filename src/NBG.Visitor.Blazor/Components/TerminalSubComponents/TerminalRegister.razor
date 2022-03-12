@@ -14,22 +14,22 @@
                         <MudText Typo=Typo.subtitle2 Align=Align.Left>* @Loc["RequiredFields"]</MudText>
                     </MudItem>
                     <MudItem xs=6>
-                        <MudTextField Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.FirstName" Label=@Loc["FirstName"] Variant=Variant.Filled Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
+                        <MudTextField Required="true" Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.FirstName" Label=@Loc["FirstName"] Variant=Variant.Filled Clearable=true RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                     </MudItem>
                     <MudItem xs=6>
-                        <MudTextField Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.LastName" Label=@Loc["LastName"] Variant=Variant.Filled Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
+                        <MudTextField Required="true" Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.LastName" Label=@Loc["LastName"] Variant=Variant.Filled Clearable=true RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                     </MudItem>
                     <MudItem xs=12>
-                        <MudTextField Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.PhoneNumber" Label=@Loc["PhoneNumber"] Variant=Variant.Filled Clearable=true Required="true" RequiredError=@Loc["Required"] Validation="@(new PhoneAttribute() {ErrorMessage = Loc["WrongPhone"]})" Immediate=true TextChanged=Revalidate />
+                        <MudTextField Required="true" Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.PhoneNumber" Label=@Loc["PhoneNumber"] Variant=Variant.Filled Clearable=true RequiredError=@Loc["Required"] Validation="@(new PhoneAttribute() {ErrorMessage = Loc["WrongPhone"]})" Immediate=true TextChanged=Revalidate />
                     </MudItem>
                     <MudItem xs=12>
-                        <MudTextField Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.Email" Label=@Loc["Email"] Variant=Variant.Filled Clearable=true Validation=@(new Func<string, string>(ValidateEmail)) Immediate=true TextChanged=Revalidate />
+                        <MudTextField Required="false" Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.Email" Label=@Loc["Email"] Variant=Variant.Filled Clearable=true Validation=@(new Func<string, string>(ValidateEmail)) RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                     </MudItem>
                     <MudItem xs=12>
-                        <MudTextField Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.Company" Label=@Loc["Company"] Variant=Variant.Filled Clearable=true Immediate=true TextChanged=Revalidate />
+                        <MudTextField Required="false" Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.Company" Label=@Loc["Company"] Variant=Variant.Filled Clearable=true RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                     </MudItem>
                     <MudItem xs=12>
-                        <MudTextField Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Filled Clearable=true Required="true" RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
+                        <MudTextField Required="true" Class="mb-2 touchscreen-textfield absolut-helper-container" T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Filled Clearable=true RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                     </MudItem>
                 </MudGrid>
             </MudForm>
