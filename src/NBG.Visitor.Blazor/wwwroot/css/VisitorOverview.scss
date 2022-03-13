@@ -18,20 +18,21 @@ body {
     .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form span {
         font-size: 14px;
     }
+
     .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form svg {
         font-size: 15px;
     }
 
-    .mud-toolbar.mud-table-toolbar .mud-paper form .mud-radio{
-        margin-right:12px;
+    .mud-toolbar.mud-table-toolbar .mud-paper form .mud-radio {
+        margin-right: 12px;
     }
 
     .mud-toolbar.mud-table-toolbar .mud-paper form .mud-button-root {
-        padding:9px;
+        padding: 9px;
     }
 
     .mud-toolbar.mud-table-toolbar .mud-input-control * {
-        font-size:14px;
+        font-size: 14px;
     }
 }
 
@@ -46,7 +47,6 @@ body {
     .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
         background-color: rgb(240,240,240);
     }
-    
 }
 
 @media only screen and (max-width:960px) {
@@ -78,7 +78,7 @@ body {
     .mud-table {
         margin-top: 16px !important;
         margin-right: 32px;
-        margin-left:10px !important;
+        margin-left: 10px !important;
         padding-top: 0 !important;
     }
 
@@ -96,9 +96,9 @@ body {
     }
 
     .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
-        top:0;
+        top: 0;
         right: 14px;
-        background-color:white;
+        background-color: white;
     }
 
     .mud-table-smalldevices-sortselect .mud-select {
@@ -113,9 +113,9 @@ body {
         height: auto !important;
     }
 
-    .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form{
-        margin-right:0;
-        position:relative;
+    .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form {
+        margin-right: 0;
+        position: relative;
     }
 
     .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form, .mud-toolbar.mud-table-toolbar .mud-input-control {
@@ -131,11 +131,11 @@ body {
     }
 
     .mud-toolbar.mud-table-toolbar .mud-paper p {
-        display:none;
+        display: none;
     }
 
-    .mud-table{
-        margin-right:0;
+    .mud-table {
+        margin-right: 0;
     }
 
     .mud-table-body .mud-table-cell .mud-chip {
@@ -167,7 +167,7 @@ body {
     .optionsMenu .mud-icon-button {
         width: 100%;
     }
-/*    .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
+    /*    .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
         font-size:20px;
     }*/
 }
@@ -175,15 +175,17 @@ body {
 .mud-table .mud-table-cell .mud-chip-filled.mud-chip-color-warning {
     background-color: #ff9800;
 }
+
 .mud-table .mud-table-cell .mud-chip-filled.mud-chip-color-error {
     background-color: #f44336;
 }
+
 .mud-table .mud-table-cell .mud-chip-filled.mud-chip-color-success {
     background-color: #00c853;
 }
 
-.mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button{
-    position:absolute;
+.mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
+    position: absolute;
 }
 
 .mud-toolbar.mud-table-toolbar .mud-paper form {
@@ -196,9 +198,9 @@ body {
 }
 
 .mud-toolbar.mud-table-toolbar .mud-paper #titleDescBox {
-    position:relative;
-    top:0px;
-    left:15px;
+    position: relative;
+    top: 0px;
+    left: 15px;
 }
 
 @media only screen and (min-width:1271px) {
@@ -212,7 +214,7 @@ body {
     }
 }
 
-@media only screen and (max-width:1270px){
+@media only screen and (max-width:1270px) {
 
     .mud-toolbar.mud-table-toolbar .mud-paper p {
         display: none;
@@ -274,16 +276,16 @@ body {
     transition: margin-top $transition-speed $transition-type, padding-left $transition-speed $transition-type;
 }
 
-.mud-toolbar.mud-table-toolbar .mud-paper p{
-    left:40px;
+.mud-toolbar.mud-table-toolbar .mud-paper p {
+    left: 40px;
 }
 
 .mud-table .mud-toolbar .mud-paper form {
     margin-left: 15px;
 }
 
-.mud-table-container{
-    height:72vh;
+.mud-table-container {
+    height: 72vh;
 }
 
 @media only screen and (min-width: 700px) {
@@ -362,19 +364,20 @@ body {
     }
 
     .mud-toolbar.mud-table-toolbar .mud-input-control {
-        margin-right:120px;
-        margin-top:15px;
+        margin-right: 120px;
+        margin-top: 15px;
     }
 
     .mud-table tr {
         height: 59px !important;
     }
 
-    .optionsMenuTh, .addVisitTh{
-        padding-right:64px;
+    .optionsMenuTh, .addVisitTh {
+        padding-right: 64px;
     }
-    .status{
-        padding-bottom:0;
-        padding-top:0;
+
+    .status {
+        padding-bottom: 0;
+        padding-top: 0;
     }
 }
