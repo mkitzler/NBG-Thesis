@@ -33,6 +33,39 @@
     </CustomMudCarousel>
 </div>
 
+<MudMessageBox @ref="qrFailedBox">
+    <TitleContent>
+        <MudText Typo=Typo.h4>@Loc["InvalidQR"]</MudText>
+    </TitleContent>
+    <YesButton>
+        <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">OK</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+<MudMessageBox @ref="registerBox">
+    <TitleContent>
+        <MudText Typo=Typo.h4>@Loc["RegisterSuccess"]</MudText>
+    </TitleContent>
+    <YesButton>
+        <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">OK</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+<MudMessageBox @ref="confirmSignoutBox">
+    <TitleContent>
+        <MudText Typo=Typo.h4>@Loc["SignOut"]</MudText>
+    </TitleContent>
+    <MessageContent>
+        <MudText Typo=Typo.h6>@Loc["ConfirmSignOut"]</MudText>
+    </MessageContent>
+    <NoButton>
+        <MudButton Class="touchscreen-button" Variant="Variant.Filled" Color="MudBlazor.Color.Secondary">@Loc["No"]</MudButton>
+    </NoButton>
+    <YesButton>
+        <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary" EndIcon="@Icons.Material.Filled.Logout">@Loc["Yes"]</MudButton>
+    </YesButton>
+</MudMessageBox>
+
 @code {
     [CascadingParameter]
     public Localizer Loc { get; set; }
@@ -51,6 +84,10 @@
 
     private MudCarousel<object> carousel;
     private TerminalRegister form;
+
+    private MudMessageBox registerBox;
+    private MudMessageBox confirmSignoutBox;
+    private MudMessageBox qrFailedBox;
 
     MudTheme NBG = new MudTheme()
     {
@@ -96,16 +133,6 @@
             // If exists
             if (visit != null)
             {
-                foreach (var p in visit.GetType().GetProperties())
-                {
-                    Console.Write(p.Name + ": ");
-                    Console.WriteLine(p.GetValue(visit));
-                }
-                foreach (var p in visit.Visitor.GetType().GetProperties())
-                {
-                    Console.Write(p.Name + ": ");
-                    Console.WriteLine(p.GetValue(visit.Visitor));
-                }
                 if (visit.Status == VisitStatusDto.VISIT_PENDING)
                 {
                     // Needs to move first or form won't be loaded
@@ -123,7 +150,7 @@
                     #if DEBUG
                     Console.WriteLine("Active");
                     #endif
-                    bool? result = await Dialog.ShowMessageBox(Loc["SignOut"], Loc["ConfirmSignOut"], Loc["Yes"], Loc["No"], options: new DialogOptions() {DisableBackdropClick = true, CloseButton = false});
+                    bool? result = await confirmSignoutBox.Show(new() {DisableBackdropClick = true, CloseButton = false});
                     if (result ?? false)
                     {
                         #if DEBUG
@@ -136,7 +163,7 @@
             }
             else
             {
-                await Dialog.ShowMessageBox(Loc["InvalidQR"], null);
+                await qrFailedBox.Show();
             }
         }
     }
@@ -154,7 +181,7 @@
         #endif
 
         // Generate qr code and pdf
-        Bitmap qr = QRGenerator.GenerateQrCode(QRUrl + id.ToString());
+        Bitmap qr = QRGenerator.GenerateQrCode(QRUrl + Loc.Culture.Name + "/" + id.ToString());
         PdfDocument pdf = new TicketPdfGenerator(Loc).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
 
         // Replace with print function
@@ -170,9 +197,10 @@
                 <a href=@(QRUrl + id.ToString())>Link</a>
             </div>
         ;
-        await Dialog.Show<MudDialog>(Loc["RegisterSuccess"], new DialogParameters() {["DialogContent"] = rf}).Result;
+        registerBox.MessageContent = rf;
+        await registerBox.Show();
         #else
-        await Dialog.ShowMessageBox(Loc["RegisterSuccess"], null);
+        await registerBox.Show();
         #endif
     }
 }

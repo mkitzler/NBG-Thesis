@@ -11,12 +11,17 @@
   
   <ItemGroup>
     <None Remove="Components\Dialogs\EditDialog.razor.css" />
+    <None Remove="Components\TerminalSubComponents\TerminalFooter.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Components\Dialogs\EditDialog.razor.css" />
+<<<<<<< HEAD
     <None Include="compilerconfig.json" />
     <None Include="wwwroot\css\VisitorOverview.scss" />
+=======
+    <Content Include="Components\TerminalSubComponents\TerminalFooter.razor.css" />
+>>>>>>> origin/main
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 

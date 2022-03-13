@@ -19,15 +19,13 @@
     </MudItem>
 </MudGrid>
 
-<footer class="footer" style="height: 12%">
-    <MudGrid Justify=Justify.Center>
-        <MudItem lg=4 Class="center">
-            <MudText Typo=Typo.h4>
-                @Loc["QRSigninHint"]
-            </MudText>
-        </MudItem>
-    </MudGrid>
-</footer>
+<TerminalFooter ShowLanguageSelection=false>
+    <CenterItem>
+        <MudText Typo=Typo.h4>
+            @Loc["QRSigninHint"]
+        </MudText>
+    </CenterItem>
+</TerminalFooter>
 
 @code {
     [CascadingParameter]
