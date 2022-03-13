@@ -14,276 +14,27 @@
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
 
-<style>
-    /*MudTable breakpoint: 960px*/
-    /*Row Options Menu on Hover*/
-    @@media only screen and (max-width:960px){
-        .mud-table-body .mud-table-cell{
-            text-align:center;
-        }
-        .mud-toolbar.mud-table-toolbar{
-            height:115px;
-        }
+<link href="_content/NBG.Visitor.Blazor/css/VisitorOverview.css" rel="stylesheet"/>
 
-        .mud-table.mud-elevation-5{
-            box-shadow: none;
-        }
-
-        .mud-toolbar.mud-table-toolbar .mud-paper{
-            margin:0 !important;
-            padding:0 !important;
-        }
-    
-        .mud-toolbar.mud-table-toolbar{
-            margin:0;
-            padding:0;
-        }
-        
-        .mud-toolbar.mud-table-toolbar{
-            align-items:flex-start;
-            flex-direction:column;
-        }
-
-        .mud-table{
-            margin:16px !important;
-            padding-top:0 !important;
-        }
-
-        .mud-toolbar.mud-table-toolbar .mud-form div[role] {
-            width:100vw !important;
-        }
-
-        .mud-toolbar.mud-table-toolbar form.mud-form{
-            margin-top:0 !important;
-            padding-left:0px;
-            margin-left:0px;
-        }
-        .mud-toolbar.mud-table-toolbar .mud-input-control{
-            padding-left:0px;
-            margin-left:0px;
-        }
-
-        .mud-toolbar.mud-table-toolbar .mud-input-control.mud-input-input-control{
-            margin-top:0 !important;
-        }
-        
-        .mud-toolbar.mud-table-toolbar .mud-input-control .mud-input-control-input-container .mud-input.mud-input-text{
-            margin-top:5px !important;
-        }
-
-        .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button{
-              position: absolute;
-              right: 0;
-              margin: 0 !important;
-              background-color: rgb(240,240,240);
-              padding: 5px;
-        }
-        
-        .mud-table-smalldevices-sortselect .mud-select{
-            display:none;
-        }
-
-        /*
-        .mud-table .mud-table-smalldevices-sortselect{
-            padding:0;
-        }*/
-
-        form #logoutBtn{
-            height:auto !important;
-        }
-
-        .mud-toolbar.mud-table-toolbar form.mud-form,  .mud-toolbar.mud-table-toolbar .mud-input-control{
-            transition: padding-left 0.4s linear; /*Radio Btns & Search Bar*/
-        }
-
-        .mud-toolbar, .mud-toolbar>*
-        {
-            transition: margin 0.4s linear, padding 0.4s linear;
-        }
-
-        .mud-table .mud-toolbar{
-            transition: padding-right 0.4s linear, padding-left 0.4s linear;
-        }
-
-        .mud-toolbar.mud-table-toolbar .mud-paper p{
-            display:none;
-            height:0;
-            width:0;
-        }
-    }
-
-    @@media only screen and (max-width:1305px) and (min-width:961px){
-        .mud-toolbar.mud-table-toolbar .mud-form div[role] {
-            display:flex;
-            align-content:flex-start;
-            flex-direction:column;
-        }
-
-        .mud-toolbar.mud-table-toolbar .mud-form div[role] .mud-radio{
-            height:27px !important;
-        }
-
-        .mud-toolbar.mud-table-toolbar .mud-form{
-            margin-top:0 !important;
-        }
-    }
-
-    @@media only screen and (min-width:961px){
-        .mud-toolbar.mud-table-toolbar .mud-form{
-            margin-left:20px !important;
-        }
-    }
-
-/*    .mud-toolbar.mud-table-toolbar form.mud-form, .mud-table-smalldevices-sortselect .mud-select, .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button, .mud-toolbar.mud-table-toolbar .mud-input-control .mud-input-control-input-container .mud-input.mud-input-text, .mud-toolbar.mud-table-toolbar .mud-input-control.mud-input-input-control, .mud-toolbar.mud-table-toolbar form.mud-form, .mud-toolbar.mud-table-toolbar .mud-form div[role], .mud-table, .mud-toolbar.mud-table-toolbar, .mud-toolbar.mud-table-toolbar .mud-paper p, .mud-toolbar.mud-table-toolbar, .mud-toolbar.mud-table-toolbar .mud-paper, .mud-table.mud-elevation-5, .mud-toolbar.mud-table-toolbar, .mud-table-body .mud-table-cell
-    {
-        transition: all 1s ; 
-        -o-transition: all 1s linear; 
-        -moz-transition: all .25s linear; 
-        -webkit-transition: all .25s linear; 
-    }*/
-
-    .mud-toolbar.mud-table-toolbar .mud-paper{
-        margin-top:0 !important;
-    }
-
-    .mud-toolbar.mud-table-toolbar .mud-paper h5{
-        top:0;
-    }
-
-    .mud-table
-    { 
-        transition: box-shadow 0.4s linear, margin-top 0.4s linear, margin-left 0.4s linear, padding-top 0.4s linear;
-    }
-
-    /* Hide scrollbar*/
-    *::-webkit-scrollbar {
-      display: none;
-    }
-    * {
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none !important;  /* Firefox */
-    }
-
-    .mud-toolbar.mud-table-toolbar{
-        /*transition: padding-left 0.4s linear, height 3s linear;*/
-    }
-
-    .mud-toolbar.mud-table-toolbar .mud-paper{
-        transition: margin-top 0.4s linear, padding-left 0.4s linear;
-
-    }
-
-    @@media only screen and (min-width: 700px) {
-        .mud-table .mud-toolbar{
-            padding-right:20px;
-        }
-    }
-
-    @@media only screen and (min-width: 961px) {
-        .mud-table{
-            padding-top: 16px !important;
-        }
-
-        .mud-table-toolbar{
-            height:90px;
-        }
-
-        .optionsMenu
-        {
-            visibility: hidden;
-        }
-
-        tr:hover .optionsMenu
-        {
-            visibility: visible;
-        }
-
-        /*Table Buttons Formatting*/
-        .visitorOverviewBtn, .optionsMenu button{
-            width:40px;
-            height:40px;
-        }
-
-        .optionsMenu, #addButtonToolTip div{
-            border-radius:100%;
-        }
-
-        .visitorOverviewBtn:not(#addVisitBtn):not(:hover), .optionsMenu:not(:hover){
-            background-color:#f0f0f0;
-        }
-
-        .visitorOverviewBtn:not(#addVisitBtn):hover, .optionsMenu:hover{
-            background-color:#e1e1e1;
-        }
-
-        .mud-table .mud-toolbar{
-            padding-right:64px;
-        }
-    
-        /*Add Visit Button Formatting*/
-        #addButtonToolTip div button{
-            width:40px;
-            height:40px;
-            border-width:2px;
-            border-style:solid;
-            border-color:#d32f2f;
-            background-color:#ffeeed;
-            color:#d32f2f;
-        }
-
-        #addVisitBtn{
-            position:right;
-        }
-
-        .addVisitTh{
-            width:40px !important;
-        }
-
-        #addButtonToolTip div button:hover{
-            background-color:#d32f2f !important;
-            color:white !important;
-        }
-
-        .visitStatusChip{
-            margin-left:0;
-        }
-
-        .optionsMenuContainer{
-            max-width:125px;
-        }
-
-        .mud-toolbar.mud-table-toolbar form.mud-form{
-            padding-left:20px;
-            margin-left:-20px;
-        }
-        .mud-toolbar.mud-table-toolbar .mud-input-control{
-            padding-left:20px !important;
-            margin-left:-20px !important;
-        }
-    }
-    
-
-</style>
-@*Function/MostImportant Class ID Style Icon Color Elevation Dense *@
-<MudTable Items=@Visits Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Height="75vh" RowStyle="height:60px !important;" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Breakpoint="Breakpoint.Sm"> 
+<MudTable Items=@Visits Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Breakpoint="Breakpoint.Sm"> 
     <ToolBarContent>
-        <MudCard Class="pl-6 mt-8" Elevation="0">
-            <MudText Class="mb-2" Typo="Typo.h5">@Loc["Title"]</MudText>
-            <MudText>@Loc["Description"]</MudText>
+        <MudCard Elevation="0">
+            <div id="titleDescBox">
+                <MudText Typo="Typo.h5">@Loc["Title"]</MudText>
+                <MudText>@Loc["Description"]</MudText>
+            </div>
+
+            <MudForm>
+                <MudRadioGroup @bind-SelectedOption="@ActiveFilter">
+                    <MudRadio Option="@(VisitStatusDto.VISIT_ACTIVE)" Color="MudBlazor.Color.Success" T="VisitStatusDto?">@Loc["Active"]</MudRadio>
+                    <MudRadio Option="@(VisitStatusDto.VISIT_PENDING)" Color="MudBlazor.Color.Warning" T="VisitStatusDto?">@Loc["Pending"]</MudRadio>
+                    <MudRadio Option="@(VisitStatusDto.VISIT_OVER)" Color="MudBlazor.Color.Error" T="VisitStatusDto?">@Loc["Over"]</MudRadio>
+                </MudRadioGroup>
+            </MudForm>
         </MudCard>
 
-        <MudSpacer/>
-
-        <MudForm Class="mt-7 mr-11">
-            <MudRadioGroup @bind-SelectedOption="@ActiveFilter">
-                <MudRadio Option="@(VisitStatusDto.VISIT_ACTIVE)" Color="MudBlazor.Color.Success" T="VisitStatusDto?">@Loc["Active"]</MudRadio>
-                <MudRadio Option="@(VisitStatusDto.VISIT_PENDING)" Color="MudBlazor.Color.Warning" T="VisitStatusDto?">@Loc["Pending"]</MudRadio>
-                <MudRadio Option="@(VisitStatusDto.VISIT_OVER)" Color="MudBlazor.Color.Error" T="VisitStatusDto?">@Loc["Over"]</MudRadio>
-            </MudRadioGroup>
-        </MudForm>
-
-        <MudTextField @bind-Value="searchString" Class="mt-3 mr-11" Placeholder=@Loc["Search"] Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="MudBlazor.Size.Medium"></MudTextField>
-        <MudIconButton OnClick="ResetFilters" Class="mt-7 visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
+        <MudTextField @bind-Value="searchString" Placeholder=@Loc["Search"] Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="MudBlazor.Size.Medium"></MudTextField>
+        <MudIconButton OnClick="ResetFilters" Class="visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
     </ToolBarContent>
     <HeaderContent>
         <MudTh Class="pl-16"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">@Loc["FirstName"]</MudTableSortLabel></MudTh>
@@ -297,14 +48,14 @@
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.VisitEnd)">@Loc["End"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Status)">@Loc["Status"]</MudTableSortLabel></MudTh>
         <MudTh></MudTh>
-        <MudTh Class="pr-16 addVisitTh">
+        <MudTh Class="addVisitTh">
             <MudTooltip Text="@Loc["AddVisit"]" id="addButtonToolTip">
                 <MudIconButton OnClick="AddVisit" Class="visitorOverviewBtn" id="addVisitBtn" Icon="@Icons.Filled.Add"></MudIconButton>
             </MudTooltip>   
         </MudTh>
     </HeaderContent>
     <RowTemplate>
-        <MudTd Class="pl-16 mt-10">@context.Visitor.FirstName</MudTd>
+        <MudTd Class="pl-16">@context.Visitor.FirstName</MudTd>
         <MudTd>@context.Visitor.LastName</MudTd>
         <MudTd>@context.Visitor.PhoneNumber</MudTd>
         <MudTd>@context.Visitor.Email</MudTd>
@@ -314,7 +65,7 @@
         <MudTd>@context.VisitStart?.ToString("g", Loc.Culture)</MudTd>
         <MudTd>@context.VisitEnd?.ToString("g", Loc.Culture)</MudTd>
 
-        <MudTd Class="status pt-0 pb-0">
+        <MudTd Class="status pt-1 pb-1">
             @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
             {
                 <MudChip Class="visitStatusChip" Color="MudBlazor.Color.Success" Size=MudBlazor.Size.Small>@Loc["ActiveLong"]</MudChip> 
@@ -327,15 +78,19 @@
             }
         </MudTd>
 
-        <MudTd Class = "pt-1 pb-1">
-            @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
-            {
-                <MudIconButton OnClick=@(()=>SignOffVisit(@context)) Class="visitorOverviewBtn" Icon=@Icons.Filled.Logout></MudIconButton>
-            }
-        </MudTd>
+        @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
+        {
+            <MudTd Class = "pt-1 pb-1">
+                <MudIconButton OnClick=@(()=>SignOffVisit(@context)) Class="signOffBtn visitorOverviewBtn" Icon=@Icons.Filled.Logout></MudIconButton>
+            </MudTd>
+        }
+        else
+        {
+            <MudTd Class="pt-0 pb-0"></MudTd>
+        }
 
-        <MudTd Class="pr-16 pt-1 pb-1">
-            <MudMenu @onclick="OpenMenu" Class="optionsMenu" Icon="@Icons.Filled.MoreVert" Dense=true >
+        <MudTd Class="optionsMenuTd pt-1 pb-1">
+            <MudMenu Class="optionsMenu" Icon="@Icons.Filled.MoreVert" Dense=true>
                 <div class = "optionsMenuContainer">
                     <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:12px;">@Loc["Edit"]</MudText></MudMenuItem>
                     <MudMenuItem OnClick=@(()=>PrintVisitorPass(@context))><MudText Style="font-size:12px;">@Loc["PrintVisitorPass"]</MudText></MudMenuItem>
@@ -449,7 +204,7 @@
         }
     }
 
-    public async Task PrintVisitorPass(VisitDto visit)
+        public async Task PrintVisitorPass(VisitDto visit)
     {
         Bitmap qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
 
@@ -539,9 +294,11 @@
     }
 
     private void OpenMenu(){
+        ShowCancelFilterButton();
+        JS.InvokeVoidAsync("console.log","TEST");
         if (!menuOpen)
             menuOpen = true;
-        else
+        else if(menuOpen)
             menuOpen = false;
         JS.InvokeVoidAsync("console.log",menuOpen.ToString());
     }
