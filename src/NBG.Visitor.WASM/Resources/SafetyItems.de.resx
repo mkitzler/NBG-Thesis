@@ -118,153 +118,153 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="String01" xml:space="preserve">
-    <value>Visitor badge
-Please wear your visitor badge clearly visible at all times.
+    <value>Besucherausweis
+Bitte tragen Sie Ihren Besucherausweis jederzeit deutlich sichtbar.
 _content/NBG.Visitor.Blazor/images/safetyicons/01_visitor_badge.png</value>
   </data>
   <data name="String02" xml:space="preserve">
-    <value>Visitor registration or deregistration
+    <value>Besucheranmeldung bzw. -abmeldung
 
 _content/NBG.Visitor.Blazor/images/safetyicons/02_information.svg</value>
   </data>
   <data name="String03" xml:space="preserve">
-    <value>Travel speed
-The maximum permitted speed is 20 km/h on the entire premises.
+    <value>Fahrgeschwindigkeit
+Am gesamten Betriebsareal ist die erlaubte Höchstfahrgeschwindigkeit 20 km/h.
 _content/NBG.Visitor.Blazor/images/safetyicons/03_travel_speed.svg</value>
   </data>
   <data name="String04" xml:space="preserve">
-    <value>Meeting place
-Find out more about the meeting places.
+    <value>Sammelplatz
+Informieren Sie sich über die Sammelplätze.
 _content/NBG.Visitor.Blazor/images/safetyicons/04_meeting_place.svg</value>
   </data>
   <data name="String05" xml:space="preserve">
-    <value>Escape routes and emergency exits
-Find out about escape routes and emergency exits.
+    <value>Fluchtwege und Notausgänge
+Informieren Sie sich über Fluchtwege und Notausgänge.
 _content/NBG.Visitor.Blazor/images/safetyicons/05_emergency_exit.png</value>
   </data>
   <data name="String06" xml:space="preserve">
-    <value>Clean room
-Unauthorized persons are strictly forbidden to enter. All means of access are secured.
+    <value>Reinraum
+Unbefugten Personen ist der Zutritt strikt verboten. Alle Zutrittsmöglichkeiten sind gesichert.
 _content/NBG.Visitor.Blazor/images/safetyicons/06_clean_room.png</value>
   </data>
   <data name="String07" xml:space="preserve">
-    <value>Warning of laser beam
-Make sure that the safety regulations are observed.
+    <value>Warnung vor Laserstrahl
+Achten Sie auf die Einhaltung der Sicherheitsvorschriften.
 _content/NBG.Visitor.Blazor/images/safetyicons/07_laser_beam.svg</value>
   </data>
   <data name="String08" xml:space="preserve">
-    <value>Warning of explosive atmosphere
-Make sure that the safety regulations are observed.
+    <value>Warnung vor explosionsfähiger Atmosphäre
+Achten Sie auf die Einhaltung der Sicherheitsvorschriften.
 _content/NBG.Visitor.Blazor/images/safetyicons/08_explosion_warning.svg</value>
   </data>
   <data name="String09" xml:space="preserve">
-    <value>Warning of industrial trucks
-Give priority to transport vehicles and use the pavements priovided.
+    <value>Warnung vor Flurförderfahrzeugen
+Räumen Sie Transportfahrzeugen Vorrang ein, benutzen Sie die vorgesehenen Gehwege.
 _content/NBG.Visitor.Blazor/images/safetyicons/09_forklift_warning.svg</value>
   </data>
   <data name="String10" xml:space="preserve">
-    <value>Warning of high voltage
-In these areas, dangerous electrical voltages can lead to injuries or even death.
+    <value>Warnung vor Hochspannung
+In diesen Bereichen können gefährliche elektrische Spannungen zu Verletzungen oder sogar zum Tode führen.
 _content/NBG.Visitor.Blazor/images/safetyicons/10_high_voltage.svg</value>
   </data>
   <data name="String11" xml:space="preserve">
-    <value>No trespassing
-Signs mark areas that nust not be entered.
+    <value>Betreten verboten
+Hinweisschilder markieren Bereiche, die nicht betreten werden dürfen.
 _content/NBG.Visitor.Blazor/images/safetyicons/11_no_trespassing.png</value>
   </data>
   <data name="String12" xml:space="preserve">
-    <value>Photography and filming prohibited
-Photography and filming is prohibited on the entire premises. Exceptions only after consulation with the management or the responsible person.
+    <value>Fotografieren und filmen verboten
+Fotografieren und filmen ist am gesamten Betriebsareal verboten. Ausnahmen nur nach Abstimmung mit der Geschäftsführung bzw. der verantwortllichen Person.
 _content/NBG.Visitor.Blazor/images/safetyicons/12_no_photography.svg</value>
   </data>
   <data name="String13" xml:space="preserve">
-    <value>Smoking is prohibited
-Smoking is prohibited on the entire premises except in the designated areas.
+    <value>Rauchen verboten
+Außer in den gekennzeichneten Bereichen ist das Rauchen am gesamten Betriebsareal verboten.
 _content/NBG.Visitor.Blazor/images/safetyicons/13_no_smoking.svg</value>
   </data>
   <data name="String14" xml:space="preserve">
-    <value>No naked flame, fire, ignition source prohibited
-Handling of open flames, fire and sources of ignition are strictly forbidden.
+    <value>Keine offene Flamme, Feuer, Zündquelle verboten
+Hantieren mit offenen Flammen, Feuer und Zündquellen strikt verboten.
 _content/NBG.Visitor.Blazor/images/safetyicons/14_no_open_flame.svg</value>
   </data>
   <data name="String15" xml:space="preserve">
-    <value>Pacemakers prohibited
-Please observe the access ban for persons with pacemakers.
+    <value>Herzschrittmacher verboten
+Beachten Sie das Zutrittsverbot für Personen mit Herzschrittmacher.
 _content/NBG.Visitor.Blazor/images/safetyicons/15_no_pacemakers.svg</value>
   </data>
   <data name="String16" xml:space="preserve">
-    <value>No touching
-Touching machines, tools and materials is prohibited without express permission.
+    <value>Berühren verboten
+Berühren von Maschinen, Werkzeugen und Werkstoffen ist ohne ausdrückliche Genehmigung verboten.
 _content/NBG.Visitor.Blazor/images/safetyicons/16_no_touching.svg</value>
   </data>
   <data name="String17" xml:space="preserve">
-    <value>Hot work
-For any hot work (welding, cutting, soldering, svarfing, cut-off grinding) a certificate of approval must be applied for.
+    <value>Heißarbeiten
+Für jegliche Heißarbeit (Schweißen, Schneiden, Löten, Flämmen, Trennschleifen) muss ein Freigabeschein beantragt werden.
 _content/NBG.Visitor.Blazor/images/safetyicons/17_hot_work.png</value>
   </data>
   <data name="String18" xml:space="preserve">
-    <value>Health hazard
-In areas with danger isgn the skin or eyes can be irritated or allergies can be triggered.
+    <value>Gesundheitsgefahr
+In Bereichen mit diesem Gefahrzeichen können die Haut oder Augen gereizt oder Allergien ausgelöst werden.
 _content/NBG.Visitor.Blazor/images/safetyicons/18_health_hazard.svg</value>
   </data>
   <data name="String19" xml:space="preserve">
-    <value>Serious health hazard
-Areas with this danger sign indicate possible serious damage to health.
+    <value>Ernste Gesundheitsgefahr
+Bereiche mit diesem Gefahrzeichen weisen auf mögliche schwere Gesundheitsschäden hin.
 _content/NBG.Visitor.Blazor/images/safetyicons/19_serious_health_hazard.png</value>
   </data>
   <data name="String20" xml:space="preserve">
-    <value>Corrosive
-In areas with this danger sign, severe skin etching, severe eye damage can occur.
+    <value>Ätzend / korrosiv
+In Bereichen mit diesem Gefahrzeichen können schwere Ätzungen der Haut, schwere Augenschäden auftreten.
 _content/NBG.Visitor.Blazor/images/safetyicons/20_corrosive.svg</value>
   </data>
   <data name="String21" xml:space="preserve">
-    <value>Oxidizing
-In areas with this danger sign, chemicals can cause or intensify fires or explosions.
+    <value>Brandfördernd
+In Bereichen mit diesem Gefahrzeichen können Chemikalien Brände oder Explosionen verursachen bzw. verstärken.
 _content/NBG.Visitor.Blazor/images/safetyicons/21_oxidizing.svg</value>
   </data>
   <data name="String22" xml:space="preserve">
-    <value>Flammable
-Highly flammable products are used in areas with this danger sign.
+    <value>Entzündbar
+In Bereichen mit diesem Gefahrzeichen werden leicht entzündliche Produkte verwendet.
 _content/NBG.Visitor.Blazor/images/safetyicons/22_flammable.svg</value>
   </data>
   <data name="String23" xml:space="preserve">
-    <value>Explosive
-In areas with this danger sign, substances can react even without atmospheric oxygen. Danger of explosion!
+    <value>Explosiv
+In Bereichen mit diesem Gefahrzeichen können Stoffe, auch ohne Beteiligung von Luftsauerstoff, reagieren. Explosionsgefahr!
 _content/NBG.Visitor.Blazor/images/safetyicons/23_explosive.svg</value>
   </data>
   <data name="String24" xml:space="preserve">
-    <value>Gases under pressure
-Gases under pressure can explode and cause injury if stored incorrectly and heated up excessively.
+    <value>Gase unter Druck
+Unter Druck stehende Gase können bei falscher Lagerung und starker Erwärmung explodieren und Verletzungen verursachen.
 _content/NBG.Visitor.Blazor/images/safetyicons/24_gases.svg</value>
   </data>
   <data name="String25" xml:space="preserve">
-    <value>Toxic
-In areas with this danger sign, chemicals in the smalles quantities can lead to life-threatening poisoning.
+    <value>Giftig
+In Bereichen mit diesem Gefahrzeichen können Chemikalien in kleinsten Mengen zu lebensgefährdenden Vergiftungen führen.
 _content/NBG.Visitor.Blazor/images/safetyicons/25_toxic.svg</value>
   </data>
   <data name="String26" xml:space="preserve">
-    <value>Dangerous for the environment
-Always dispose of products with this hazard symbol correctly and never throw them into household waste or sewage.
+    <value>Umweltgefährlich
+Produkte mit diesem Gefahrzeichen immer richtig entsorgen und nie in den Hausmüll bzw. ins Abwasser schütten.
 _content/NBG.Visitor.Blazor/images/safetyicons/26_pollution.svg</value>
   </data>
   <data name="String27" xml:space="preserve">
-    <value>Use eye protection
-Signs mark areas/equipment where eye protection should be used.
+    <value>Augenschutz benutzen
+Hinweisschilder markieren Bereiche/Anlagen wo ein Augenschutz zu benutzen ist.
 _content/NBG.Visitor.Blazor/images/safetyicons/27_eye_protection.svg</value>
   </data>
   <data name="String28" xml:space="preserve">
-    <value>Use hand protection
-Signs mark areas/equipment where hand protection must be used.
+    <value>Handschutz benutzen
+Hinweisschilder markieren Bereiche/Anlagen wo ein Handschutz zu benutzen ist.
 _content/NBG.Visitor.Blazor/images/safetyicons/28_hand_protection.svg</value>
   </data>
   <data name="String29" xml:space="preserve">
-    <value>Personal protective equipment
-Observe the mandatory signs / information signs on the operating arte and tghe installations.
+    <value>Persönliche Schutzausrüstung
+Beachten Sie die Gebotszeichen/ Hinweisschilder am Betriebsareal und an den Anlagen.
 _content/NBG.Visitor.Blazor/images/safetyicons/29_protective_equipment.svg</value>
   </data>
   <data name="String30" xml:space="preserve">
-    <value>Using a handrail
-Use the handrail when climbing stairs.
+    <value>Handlauf benutzen
+Beim Treppensteigen ist der Handlauf zu benutzen.
 _content/NBG.Visitor.Blazor/images/safetyicons/30_handrail.svg</value>
   </data>
 </root>

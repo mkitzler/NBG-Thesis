@@ -24,7 +24,7 @@ namespace NBG.Visitor.Blazor
         /// <param name="name">The Name of the Visitor</param>
         /// <param name="arrival">The arrival DateTime of the Visitor. Will print "Planned Arrival" on the ticket if in the future</param>
         /// <returns></returns>
-        public PdfDocument GetPdf(Bitmap qr, string id, string name, DateTime arrival)
+        public PdfDocument GetPdf(System.IO.Stream qr, string id, string name, DateTime arrival)
         {
             // Register windows encoding
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
@@ -35,7 +35,7 @@ namespace NBG.Visitor.Blazor
             page.Width = new(2.1, XGraphicsUnit.Inch);
 
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            gfx.DrawImage(XImage.FromStream(qr.ToStream()), 21.6, 21.6, 108, 108);   // 1 Point == 1/72 Inch
+            gfx.DrawImage(XImage.FromStream(qr), 21.6, 21.6, 108, 108);   // 1 Point == 1/72 Inch
             gfx.DrawString(id, new("Consolas", 4, XFontStyle.Regular), XBrushes.Black, 75.6, 133, XStringFormats.Center);
             gfx.DrawString(Loc["VisitorTicket"], new("Consolas", 14, XFontStyle.Regular), XBrushes.Black, 75.6, 150, XStringFormats.Center);
             gfx.DrawString(name, new("Consolas", 8, XFontStyle.Regular), XBrushes.Black, 75.6, 180, XStringFormats.Center);

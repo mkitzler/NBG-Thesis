@@ -206,11 +206,11 @@
 
         public async Task PrintVisitorPass(VisitDto visit)
     {
-        Bitmap qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
+        System.IO.MemoryStream qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
 
         RenderFragment rf = 
     @<div>
-                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
+                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToArray())}")"/>
                 <a href=@("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString())>Link</a>
             </div>
     ;

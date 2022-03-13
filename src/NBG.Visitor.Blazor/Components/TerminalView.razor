@@ -8,6 +8,7 @@
 @using QRCoder
 @using System.Drawing
 @using System.Net
+@using System.IO
 
 @inject IDialogService Dialog;
 @inject IVisitService vs;
@@ -85,6 +86,12 @@
 
     [Parameter]
     public Guid? PreregisteredVisitGuid { get; set; } = null;
+
+    /// <summary>
+    /// Utilizes alternative methods that can be used in a Blazor Webassembly app.
+    /// </summary>
+    [Parameter]
+    public bool UseWASMMethods { get; set; } = false;
 
     private MudCarousel<object> carousel;
     private TerminalRegister form;
@@ -213,11 +220,11 @@
             QRUrl += '/';
 
         // Generate qr code and pdf
-        Bitmap qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
-        PdfDocument pdf = new TicketPdfGenerator(Loc).GetPdf(qr, guid.ToString(), form.FormData.FullName, registeredAt);
+        MemoryStream qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}", UseWASMMethods);
+        //PdfDocument pdf = new TicketPdfGenerator(Loc).GetPdf(qr, guid.ToString(), form.FormData.FullName, registeredAt);
 
         // Replace with print function
-        pdf.Save("./ticket.pdf");
+        //pdf.Save("./ticket.pdf");
 
         // Reset form, scroll back to homepage and show popup
         form.Reset();
@@ -225,8 +232,8 @@
     #if DEBUG
         RenderFragment rf = 
             @<div>
-                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
-                <a href=@(QRUrl + guid.ToString())>Link</a>
+                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToArray())}")"/>
+                <a href=@($"{QRUrl}{Loc.Culture.Name}/{guid}")>Link</a>
             </div>
         ;
         registerBox.MessageContent = rf;
