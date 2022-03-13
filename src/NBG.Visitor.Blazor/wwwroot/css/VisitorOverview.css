@@ -1,207 +1,156 @@
-﻿body {
-  min-width: 320px;
-  /* Suppose you want minimum width of 320px */
-  width: auto !important;
-  /* Firefox will set width as auto */
-  width: 320px;
-  /* As IE6 ignores !important it will set width as 320px; */
-}
-
-@media only screen and (max-width: 385px) {
-  .mud-table {
-    padding-top: 0 !important;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form span {
-    font-size: 14px;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form svg {
-    font-size: 15px;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-paper form .mud-radio {
-    margin-right: 12px;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-paper form .mud-button-root {
-    padding: 9px;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-input-control * {
-    font-size: 14px;
-  }
-}
-@media only screen and (max-width: 420px) {
+﻿@media only screen and (max-width: 520px) {
   .mud-table {
     margin-right: 0 !important;
   }
-}
-@media only screen and (max-width: 960px) and (min-width: 386px) {
-  .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
-    background-color: #f0f0f0;
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form span {
+    font-size: 14px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form svg {
+    font-size: 15px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form .mud-radio {
+    margin-right: 12px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form .mud-radio .mud-button-root {
+    padding: 9px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar > .mud-input-control input {
+    font-size: 14px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar > .mud-input-control svg {
+    font-size: 14px;
   }
 }
 @media only screen and (max-width: 960px) {
-  .mud-toolbar.mud-table-toolbar {
-    height: 115px;
+  .mud-table {
+    margin-top: 16px !important;
+    margin-right: 32px;
+    margin-left: 10px !important;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar {
+    height: 125px;
+    margin-left: 0;
+    padding-left: 0;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper {
+    min-width: 373px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper #titleDescBox h5 {
+    position: relative;
+    top: 5px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form {
+    margin-top: 5px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
+    width: 30px !important;
+    height: 30px !important;
+    top: 0;
+    right: 14px;
+    background-color: #fff;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar > .mud-input-control {
+    margin-left: 15px;
+    margin-top: 0 !important;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar > .mud-input-control .mud-input-control-input-container .mud-input.mud-input-text {
+    margin-top: 5px;
+  }
+  .mud-table .mud-table-body td.mud-table-cell .mud-chip {
+    width: 65%;
+    margin: 0 17.5% 0 17.5%;
+    height: 30px;
+    text-align: center;
+  }
+  .mud-table .mud-table-body td.mud-table-cell .mud-chip.mud-chip-color-success {
+    background-color: #00c853;
+  }
+  .mud-table .mud-table-body td.mud-table-cell .mud-chip.mud-chip-color-warning {
+    background-color: #ff9800;
+  }
+  .mud-table .mud-table-body td.mud-table-cell .mud-chip.mud-chip-color-error {
+    background-color: #f44336;
+  }
+  .mud-table .mud-table-body td.mud-table-cell .signOffBtn, .mud-table .mud-table-body td.mud-table-cell .optionsMenu {
+    width: 65% !important;
+    margin: 0 17.5% 0 17.5%;
+    height: 30px;
+    flex: auto;
+    border-radius: 12px;
+  }
+  .mud-table .mud-table-body td.mud-table-cell .optionsMenu .mud-icon-button {
+    width: 100%;
+    border-radius: 12px;
+  }
+  .mud-table .mud-table-smalldevices-sortselect .mud-select {
+    display: none;
   }
 
   .mud-table.mud-elevation-5 {
     box-shadow: none;
   }
-
-  .mud-toolbar.mud-table-toolbar .mud-paper {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .mud-toolbar.mud-table-toolbar {
-    margin: 0;
-    padding: 0;
-  }
-
-  .mud-toolbar.mud-table-toolbar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
+}
+@media only screen and (min-width: 961px) {
   .mud-table {
-    margin-top: 16px !important;
-    margin-right: 32px;
-    margin-left: 10px !important;
-    padding-top: 0 !important;
+    padding-top: 16px !important;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar {
+    height: 90px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form {
+    margin-right: 30px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
+    position: absolute;
+    right: 64px;
+    top: 39px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar > .mud-input-control {
+    margin-right: 120px;
+    margin-top: 15px;
+  }
+  .mud-table .mud-table-body tr {
+    height: 59px !important;
+  }
+  .mud-table .mud-table-body tr td.mud-table-cell .mud-chip.visitStatusChip {
+    margin-left: 0;
+  }
+  .mud-table .mud-table-body tr td.mud-table-cell .optionsMenu {
+    visibility: hidden;
+  }
+  .mud-table .mud-table-body tr td.mud-table-cell .optionsMenu button {
+    width: 40px;
+    height: 40px;
+  }
+  .mud-table .mud-table-body tr:hover .optionsMenu {
+    visibility: visible !important;
+  }
+  .mud-table .mud-table-head th.mud-table-cell #addButtonToolTip div button {
+    width: 40px;
+    height: 40px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #d32f2f;
+    background-color: #ffeeed;
+    color: #d32f2f;
+  }
+  .mud-table .mud-table-head th.mud-table-cell #addButtonToolTip div button:hover {
+    background-color: #d32f2f !important;
+    color: white !important;
+  }
+  .mud-table .mud-table-head th.optionsMenuTh {
+    padding-right: 64px;
+  }
+  .mud-table .mud-table-head th.addVisitTh {
+    width: 40px !important;
+    padding-right: 64px;
   }
 
-  .mud-toolbar.mud-table-toolbar .mud-input-control {
-    padding-left: 0px;
-    margin-left: 15px;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-input-control.mud-input-input-control {
-    margin-top: 0 !important;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-input-control .mud-input-control-input-container .mud-input.mud-input-text {
-    margin-top: 5px !important;
-  }
-
-  .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
-    top: 0;
-    right: 14px;
-    background-color: white;
-  }
-
-  .mud-table-smalldevices-sortselect .mud-select {
-    display: none;
-  }
-
-  /*
-      .mud-table .mud-table-smalldevices-sortselect{
-          padding:0;
-      }*/
-  form #logoutBtn {
-    height: auto !important;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form {
-    margin-right: 0;
-    position: relative;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form, .mud-toolbar.mud-table-toolbar .mud-input-control {
-    transition: padding-left 0.4s ease-in;
-    /*Radio Btns & Search Bar*/
-  }
-
-  .mud-toolbar, .mud-toolbar > * {
-    transition: margin 0.4s ease-in, padding 0.4s ease-in;
-  }
-
-  .mud-table .mud-toolbar {
-    transition: padding-right 0.4s ease-in;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-paper p {
-    display: none;
-  }
-
-  .mud-table {
-    margin-right: 0;
-  }
-
-  .mud-table-body .mud-table-cell .mud-chip {
-    width: 50%;
-    margin: 0 0 0 50%;
-    height: 30px;
-    text-align: center;
-  }
-
-  .signOffBtn, .optionsMenu {
-    width: 50% !important;
-    margin: 0 0 0 50%;
-    height: 30px;
-    flex: auto;
-    border-radius: 12px;
-    background-color: #f0f0f0;
-  }
-
-  .signOffBtn, .optionsMenu .mud-icon-button {
-    border-radius: 12px;
-    background-color: #f0f0f0;
-  }
-
-  .signOffBtn:hover, .optionsMenu .mud-icon-button:hover {
-    border-radius: 12px;
-    background-color: #e0e0e0;
-  }
-
-  .optionsMenu .mud-icon-button {
-    width: 100%;
-  }
-
-  /*    .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
-      font-size:20px;
-  }*/
-}
-.mud-table .mud-table-cell .mud-chip-filled.mud-chip-color-warning {
-  background-color: #ff9800;
-}
-
-.mud-table .mud-table-cell .mud-chip-filled.mud-chip-color-error {
-  background-color: #f44336;
-}
-
-.mud-table .mud-table-cell .mud-chip-filled.mud-chip-color-success {
-  background-color: #00c853;
-}
-
-.mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
-  position: absolute;
-}
-
-.mud-toolbar.mud-table-toolbar .mud-paper form {
-  margin-right: 30px;
-}
-
-.mud-toolbar.mud-table-toolbar .mud-paper p {
-  margin-top: 12px;
-  margin-right: 30px;
-}
-
-.mud-toolbar.mud-table-toolbar .mud-paper #titleDescBox {
-  position: relative;
-  top: 0px;
-  left: 15px;
-}
-
-@media only screen and (min-width: 1271px) {
-  .mud-toolbar.mud-table-toolbar .mud-paper form {
-    display: inline-block;
-  }
-
-  #titleDescBox {
-    display: inline-block;
+  .optionsMenuContainer {
+    max-width: 125px;
   }
 }
 @media only screen and (max-width: 1270px) {
@@ -219,32 +168,61 @@
     display: block;
   }
 }
-/*    .mud-toolbar.mud-table-toolbar form.mud-form, .mud-table-smalldevices-sortselect .mud-select, .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button, .mud-toolbar.mud-table-toolbar .mud-input-control .mud-input-control-input-container .mud-input.mud-input-text, .mud-toolbar.mud-table-toolbar .mud-input-control.mud-input-input-control, .mud-toolbar.mud-table-toolbar form.mud-form, .mud-toolbar.mud-table-toolbar .mud-form div[role], .mud-table, .mud-toolbar.mud-table-toolbar, .mud-toolbar.mud-table-toolbar .mud-paper p, .mud-toolbar.mud-table-toolbar, .mud-toolbar.mud-table-toolbar .mud-paper, .mud-table.mud-elevation-5, .mud-toolbar.mud-table-toolbar, .mud-table-body .mud-table-cell
-    {
-        transition: all 1s ; 
-        -o-transition: all 1s linear; 
-        -moz-transition: all .25s linear; 
-        -webkit-transition: all .25s linear; 
-    }*/
-.mud-toolbar.mud-table-toolbar .mud-paper {
-  margin-top: 0 !important;
+@media only screen and (min-width: 1271px) {
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper #titleDescBox {
+    display: inline-block;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper #titleDescBox p {
+    margin-top: 12px;
+    margin-right: 30px;
+  }
+  .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form {
+    display: inline-block;
+  }
+}
+body {
+  min-width: 320px;
+  width: auto !important;
+  width: 320px;
 }
 
-.mud-toolbar.mud-table-toolbar .mud-paper h5, .mud-toolbar.mud-table-toolbar .mud-paper form svg, .mud-toolbar.mud-table-toolbar .mud-paper form span, .mud-toolbar.mud-table-toolbar .mud-input-control * {
-  transition: font-size 0.4s linear;
+.visitorOverviewBtn:not(#addVisitBtn):not(:hover), .optionsMenu button:not(:hover) {
+  background-color: #e0e0e0;
+}
+
+.visitorOverviewBtn:not(#addVisitBtn):hover, .optionsMenu button:hover {
+  background-color: #d0d0d0;
 }
 
 .mud-table {
-  transition: box-shadow 0.4s ease-in, margin 0.4s ease-in, padding-top 0.4s ease-in;
+  transition: box-shadow 0.25s ease-in, margin 0.25s ease-in, padding-top 0.25s ease-in;
 }
-
-.mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
-  transition: all 0.4s ease-in;
+.mud-table .mud-toolbar.mud-table-toolbar {
+  transition: padding-left 0.25s ease-in;
+}
+.mud-table .mud-toolbar.mud-table-toolbar .mud-paper #titleDescBox {
+  position: relative;
+  left: 15px;
+}
+.mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form {
+  margin-left: 15px;
+}
+.mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form svg, .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form span {
+  transition: font-size 0.25s linear;
+}
+.mud-table .mud-toolbar.mud-table-toolbar > .mud-input-control * {
+  transition: font-size 0.25s linear;
+}
+.mud-table .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
+  position: absolute;
+  transition: font-size 0.25s ease-in, margin 0.25s ease-in, padding 0.25s ease-in, left 0.25s ease-in, right 0.25s ease-in, top 0.25s ease-in, height 0.25s ease-in, width 0.25s ease-in;
   width: 40px;
   height: 40px;
 }
+.mud-table .mud-table-container {
+  height: 72vh;
+}
 
-/* Hide scrollbar*/
 *::-webkit-scrollbar {
   display: none;
 }
@@ -256,116 +234,23 @@
   /* Firefox */
 }
 
-.mud-toolbar.mud-table-toolbar {
-  /*transition: padding-left 0.4s linear, height 3s linear;*/
-  transition: padding-left 0.4s ease-in;
-}
-
-.mud-toolbar.mud-table-toolbar .mud-paper {
-  transition: margin-top 0.4s ease-in, padding-left 0.4s ease-in;
-}
-
-.mud-toolbar.mud-table-toolbar .mud-paper p {
-  left: 40px;
-}
-
-.mud-table .mud-toolbar .mud-paper form {
-  margin-left: 15px;
-}
-
-.mud-table-container {
-  height: 72vh;
-}
-
-@media only screen and (min-width: 700px) {
-  .mud-table .mud-toolbar {
-    padding-right: 20px;
-  }
-}
-@media only screen and (min-width: 961px) {
-  .mud-table {
-    padding-top: 16px !important;
-  }
-
-  .mud-table-toolbar {
-    height: 90px;
-  }
-
-  .optionsMenu {
-    visibility: hidden;
-  }
-
-  tr:hover .optionsMenu {
-    visibility: visible;
-  }
-
-  /*Table Buttons Formatting*/
-  .visitorOverviewBtn, .optionsMenu button {
-    width: 40px;
-    height: 40px;
-  }
-
-  .optionsMenu, #addButtonToolTip div {
-    border-radius: 100%;
-  }
-
-  .visitorOverviewBtn:not(#addVisitBtn):not(:hover), .optionsMenu:not(:hover) {
-    background-color: #f0f0f0;
-  }
-
-  .visitorOverviewBtn:not(#addVisitBtn):hover, .optionsMenu:hover {
-    background-color: #e1e1e1;
-  }
-
-  /*Add Visit Button Formatting*/
-  #addButtonToolTip div button {
-    width: 40px;
-    height: 40px;
-    border-width: 2px;
-    border-style: solid;
-    border-color: #d32f2f;
-    background-color: #ffeeed;
-    color: #d32f2f;
-  }
-
-  .addVisitTh {
-    width: 40px !important;
-  }
-
-  #addButtonToolTip div button:hover {
-    background-color: #d32f2f !important;
-    color: white !important;
-  }
-
-  .visitStatusChip {
-    margin-left: 0;
-  }
-
-  .optionsMenuContainer {
-    max-width: 125px;
-  }
-
-  .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
-    padding: 12px;
-    right: 64px;
-    top: 39px;
-  }
-
-  .mud-toolbar.mud-table-toolbar .mud-input-control {
-    margin-right: 120px;
-    margin-top: 15px;
-  }
-
-  .mud-table tr {
-    height: 59px !important;
-  }
-
-  .optionsMenuTh, .addVisitTh {
-    padding-right: 64px;
-  }
-
-  .status {
-    padding-bottom: 0;
-    padding-top: 0;
-  }
-}
+/*.mud-toolbar.mud-table-toolbar .mud-paper {
+    transition: margin-top $transition-speed $transition-type, padding-left $transition-speed $transition-type;
+}*/
+/*.mud-toolbar.mud-table-toolbar form.mud-form, .mud-table-smalldevices-sortselect .mud-select, .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button, .mud-toolbar.mud-table-toolbar .mud-input-control .mud-input-control-input-container .mud-input.mud-input-text, .mud-toolbar.mud-table-toolbar .mud-input-control.mud-input-input-control, .mud-toolbar.mud-table-toolbar form.mud-form, .mud-toolbar.mud-table-toolbar .mud-form div[role], .mud-table, .mud-toolbar.mud-table-toolbar, .mud-toolbar.mud-table-toolbar .mud-paper p, .mud-toolbar.mud-table-toolbar, .mud-toolbar.mud-table-toolbar .mud-paper, .mud-table.mud-elevation-5, .mud-toolbar.mud-table-toolbar, .mud-table-body .mud-table-cell
+{
+    transition: all 1s ; 
+    -o-transition: all 1s linear; 
+    -moz-transition: all .25s linear; 
+    -webkit-transition: all .25s linear; 
+}*/
+/*.mud-toolbar.mud-table-toolbar .mud-paper form.mud-form, .mud-toolbar.mud-table-toolbar .mud-input-control {
+    transition: padding-left $transition-speed $transition-type;*/
+/*Radio Btns & Search Bar*/
+/*}*/
+/*.mud-toolbar, .mud-toolbar > * {
+    transition: margin $transition-speed $transition-type, padding $transition-speed $transition-type;
+}*/
+/*.mud-table .mud-toolbar {
+    transition: padding-right $transition-speed $transition-type;
+}*/
