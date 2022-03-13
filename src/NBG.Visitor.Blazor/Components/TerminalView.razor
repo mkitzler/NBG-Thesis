@@ -17,25 +17,22 @@
 <MudThemeProvider Theme="NBG"/>
 
 <div style=@Style>
-    <CustomMudCarousel Style="height: 100%; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object">
-        @if (!HideFirstPage)
-        {
-            <MudCarouselItem>
-                <TerminalHome OnNext=@(() => carousel.Next()) />
-            </MudCarouselItem>
-        }
+    <CustomMudCarousel Style="height: 100%; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object" SelectedIndex=@(HideFirstPage ? 1 : 0)>
         <MudCarouselItem>
-            <TerminalRegister @ref="form" OnBack=@(HideFirstPage ? null : carousel.Previous) OnNext=carousel.Next />
+            <TerminalHome OnNext=carousel.Next />
         </MudCarouselItem>
         <MudCarouselItem>
-            <TerminalSafety OnBack=@(() => carousel.Previous()) OnRegister=Register/>
+            <TerminalRegister @ref="form" OnBack=carousel.Previous OnNext=carousel.Next />
+        </MudCarouselItem>
+        <MudCarouselItem>
+            <TerminalSafety OnBack=carousel.Previous OnRegister=Register />
         </MudCarouselItem>
     </CustomMudCarousel>
 </div>
 
 <MudMessageBox @ref="qrFailedBox">
     <TitleContent>
-        <MudText Typo=Typo.h4>@Loc["InvalidQR"]</MudText>
+        <MudText Typo=Typo.h4 Class="ma-4">@Loc["InvalidQR"]</MudText>
     </TitleContent>
     <YesButton>
         <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">OK</MudButton>
@@ -44,7 +41,7 @@
 
 <MudMessageBox @ref="registerBox">
     <TitleContent>
-        <MudText Typo=Typo.h4>@Loc["RegisterSuccess"]</MudText>
+        <MudText Typo=Typo.h4 Class="ma-4">@Loc["RegisterSuccess"]</MudText>
     </TitleContent>
     <YesButton>
         <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">OK</MudButton>
@@ -56,7 +53,7 @@
         <MudText Typo=Typo.h4>@Loc["SignOut"]</MudText>
     </TitleContent>
     <MessageContent>
-        <MudText Typo=Typo.h6>@Loc["ConfirmSignOut"]</MudText>
+        <MudText Typo=Typo.h6 Class="ma-4">@Loc["ConfirmSignOut"]</MudText>
     </MessageContent>
     <NoButton>
         <MudButton Class="touchscreen-button" Variant="Variant.Filled" Color="MudBlazor.Color.Secondary">@Loc["No"]</MudButton>
@@ -73,9 +70,16 @@
     [Parameter]
     public string Style { get; set; }
 
+    /// <summary>
+    /// The url to the terminal which the QR code will contain.
+    /// </summary>
+    /// <remarks>The culture and guid will be appended like: <code>QRUrl + "de-DE/b4f88443-2b8e-4308-be2d-e5e274b59a7e"</code></remarks>
     [Parameter]
     public string QRUrl { get; set; } = "https://fiss.dev.nbg.tech:44303/terminal/";
 
+    /// <summary>
+    /// Skips directly to the second page.
+    /// </summary>
     [Parameter]
     public bool HideFirstPage { get; set; } = false;
 
@@ -123,42 +127,23 @@
         // If guid is valid
         if (guid != default(Guid))
         {
-        // Load visit
-            #if DEBUG
-            VisitDto visit = new VisitDto() {Status = VisitStatusDto.VISIT_ACTIVE};
-            #else
+            // Load visit
             VisitDto visit = await vs.ReadVisitByGuid(guid);
-            #endif
 
             // If exists
             if (visit != null)
             {
                 if (visit.Status == VisitStatusDto.VISIT_PENDING)
                 {
-                    // Needs to move first or form won't be loaded
-                    carousel.MoveTo(HideFirstPage ? 0 : 1);
-                    #if DEBUG
-                    Console.WriteLine("Pending");
-                    form.FormData.ContactPerson = "Loaded from DB";
-                    #else
-                    form.FormData = await vs.ReadRegisterFormDataByGuid(guid);
-                    form.Valid = true;
-                    #endif
+                    await LoadFormData(guid);
                 }
                 else if (visit.Status == VisitStatusDto.VISIT_ACTIVE)
                 {
-                    #if DEBUG
-                    Console.WriteLine("Active");
-                    #endif
-                    bool? result = await confirmSignoutBox.Show(new() {DisableBackdropClick = true, CloseButton = false});
-                    if (result ?? false)
-                    {
-                        #if DEBUG
-                        Console.WriteLine("Ended Visit");
-                        #else
-                        await vs.UpdateVisit(visit.Id, new() { Status = VisitStatusDto.VISIT_OVER });
-                        #endif
-                    }
+                    await SignOutUser(guid, visit.Id);
+                }
+                else
+                {
+                    await qrFailedBox.Show();
                 }
             }
             else
@@ -168,21 +153,68 @@
         }
     }
 
+    /// <summary>
+    /// Load the form data of an visit.
+    /// </summary>
+    /// <param name="guid">The Guid of the visit.</param>
+    public async Task LoadFormData(Guid guid)
+    {
+        // Needs to move first or form won't be loaded
+        if (!HideFirstPage)
+            carousel.MoveTo(1);
+
+        form.FormData = await vs.ReadRegisterFormDataByGuid(guid);
+        form.Valid = true;
+        await form.Validate();
+    }
+
+    /// <summary>
+    /// Load the form data of an visit.
+    /// </summary>
+    /// <param name="guid">The Guid of the visit.</param>
+    public async Task SignOutUser(Guid guid, int visitId = -1)
+    {
+    #if DEBUG
+        Console.WriteLine("Active");
+    #endif
+        bool? result = await confirmSignoutBox.Show(new() {DisableBackdropClick = true, CloseButton = false});
+        if (result ?? false)
+        {
+        #if DEBUG
+            Console.WriteLine("Ended Visit");
+        #else
+            await vs.UpdateVisit((visitId < 0) ? (await vs.ReadVisitByGuid(guid)).Id : visitId, new() { Status = VisitStatusDto.VISIT_OVER });
+        #endif
+        }
+    }
+
     private async Task Register()
     {
+        HideFirstPage = false;
         DateTime registeredAt = DateTime.Now;
 
-        // Load data
-        #if DEBUG
-        Guid id = new("00000000-0000-0000-0000-000000000100");
+        // Send data
+    #if DEBUG
+        //Use dummy data
+        Guid guid = PreregisteredVisitGuid ?? new("00000000-0000-0000-0000-000000000100");
         await Task.Delay(1000);
-        #else
-        Guid id = (await vs.AddVisit(registeredAt, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company, form.FormData.ContactPerson)).Guid;
-        #endif
+    #else
+        // Add visit or update to status active with user verified data
+        Guid guid = PreregisteredVisitGuid ?? (await vs.AddVisit(registeredAt, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company, form.FormData.ContactPerson)).Guid;
+        if (PreregisteredVisitGuid.HasValue)
+        {
+            int id = (await vs.ReadVisitByGuid(guid)).Id;
+            await vs.UpdateVisit(id, registeredAt, null, VisitStatusDto.VISIT_ACTIVE, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+        }
+    #endif
+
+        // Check url for trailing slash
+        if (QRUrl.Last() != '/')
+            QRUrl += '/';
 
         // Generate qr code and pdf
-        Bitmap qr = QRGenerator.GenerateQrCode(QRUrl + Loc.Culture.Name + "/" + id.ToString());
-        PdfDocument pdf = new TicketPdfGenerator(Loc).GetPdf(qr, id.ToString(), form.FormData.FullName, registeredAt);
+        Bitmap qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
+        PdfDocument pdf = new TicketPdfGenerator(Loc).GetPdf(qr, guid.ToString(), form.FormData.FullName, registeredAt);
 
         // Replace with print function
         pdf.Save("./ticket.pdf");
@@ -190,17 +222,17 @@
         // Reset form, scroll back to homepage and show popup
         form.Reset();
         carousel.MoveTo(0);
-        #if DEBUG
+    #if DEBUG
         RenderFragment rf = 
             @<div>
                 <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
-                <a href=@(QRUrl + id.ToString())>Link</a>
+                <a href=@(QRUrl + guid.ToString())>Link</a>
             </div>
         ;
         registerBox.MessageContent = rf;
         await registerBox.Show();
-        #else
+    #else
         await registerBox.Show();
-        #endif
+    #endif
     }
 }

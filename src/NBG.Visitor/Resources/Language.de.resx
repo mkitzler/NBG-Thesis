@@ -321,4 +321,7 @@
   <data name="SafetyInfo" xml:space="preserve">
     <value>Sicherheitshinweise</value>
   </data>
+  <data name="ClearFields" xml:space="preserve">
+    <value>Felder löschen</value>
+  </data>
 </root>
