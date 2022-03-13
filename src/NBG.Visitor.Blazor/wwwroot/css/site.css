@@ -26,7 +26,17 @@
     margin-top: 0.5rem !important;
 }
 
-.absolut-helper-container .mud-input-control-helper-container {
+.touchscreen-textfield .mud-icon-button-label {
+    height: 3rem;
+    width: 3rem;
+}
+
+.touchscreen-textfield .mud-icon-button-label .mud-svg-icon {
+    height: 1.75rem;
+    width: 1.75rem;
+}
+
+.absolute-helper-container .mud-input-control-helper-container {
     position: absolute;
     top: 100%;
 }
