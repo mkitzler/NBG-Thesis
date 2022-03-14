@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <PackageReference Include="BuildWebCompiler2022" Version="1.14.7" />
-    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.7.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.1" />

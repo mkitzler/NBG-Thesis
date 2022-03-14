@@ -5,34 +5,22 @@ using System.Net;
 
 namespace NBG.Visitor.Blazor
 {
-    internal static class QRGenerator
+    public static class QRGenerator
     {
         /// <summary>
         /// Generates a QR code.
         /// </summary>
         /// <param name="content">The content of the qr code</param>
-        /// <param name="useAlternative">Uses different method that does not use System.Drawing, but cannot embed logo</param>
-        /// <returns>A bitmap as byte array</returns>
-        public static byte[] GenerateQrCode(string content, bool useAlternative = false)
+        /// <returns>The QR code as bitmap</returns>
+        public static Bitmap GenerateQrCode(string content)
         {
-            byte[] ret;
-
             QRCodeGenerator qrGenerator = new QRCodeGenerator();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(content, QRCodeGenerator.ECCLevel.H);
-            if (!useAlternative)
-            {
-                QRCode qrCode = new QRCode(qrCodeData);
-                //Old
-                //Bitmap logo = BitmapFromUrl("https://fiss.dev.nbg.tech:44303/_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png");
-                Bitmap logo = StaticContent.NBG_Icon_Red;
-                ret = qrCode.GetGraphic(30, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 25, 15, false).ToBytes();
-            }
-            else
-            {
-                BitmapByteQRCode bitmapByteQR = new BitmapByteQRCode(qrCodeData);
-                ret = bitmapByteQR.GetGraphic(30);
-            }
-            return ret;
+            QRCode qrCode = new QRCode(qrCodeData);
+            //Old
+            //Bitmap logo = BitmapFromUrl("https://fiss.dev.nbg.tech:44303/_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png");
+            Bitmap logo = StaticContent.NBG_Icon_Red;
+            return qrCode.GetGraphic(30, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 25, 15, false);
         }
 
         public static Bitmap BitmapFromUrl(string url)
