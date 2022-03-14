@@ -220,11 +220,16 @@
             QRUrl += '/';
 
         // Generate qr code and pdf
-        MemoryStream qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}", UseWASMMethods);
+        byte[] qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}", UseWASMMethods);
         //PdfDocument pdf = new TicketPdfGenerator(Loc).GetPdf(qr, guid.ToString(), form.FormData.FullName, registeredAt);
 
         // Replace with print function
         //pdf.Save("./ticket.pdf");
+
+        using (var f = new FileStream("./ticket.pdf", FileMode.Create))
+        {
+            f.Write(new TicketPdfGenerator(Loc).AlternativeGetPdf(qr, guid.ToString(), form.FormData.FullName, registeredAt));
+        }
 
         // Reset form, scroll back to homepage and show popup
         form.Reset();
@@ -232,7 +237,7 @@
     #if DEBUG
         RenderFragment rf = 
             @<div>
-                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToArray())}")"/>
+                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr)}")"/>
                 <a href=@($"{QRUrl}{Loc.Culture.Name}/{guid}")>Link</a>
             </div>
         ;
