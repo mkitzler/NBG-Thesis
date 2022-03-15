@@ -2,6 +2,7 @@
 using PdfSharp.Pdf;
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
@@ -46,7 +47,11 @@ namespace NBG.Visitor.Blazor
             page.Width = new(2.1, XGraphicsUnit.Inch);
 
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            gfx.DrawImage(XImage.FromStream(qr.ToStream()), 21.6, 21.6, 108, 108);   // 1 Point == 1/72 Inch
+            using (MemoryStream qrStream = new MemoryStream())
+            {
+                qr.Save(qrStream, ImageFormat.Png);
+                gfx.DrawImage(XImage.FromStream(qrStream), 21.6, 21.6, 108, 108);   // 1 Point == 1/72 Inch
+            }
             gfx.DrawString(id, new("Consolas", 4, XFontStyle.Regular), XBrushes.Black, 75.6, 133, XStringFormats.Center);
             gfx.DrawString(visitorTicketLabel, new("Consolas", 14, XFontStyle.Regular), XBrushes.Black, 75.6, 150, XStringFormats.Center);
             gfx.DrawString(name, new("Consolas", 8, XFontStyle.Regular), XBrushes.Black, 75.6, 180, XStringFormats.Center);

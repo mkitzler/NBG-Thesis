@@ -2,9 +2,10 @@
 @using NBG.Visitor.Blazor
 @using NBG.Visitor.Blazor.Components
 @using System.Reflection
+@using System.IO
 
 <CascadingValue Value="Loc">
-    <TerminalView Style="height: 100vh;" PreregisteredVisitGuid=Guid HideFirstPage=true></TerminalView>
+    <TerminalView Style="height: 100vh;" Registered=OnRegister PreregisteredVisitGuid=Guid HideFirstPage=true></TerminalView>
 </CascadingValue>
 
 @code{
@@ -20,5 +21,13 @@
     {
         Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), Culture);
         base.OnInitialized();
+    }
+
+    private void OnRegister(byte[] pdf)
+    {
+        using (StreamWriter sw = new StreamWriter(new FileStream("./ticket.pdf", FileMode.Create)))
+        {
+            sw.Write(pdf);
+        }
     }
 }

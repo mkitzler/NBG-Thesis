@@ -2,11 +2,20 @@
 @using NBG.Visitor.Blazor
 @using NBG.Visitor.Blazor.Components
 @using System.Reflection
+@using System.IO
 
 <CascadingValue Value="Loc">
-    <TerminalView Style="height: 100vh;"></TerminalView>
+    <TerminalView Style="height: 100vh;" Registered=OnRegister></TerminalView>
 </CascadingValue>
 
 @code{
     private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
+
+    private void OnRegister(byte[] pdf)
+    {
+        using (StreamWriter sw = new StreamWriter(new FileStream("./ticket.pdf", FileMode.Create)))
+        {
+            sw.Write(pdf);
+        }
+    }
 }

@@ -1,4 +1,5 @@
 ﻿@using MudBlazor;
+@using NBG.Services.Clients.REST
 @using NBG.Visitor.Blazor.Components.Dialogs
 @using NBG.Visitor.Blazor.Components.TerminalSubComponents
 @using NBG.Visitor.Domain.Dtos;
@@ -94,7 +95,7 @@
     public bool UseWASMMethods { get; set; } = false;
 
     /// <summary>
-    /// Gets called when the user finished registration with the Pdf file of the ticket async byte aray.
+    /// Gets called when the user finished registration with the Pdf file of the ticket async byte array.
     /// </summary>
     [Parameter]
     public EventCallback<byte[]> Registered {get; set;}
@@ -188,13 +189,13 @@
     public async Task SignOutUser(Guid guid, int visitId = -1)
     {
     #if DEBUG
-        Console.WriteLine("Active");
+    Console.WriteLine("Active");
     #endif
         bool? result = await confirmSignoutBox.Show(new() {DisableBackdropClick = true, CloseButton = false});
         if (result ?? false)
         {
         #if DEBUG
-            Console.WriteLine("Ended Visit");
+    Console.WriteLine("Ended Visit");
         #else
             await vs.UpdateVisit((visitId < 0) ? (await vs.ReadVisitByGuid(guid)).Id : visitId, new() { Status = VisitStatusDto.VISIT_OVER });
         #endif
@@ -208,9 +209,9 @@
 
         // Send data
     #if DEBUG
-        //Use dummy data
-        Guid guid = PreregisteredVisitGuid ?? new("00000000-0000-0000-0000-000000000100");
-        await Task.Delay(1000);
+    //Use dummy data
+    Guid guid = PreregisteredVisitGuid ?? new("00000000-0000-0000-0000-000000000100");
+    await Task.Delay(1000);
     #else
         // Add visit or update to status active with user verified data
         Guid guid = PreregisteredVisitGuid ?? (await vs.AddVisit(registeredAt, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company, form.FormData.ContactPerson)).Guid;
@@ -225,12 +226,13 @@
         if (QRUrl.Last() != '/')
             QRUrl += '/';
 
-        Bitmap qr;
+        // Generate qr code and pdf
+        byte[] qr;
         if (!UseWASMMethods)
         {
-            // Generate qr code and pdf
-            qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
-            PdfDocument pdf = TicketPdfGenerator.GetPdf(Loc, qr, guid.ToString(), form.FormData.FullName, registeredAt);
+            Bitmap qrBitmap = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
+            qr = qrBitmap.ToBytes();
+            PdfDocument pdf = TicketPdfGenerator.GetPdf(Loc, qrBitmap, guid.ToString(), form.FormData.FullName, registeredAt);
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -240,9 +242,9 @@
         }
         else
         {
-            //Placeholder
-            qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
-            //TODO RestTicketService
+            qr = await RestTicketService.GenerateQR($"{QRUrl}{Loc.Culture.Name}/{guid}");
+            byte[] pdf = await RestTicketService.GenerateTicket(Loc["VisitorTicket"], (registeredAt > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]), Loc.Culture, qr, guid.ToString(), form.FormData.FullName, registeredAt);
+            await Registered.InvokeAsync(pdf);
         }
 
         // Reset form, scroll back to homepage and show popup
@@ -251,7 +253,7 @@
     #if DEBUG
         RenderFragment rf = 
             @<div>
-                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
+                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr)}")"/>
                 <a href=@($"{QRUrl}{Loc.Culture.Name}/{guid}")>Link</a>
             </div>
         ;
