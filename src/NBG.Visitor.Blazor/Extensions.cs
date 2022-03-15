@@ -10,7 +10,9 @@ namespace NBG.Visitor.Blazor
         {
             using (MemoryStream ms = new MemoryStream())
             {
+#pragma warning disable CA1416 // Plattformkompatibilität überprüfen
                 b.Save(ms, ImageFormat.Png);
+#pragma warning restore CA1416 // Plattformkompatibilität überprüfen
                 return ms.ToArray();
             }
         }

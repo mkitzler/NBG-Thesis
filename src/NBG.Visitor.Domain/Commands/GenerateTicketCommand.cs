@@ -11,7 +11,7 @@ namespace NBG.Visitor.Domain.Commands
     {
         public string VisitorTicketLabel { get; set; }
         public string ArrivalLabel { get; set; }
-        public CultureInfo DateFormat { get; set; }
+        public string DateCulture { get; set; }
         public byte[] QR { get; set; }
         public string Guid { get; set; }
         public string Name { get; set; }

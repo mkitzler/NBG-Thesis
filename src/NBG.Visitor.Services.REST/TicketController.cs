@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NBG.Visitor.Blazor;
 using System.IO;
+using System.Globalization;
+using NBG.Visitor.Blazor.TicketGeneration;
 
 namespace NBG.Visitor.Services.REST
 {
@@ -19,20 +21,13 @@ namespace NBG.Visitor.Services.REST
         [HttpPost("GenerateQR")]
         public async Task<byte[]> GenerateQR([FromBody] string content)
         {
-            return QRGenerator.GenerateQrCode(content).ToBytes();
+            return QRGenerator.GenerateQrCode(content);
         }
 
         [HttpPost("GenerateTicket")]
         public async Task<byte[]> GenerateTicket([FromBody] GenerateTicketCommand ticket)
         {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                using (MemoryStream qr = new MemoryStream(ticket.QR))
-                {
-                    TicketPdfGenerator.GetPdf(ticket.VisitorTicketLabel, ticket.ArrivalLabel, ticket.DateFormat, new System.Drawing.Bitmap(qr), ticket.Guid, ticket.Name, ticket.Arrival).Save(ms);
-                    return ms.ToArray();
-                }
-            }
+            return TicketPdfGenerator.GetPdf(ticket.VisitorTicketLabel, ticket.ArrivalLabel, new CultureInfo(ticket.DateCulture), ticket.QR, ticket.Guid, ticket.Name, ticket.Arrival);
         }
     }
 }

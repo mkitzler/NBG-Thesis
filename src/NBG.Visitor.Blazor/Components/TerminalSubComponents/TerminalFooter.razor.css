@@ -1,12 +1,12 @@
 ﻿.footer {
-    color: #FFF;
-    background-color: #F00C;
     width: 100%;
     left: 0;
     bottom: 0;
     position: fixed;
     text-align: center;
     display: flex;
+    height: 13%;
+    opacity: 90%;
 }
 
 .flag {

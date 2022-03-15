@@ -7,16 +7,18 @@ using MudBlazor;
 
 namespace NBG.Visitor.Blazor.Components
 {
-    public static class VisitorOverviewTheme
+    public static class MudBlazorConfig
     {
         public static MudTheme Theme = new MudTheme()
         {
             Palette = new Palette()
             {
-                Primary = Colors.Red.Darken4,
-                Secondary = Colors.Red.Darken1
+                Primary = Colors.Red.Accent4,
+                Secondary = Colors.Grey.Lighten2,
+                SecondaryContrastText = Colors.Grey.Darken2,
+                Error = Colors.Red.Darken4,
+                Dark = Colors.Shades.Black
             }
         };
-
     }
 }

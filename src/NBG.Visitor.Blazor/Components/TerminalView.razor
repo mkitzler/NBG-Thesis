@@ -2,6 +2,7 @@
 @using NBG.Services.Clients.REST
 @using NBG.Visitor.Blazor.Components.Dialogs
 @using NBG.Visitor.Blazor.Components.TerminalSubComponents
+@using NBG.Visitor.Blazor.TicketGeneration
 @using NBG.Visitor.Domain.Dtos;
 @using NBG.Visitor.Domain;
 @using System.Reflection
@@ -16,7 +17,8 @@
 
 <link href="_content/NBG.Visitor.Blazor/css/site.css" rel="stylesheet"/>
 
-<MudThemeProvider Theme="NBG"/>
+<MudThemeProvider Theme=MudBlazorConfig.Theme/>
+<MudDialogProvider/>
 
 <div style=@Style>
     <CustomMudCarousel Style="height: 100%; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object" SelectedIndex=@(HideFirstPage ? 1 : 0)>
@@ -107,27 +109,74 @@
     private MudMessageBox confirmSignoutBox;
     private MudMessageBox qrFailedBox;
 
-    MudTheme NBG = new MudTheme()
-    {
-        Palette = new Palette()
-        {
-            Primary = Colors.Red.Darken1,
-            Secondary = Colors.Grey.Lighten2,
-            SecondaryContrastText = Colors.Grey.Darken2,
-            Error = Colors.Red.Darken3,
-            Dark = Colors.Shades.Black
-        }
-    };
-
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender)
         {
             if (PreregisteredVisitGuid != null)
             {
-                UseGuid(PreregisteredVisitGuid ?? default(Guid));
+                UseGuid(PreregisteredVisitGuid ?? default(Guid)).AndForget();
             }
         }
+    }
+
+    private async Task Register()
+    {
+        HideFirstPage = false;
+        DateTime registeredAt = DateTime.Now;
+
+        // Send data
+#if DEBUG
+        //Use dummy data
+        Guid guid = PreregisteredVisitGuid ?? new("00000000-0000-0000-0000-000000000100");
+        await Task.Delay(1000);
+#else
+        // Add visit or update to status active with user verified data
+        Guid guid = PreregisteredVisitGuid ?? (await vs.AddVisit(registeredAt, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company, form.FormData.ContactPerson)).Guid;
+        if (PreregisteredVisitGuid.HasValue)
+        {
+            int id = (await vs.ReadVisitByGuid(guid)).Id;
+            await vs.UpdateVisit(id, registeredAt, null, VisitStatusDto.VISIT_ACTIVE, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+        }
+#endif
+
+        // Check url for trailing slash
+        if (QRUrl.Last() != '/')
+            QRUrl += '/';
+
+        // Generate qr code and pdf
+        byte[] qr;
+        if (!UseWASMMethods)
+        {
+            qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
+            byte[] pdf = TicketPdfGenerator.GetPdf(Loc, qr, guid.ToString(), form.FormData.FullName, registeredAt);
+
+            await Registered.InvokeAsync(pdf);
+        }
+        else
+        {
+            qr = await RestTicketService.GenerateQR($"{QRUrl}{Loc.Culture.Name}/{guid}");
+            byte[] pdf = await RestTicketService.GenerateTicket(Loc["VisitorTicket"], (registeredAt > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]), Loc.Culture.Name, qr, guid.ToString(), form.FormData.FullName, registeredAt);
+            await Registered.InvokeAsync(pdf);
+        }
+
+        // Reset form, scroll back to homepage and show popup
+        form.Reset();
+        carousel.MoveTo(0);
+#if DEBUG
+        RenderFragment rf = 
+            @<div>
+                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr)}")"/>
+                <a href=@($"{QRUrl}{Loc.Culture.Name}/{guid}")>Link</a>
+            </div>;
+            
+#pragma warning disable BL0005 // Only für debug purposes, warning neglectable
+        registerBox.MessageContent = rf;
+#pragma warning restore BL0005
+        await registerBox.Show();
+#else
+        await registerBox.Show();
+#endif
     }
 
     /// <summary>
@@ -153,7 +202,7 @@
                 }
                 else if (visit.Status == VisitStatusDto.VISIT_ACTIVE)
                 {
-                    await SignOutUser(guid, visit.Id);
+                    await SignOutUser(visit.Id);
                 }
                 else
                 {
@@ -183,84 +232,34 @@
     }
 
     /// <summary>
-    /// Load the form data of an visit.
+    /// Sets the status of the visit with the specified guid to over.
     /// </summary>
+    /// <remarks>
+    /// Uses the guid to automatically request the id.
+    /// </remarks>
     /// <param name="guid">The Guid of the visit.</param>
-    public async Task SignOutUser(Guid guid, int visitId = -1)
+    public async Task SignOutUser(Guid guid)
     {
-    #if DEBUG
-    Console.WriteLine("Active");
-    #endif
+        await SignOutUser((await vs.ReadVisitByGuid(guid)).Id);
+    }
+
+    /// <summary>
+    /// Sets the status of the visit with the specified id to over.
+    /// </summary>
+    /// <param name="visitId">The id of the visit.</param>
+    public async Task SignOutUser(int visitId)
+    {
+#if DEBUG
+        Console.WriteLine("Active");
+#endif
         bool? result = await confirmSignoutBox.Show(new() {DisableBackdropClick = true, CloseButton = false});
         if (result ?? false)
         {
-        #if DEBUG
-    Console.WriteLine("Ended Visit");
-        #else
-            await vs.UpdateVisit((visitId < 0) ? (await vs.ReadVisitByGuid(guid)).Id : visitId, new() { Status = VisitStatusDto.VISIT_OVER });
-        #endif
+#if DEBUG
+            Console.WriteLine("Ended Visit");
+#else
+            await vs.UpdateVisit(visitId, new() { Status = VisitStatusDto.VISIT_OVER });
+#endif
         }
-    }
-
-    private async Task Register()
-    {
-        HideFirstPage = false;
-        DateTime registeredAt = DateTime.Now;
-
-        // Send data
-    #if DEBUG
-    //Use dummy data
-    Guid guid = PreregisteredVisitGuid ?? new("00000000-0000-0000-0000-000000000100");
-    await Task.Delay(1000);
-    #else
-        // Add visit or update to status active with user verified data
-        Guid guid = PreregisteredVisitGuid ?? (await vs.AddVisit(registeredAt, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company, form.FormData.ContactPerson)).Guid;
-        if (PreregisteredVisitGuid.HasValue)
-        {
-            int id = (await vs.ReadVisitByGuid(guid)).Id;
-            await vs.UpdateVisit(id, registeredAt, null, VisitStatusDto.VISIT_ACTIVE, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
-        }
-    #endif
-
-        // Check url for trailing slash
-        if (QRUrl.Last() != '/')
-            QRUrl += '/';
-
-        // Generate qr code and pdf
-        byte[] qr;
-        if (!UseWASMMethods)
-        {
-            Bitmap qrBitmap = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
-            qr = qrBitmap.ToBytes();
-            PdfDocument pdf = TicketPdfGenerator.GetPdf(Loc, qrBitmap, guid.ToString(), form.FormData.FullName, registeredAt);
-
-            using (MemoryStream ms = new MemoryStream())
-            {
-                pdf.Save(ms);
-                await Registered.InvokeAsync(ms.ToArray());
-            }
-        }
-        else
-        {
-            qr = await RestTicketService.GenerateQR($"{QRUrl}{Loc.Culture.Name}/{guid}");
-            byte[] pdf = await RestTicketService.GenerateTicket(Loc["VisitorTicket"], (registeredAt > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]), Loc.Culture, qr, guid.ToString(), form.FormData.FullName, registeredAt);
-            await Registered.InvokeAsync(pdf);
-        }
-
-        // Reset form, scroll back to homepage and show popup
-        form.Reset();
-        carousel.MoveTo(0);
-    #if DEBUG
-        RenderFragment rf = 
-            @<div>
-                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr)}")"/>
-                <a href=@($"{QRUrl}{Loc.Culture.Name}/{guid}")>Link</a>
-            </div>
-        ;
-        registerBox.MessageContent = rf;
-        await registerBox.Show();
-    #else
-        await registerBox.Show();
-    #endif
     }
 }

@@ -4,7 +4,7 @@
 @using System.Reflection
 
 <CascadingValue Value="Loc">
-    <TerminalView Style="height: 100vh;" PreregisteredVisitGuid=Guid HideFirstPage=true UseWASMMethods=true></TerminalView>
+    <TerminalView Style="height: 100vh;" PreregisteredVisitGuid=Guid UseWASMMethods=true></TerminalView>
 </CascadingValue>
 
 @code{
@@ -18,7 +18,7 @@
 
     protected override void OnInitialized()
     {
-        Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), Culture);
+        Loc = new("NBG.Visitor.WASM.Resources.Language", Assembly.GetExecutingAssembly(), Culture);
         base.OnInitialized();
     }
 }
