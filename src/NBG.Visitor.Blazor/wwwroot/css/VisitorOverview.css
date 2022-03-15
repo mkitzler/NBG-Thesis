@@ -119,14 +119,17 @@
     margin-left: 0;
   }
   .mud-table .mud-table-body tr td.mud-table-cell .optionsMenu {
-    visibility: hidden;
+    border-radius: 100%;
   }
   .mud-table .mud-table-body tr td.mud-table-cell .optionsMenu button {
     width: 40px;
     height: 40px;
   }
+  .mud-table .mud-table-body tr:not(:hover) .optionsMenu {
+    visibility: collapse;
+  }
   .mud-table .mud-table-body tr:hover .optionsMenu {
-    visibility: visible !important;
+    visibility: visible;
   }
   .mud-table .mud-table-head th.mud-table-cell #addButtonToolTip div button {
     width: 40px;
@@ -151,6 +154,11 @@
 
   .optionsMenuContainer {
     max-width: 125px;
+  }
+
+  .visitorOverviewBtn {
+    width: 40px;
+    height: 40px;
   }
 }
 @media only screen and (max-width: 1270px) {
@@ -216,8 +224,6 @@ body {
 .mud-table .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
   position: absolute;
   transition: font-size 0.25s ease-in, margin 0.25s ease-in, padding 0.25s ease-in, left 0.25s ease-in, right 0.25s ease-in, top 0.25s ease-in, height 0.25s ease-in, width 0.25s ease-in;
-  width: 40px;
-  height: 40px;
 }
 .mud-table .mud-table-container {
   height: 72vh;
@@ -232,6 +238,10 @@ body {
   /* IE and Edge */
   scrollbar-width: none !important;
   /* Firefox */
+}
+
+.mud-popover:not(.mud-popover-open) {
+  display: none;
 }
 
 /*.mud-toolbar.mud-table-toolbar .mud-paper {

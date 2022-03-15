@@ -4,10 +4,6 @@
 @using System.Globalization
 @using System.Reflection
 
-<MudThemeProvider/>
-<MudDialogProvider/>
-<MudSnackbarProvider/>
-
 <style>
     #LangButton * {
         color:white !important;
@@ -19,12 +15,6 @@
     <div class="main">
         <MudAppBar Class="red darken-4" Fixed="false" Dense=@dense Elevation="5">
             <img src="/img/Logo/nbg_logo.png" style="max-height:80%; position:absolute; left:15px;"/>
-            @*<NavLink href="terminal">
-                <MudButton Class="red-text text-lighten-5" Icon="@Icons.Material.Filled.ConnectWithoutContact">Visitor Registration</MudButton>
-            </NavLink>   
-            <NavLink href="visitors">
-                <MudButton Class="red-text text-lighten-5" Icon="@Icons.Material.Filled.EditNote" >Visitor Administration</MudButton>
-            </NavLink>*@
             <MudSpacer></MudSpacer>
 
             <MudMenu id="LangButton" Label="@Loc["LangShort"]" Class="mr-5" StartIcon="@Icons.Filled.Language" Dense="true">

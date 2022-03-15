@@ -184,8 +184,7 @@ $transition-type: ease-in;
                         margin-left: 0;
                     }
                     .optionsMenu {
-
-                        visibility: hidden;
+                        border-radius:100%;
                         button {
                             width: $button-height-width;
                             height: $button-height-width;
@@ -193,9 +192,14 @@ $transition-type: ease-in;
                     }
                 }
             }
+            tr:not(:hover) {
+                .optionsMenu {
+                    visibility: collapse;
+                }
+            }
             tr:hover {
                 .optionsMenu {
-                    visibility: visible !important;
+                    visibility: visible;
                 }
             }
         }
@@ -232,6 +236,11 @@ $transition-type: ease-in;
     // Option Menu Popup Container
     .optionsMenuContainer {
         max-width: 125px;
+    }
+
+    .visitorOverviewBtn {
+        width: $button-height-width;
+        height: $button-height-width;
     }
 }
 
@@ -313,8 +322,6 @@ body {
         button.mud-button-root.mud-icon-button {
             position: absolute;
             transition: font-size $transition-speed $transition-type, margin $transition-speed $transition-type, padding $transition-speed $transition-type, left $transition-speed $transition-type, right $transition-speed $transition-type, top $transition-speed $transition-type, height $transition-speed $transition-type, width $transition-speed $transition-type;
-            width: $button-height-width;
-            height: $button-height-width;
         }
     }
     .mud-table-container {
@@ -331,9 +338,9 @@ body {
     scrollbar-width: none !important; /* Firefox */
 }
 
-
-
-
+.mud-popover:not(.mud-popover-open){
+    display:none;
+}
 
 //-------------------------------------------------MISC-------------------------------------------
 

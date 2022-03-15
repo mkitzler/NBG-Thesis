@@ -17,6 +17,8 @@
 <link href="_content/NBG.Visitor.Blazor/css/VisitorOverview.css" rel="stylesheet"/>
 
 <MudThemeProvider Theme="VisitorOverviewTheme.Theme" />
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 <MudTable Items=@Visits Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Breakpoint="Breakpoint.Sm"> 
     <ToolBarContent>
@@ -91,6 +93,7 @@
             <MudTd Class="pt-0 pb-0"></MudTd>
         }
 
+        
         <MudTd Class="optionsMenuTd pt-1 pb-1">
             <MudMenu Class="optionsMenu" Icon="@Icons.Filled.MoreVert" Dense=true>
                 <div class = "optionsMenuContainer">
@@ -124,7 +127,7 @@
 
     // Dialog configuration
     private DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true };
-    private bool menuOpen { get; set; } = false;
+    private bool menuClosed { get; set; } = false;
 
     // Filtering
     private string searchString = "";
@@ -296,13 +299,9 @@
         resetFilterBtnStyle = "visibility:hidden;";
     }
 
-    private void OpenMenu(){
-        ShowCancelFilterButton();
+    private void CloseMenu(){
+        menuClosed = true;
+        JS.InvokeVoidAsync("console.log",menuClosed.ToString());
         JS.InvokeVoidAsync("console.log","TEST");
-        if (!menuOpen)
-            menuOpen = true;
-        else if(menuOpen)
-            menuOpen = false;
-        JS.InvokeVoidAsync("console.log",menuOpen.ToString());
     }
 }

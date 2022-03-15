@@ -9,7 +9,6 @@ namespace NBG.Visitor.Blazor.Components
 {
     public static class VisitorOverviewTheme
     {
-
         public static MudTheme Theme = new MudTheme()
         {
             Palette = new Palette()
