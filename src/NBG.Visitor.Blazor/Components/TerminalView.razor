@@ -93,6 +93,12 @@
     [Parameter]
     public bool UseWASMMethods { get; set; } = false;
 
+    /// <summary>
+    /// Gets called when the user finished registration with the Pdf file of the ticket async byte aray.
+    /// </summary>
+    [Parameter]
+    public EventCallback<byte[]> Registered {get; set;}
+
     private MudCarousel<object> carousel;
     private TerminalRegister form;
 
@@ -219,12 +225,25 @@
         if (QRUrl.Last() != '/')
             QRUrl += '/';
 
-        // Generate qr code and pdf
-        MemoryStream qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}", UseWASMMethods);
-        //PdfDocument pdf = new TicketPdfGenerator(Loc).GetPdf(qr, guid.ToString(), form.FormData.FullName, registeredAt);
+        Bitmap qr;
+        if (!UseWASMMethods)
+        {
+            // Generate qr code and pdf
+            qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
+            PdfDocument pdf = TicketPdfGenerator.GetPdf(Loc, qr, guid.ToString(), form.FormData.FullName, registeredAt);
 
-        // Replace with print function
-        //pdf.Save("./ticket.pdf");
+            using (MemoryStream ms = new MemoryStream())
+            {
+                pdf.Save(ms);
+                await Registered.InvokeAsync(ms.ToArray());
+            }
+        }
+        else
+        {
+            //Placeholder
+            qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
+            //TODO RestTicketService
+        }
 
         // Reset form, scroll back to homepage and show popup
         form.Reset();
@@ -232,7 +251,7 @@
     #if DEBUG
         RenderFragment rf = 
             @<div>
-                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToArray())}")"/>
+                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
                 <a href=@($"{QRUrl}{Loc.Culture.Name}/{guid}")>Link</a>
             </div>
         ;

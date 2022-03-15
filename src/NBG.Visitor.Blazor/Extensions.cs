@@ -13,9 +13,11 @@ namespace NBG.Visitor.Blazor
 
         public static MemoryStream ToStream(this Bitmap b)
         {
-            MemoryStream ms = new MemoryStream();
-            b.Save(ms, ImageFormat.Png);
-            return ms;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                b.Save(ms, ImageFormat.Png);
+                return ms;
+            }
         }
     }
 }

@@ -212,17 +212,17 @@
 
         public async Task PrintVisitorPass(VisitDto visit)
     {
-        System.IO.MemoryStream qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
+        Bitmap qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
 
         RenderFragment rf = 
     @<div>
-                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToArray())}")"/>
+                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr.ToBytes())}")"/>
                 <a href=@("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString())>Link</a>
             </div>
     ;
         var dialog = DialogService.Show<MudDialog>(visit.Visitor.FirstName + " " + visit.Visitor.LastName, new DialogParameters() {["DialogContent"] = rf});
 
-        PdfDocument pdf = new TicketPdfGenerator(Loc).GetPdf(qr, visit.Guid.ToString(), visit.Visitor.FullName/* + " " + visit.VisitStart?.ToString("g", Loc.Culture) ???*/, visit.VisitStart??DateTime.Now);
+        PdfDocument pdf = TicketPdfGenerator.GetPdf(Loc, qr, visit.Guid.ToString(), visit.Visitor.FullName/* + " " + visit.VisitStart?.ToString("g", Loc.Culture) ???*/, visit.VisitStart??DateTime.Now);
         pdf.Save("./pdf.pdf");
 
         if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so carousel scroll won't get stuck (wait until dialog is closed)
