@@ -22,7 +22,17 @@
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
-<MudTable Items=@Visits Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Breakpoint="Breakpoint.Sm"> 
+
+@if (_loading)
+{
+    // To reposition Loading bar
+    <style>
+        .mud-table .mud-table-body tr:first-child{
+            height:4px !important;
+        }
+    </style>
+}
+<MudTable Items=@Visits @ref="_visitTable" Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Breakpoint="Breakpoint.Sm" HorizontalScrollbar=true> 
     <ToolBarContent>
         <MudCard Elevation="0">
             <div id="titleDescBox">
@@ -42,7 +52,7 @@
         <MudTextField @bind-Value="searchString" Placeholder=@Loc["Search"] Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="MudBlazor.Size.Medium"></MudTextField>
         <MudIconButton OnClick="ResetFilters" Class="resetFilterBtn visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
     </ToolBarContent>
-    <HeaderContent>
+    <HeaderContent >
         <MudTh Class="pl-16"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">@Loc["FirstName"]</MudTableSortLabel></MudTh>
         <MudTh><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.LastName)">@Loc["LastName"]</MudTableSortLabel></MudTh>
         <MudTh>@Loc["PhoneNr"]</MudTh>
@@ -94,10 +104,9 @@
         {
             <MudTd Class="pt-0 pb-0"></MudTd>
         }
-
         
-        <MudTd Class="optionsMenuTd pt-1 pb-1">
-            <MudMenu Class="optionsMenu" Icon="@Icons.Filled.MoreVert" Dense=true>
+        <MudTd Class="optionsMenuTd pt-1 pb-1" @onmouseenter="CloseMenu">
+            <MudMenu Class="optionsMenu" Icon="@Icons.Filled.MoreVert" Dense=true PopoverClass="optionsMenuPopover" @ref="menu" >
                 <div class = "optionsMenuContainer">
                     <MudMenuItem OnClick=@(()=>EditVisit(@context))><MudText Style="font-size:12px;">@Loc["Edit"]</MudText></MudMenuItem>
                     <MudMenuItem OnClick=@(()=>PrintVisitorPass(@context))><MudText Style="font-size:12px;">@Loc["PrintVisitorPass"]</MudText></MudMenuItem>
@@ -108,7 +117,7 @@
     </RowTemplate>
 
     <PagerContent>
-        <MudTablePager PageSizeOptions="@pageSizeOptions"/>
+        <MudTablePager PageSizeOptions="@pageSizeOptions" @ref="_pager"/>
     </PagerContent>
 </MudTable>
 
@@ -126,10 +135,15 @@
     private bool fixedFooter = true;
     private int[] pageSizeOptions = new int[] { 10, 25, 50, 100 };
     private string resetFilterBtnStyle { get; set; } = "visibility:hidden;";
+    MudTablePager _pager {  get;  set; }
+    MudTable<VisitDto> _visitTable { get; set; }
+
+    // MudMenu
+    MudMenu menu { set => menus.Add(value); }
+    List<MudMenu> menus = new List<MudMenu>();
 
     // Dialog configuration
     private DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true };
-    private bool menuClosed { get; set; } = false;
 
     // Filtering
     private string searchString = "";
@@ -164,13 +178,19 @@
         var result = await dialog.Result;
 
         if (!result.Cancelled)
-        {
+        { 
             var visit = (VisitDto)result.Data;
-            await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, status: (visit.PlannedVisitStart <= DateTime.Now) ? VisitStatusDto.VISIT_ACTIVE : VisitStatusDto.VISIT_PENDING);
+            visit.Status = VisitStatusDto.VISIT_PENDING;
+
+            await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, null, VisitStatusDto.VISIT_PENDING);
             Visits.Add(visit);
 
             Snackbar.Add(Loc["AddedVisitMsg"], Severity.Success);
             await JS.InvokeVoidAsync("console.log",Loc["AddedVisitMsg"]);
+
+            //Navigate to last page of VISIT_PENDING filter => Location of newly added visitor
+            ActiveFilter = VisitStatusDto.VISIT_PENDING;
+            _visitTable.NavigateTo(Page.Last);
         }
     }
 
@@ -309,9 +329,15 @@
         resetFilterBtnStyle = "visibility:hidden;";
     }
 
+    //Close all menus
     private void CloseMenu(){
-        menuClosed = true;
-        JS.InvokeVoidAsync("console.log",menuClosed.ToString());
-        JS.InvokeVoidAsync("console.log","TEST");
+        foreach (var item in menus)
+        {
+            item.CloseMenu();
+        }   
+        Console.WriteLine(menus.Count);
     }
+    //table: OnRowClick, SellectedItem, SelectedItemChanged, SetSelectedItem
+    //Focus trap?
 }
+
