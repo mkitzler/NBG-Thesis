@@ -71,6 +71,26 @@ namespace NBG.Visitor.Services.REST.Test
             Assert.IsNotNull(max.Guid);
         }
 
+        [Test]
+        public async Task TestServiceReadByGuid()
+        {
+            var max = await vs.ReadVisitByGuid(new("90dd4635-58f5-40b2-a045-b0bb267e1d05"));
+            Assert.IsNotNull(max);
+            Assert.AreEqual("noch ein", max.Visitor.FirstName);
+        }
 
+        [Test]
+        public async Task TestServiceReadByWrongGuid()
+        {
+            var max = await vs.ReadVisitByGuid(new("90dd4635-58f5-40b2-0000-b0bb267e1d05"));
+            Assert.IsNull(max);
+        }
+
+        [Test]
+        public async Task ReadWrongVisitorIfExists()
+        {
+            var max = await vs.ReadVisitorIfExists("non", "nan", "nope");
+            Assert.IsNull(max);
+        }
     }
 }

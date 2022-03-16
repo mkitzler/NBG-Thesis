@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NBG.Visitor.Domain;
@@ -28,15 +29,21 @@ namespace NBG.Visitor.Services.REST
         }
 
         [HttpPost("ReadVisitorIfExists")]
-        public async Task<VisitorDto> ReadVisitorIfExists([FromBody] ReadVisitorCommand visitor)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VisitorDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ReadVisitorIfExists([FromBody] ReadVisitorCommand visitor)
         {
-            return await _vs.ReadVisitorIfExists(visitor.FirstName, visitor.LastName, visitor.PhoneNumber);
+            VisitorDto ret = await _vs.ReadVisitorIfExists(visitor.FirstName, visitor.LastName, visitor.PhoneNumber);
+            if (ret == null)
+                return NotFound();
+            else
+                return Ok(ret);
         }
 
         [HttpPost("AddVisit")]
         public async Task<VisitDto> AddVisit([FromBody] AddVisitCommand visit)
         {
-            return await _vs.AddVisit(visit.Start, visit.FirstName, visit.LastName, visit.PhoneNumber, visit.Email, visit.Company, visit.ContactPerson, visit.Guid, visit.Status);
+            return await _vs.AddVisit(visit.Start, visit.FirstName, visit.LastName, visit.PhoneNumber, visit.Email, visit.Company, visit.ContactPerson, visit.Status);
         }
 
         [HttpGet("ReadAllVisits")]
@@ -52,15 +59,27 @@ namespace NBG.Visitor.Services.REST
         }
 
         [HttpPut("{Id}")]
-        public async Task<VisitDto> UpdateVisit(int Id, [FromBody] UpdateVisitCommand visit)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VisitDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateVisit(int Id, [FromBody] UpdateVisitCommand visit)
         {
-            return await _vs.UpdateVisit(Id, visit.Start, visit.End, visit.Status, visit.ContactPerson, visit.Company, visit.FirstName, visit.LastName, visit.PhoneNumber, visit.Email);
+            VisitDto ret = await _vs.UpdateVisit(Id, visit.Start, visit.End, visit.Status, visit.ContactPerson, visit.Company, visit.FirstName, visit.LastName, visit.PhoneNumber, visit.Email);
+            if (ret == null)
+                return NotFound();
+            else
+                return Ok(ret);
         }
 
         [HttpPatch("{Id}")]
-        public async Task<VisitDto> UpdateVisit(int Id, [FromBody] PatchVisitCommand changes)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VisitDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateVisit(int Id, [FromBody] PatchVisitCommand changes)
         {
-            return await _vs.UpdateVisit(Id, changes);
+            VisitDto ret = await _vs.UpdateVisit(Id, changes);
+            if (ret == null)
+                return NotFound();
+            else
+                return Ok(ret);
         }
 
         [HttpGet("ReadRegisterFormDataByGuid/{guid}")]
@@ -70,9 +89,15 @@ namespace NBG.Visitor.Services.REST
         }
 
         [HttpGet("ReadVisitByGuid/{guid}")]
-        public async Task<VisitDto> ReadVisitByGuid(Guid guid)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VisitDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ReadVisitByGuid(Guid guid)
         {
-            return await _vs.ReadVisitByGuid(guid);
+            VisitDto ret = await _vs.ReadVisitByGuid(guid);
+            if (ret == null)
+                return NotFound();
+            else
+                return Ok(ret);
         }
 
         [HttpDelete]
