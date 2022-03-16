@@ -55,8 +55,8 @@ $transition-type: ease-in;
     }
 }
 
-// 0-960px
-@media only screen and (max-width:960px) {
+// 0-960px and mobile/touchscreen interfaces
+@media only screen and (max-width:960px), (hover: none), (pointer:coarse){
     .mud-table {
 
         margin-top: 16px !important;
@@ -194,7 +194,7 @@ $transition-type: ease-in;
             }
             tr:not(:hover) {
                 .optionsMenu {
-                    visibility: collapse;
+                    visibility: hidden;
                 }
             }
             tr:hover {
@@ -241,6 +241,11 @@ $transition-type: ease-in;
     .visitorOverviewBtn {
         width: $button-height-width;
         height: $button-height-width;
+    }
+
+    .optionsMenuPopover{
+        left:-50%;
+        top:-50% !important;
     }
 }
 

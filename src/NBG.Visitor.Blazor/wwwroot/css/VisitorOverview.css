@@ -21,7 +21,7 @@
     font-size: 14px;
   }
 }
-@media only screen and (max-width: 960px) {
+@media only screen and (max-width: 960px), (hover: none), (pointer: coarse) {
   .mud-table {
     margin-top: 16px !important;
     margin-right: 32px;
@@ -126,7 +126,7 @@
     height: 40px;
   }
   .mud-table .mud-table-body tr:not(:hover) .optionsMenu {
-    visibility: collapse;
+    visibility: hidden;
   }
   .mud-table .mud-table-body tr:hover .optionsMenu {
     visibility: visible;
@@ -159,6 +159,11 @@
   .visitorOverviewBtn {
     width: 40px;
     height: 40px;
+  }
+
+  .optionsMenuPopover {
+    left: -50%;
+    top: -50% !important;
   }
 }
 @media only screen and (max-width: 1270px) {
