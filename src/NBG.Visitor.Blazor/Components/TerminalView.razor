@@ -14,6 +14,7 @@
 
 @inject IDialogService Dialog;
 @inject IVisitService vs;
+@inject ITicketService ts;
 
 <link href="_content/NBG.Visitor.Blazor/css/site.css" rel="stylesheet"/>
 
@@ -91,12 +92,6 @@
     public Guid? PreregisteredVisitGuid { get; set; } = null;
 
     /// <summary>
-    /// Utilizes alternative methods that can be used in a Blazor Webassembly app.
-    /// </summary>
-    [Parameter]
-    public bool UseWASMMethods { get; set; } = false;
-
-    /// <summary>
     /// Gets called when the user finished registration with the Pdf file of the ticket async byte array.
     /// </summary>
     [Parameter]
@@ -145,20 +140,9 @@
             QRUrl += '/';
 
         // Generate qr code and pdf
-        byte[] qr;
-        if (!UseWASMMethods)
-        {
-            qr = QRGenerator.GenerateQrCode($"{QRUrl}{Loc.Culture.Name}/{guid}");
-            byte[] pdf = TicketPdfGenerator.GetPdf(Loc, qr, guid.ToString(), form.FormData.FullName, registeredAt);
-
-            await Registered.InvokeAsync(pdf);
-        }
-        else
-        {
-            qr = await RestTicketService.GenerateQR($"{QRUrl}{Loc.Culture.Name}/{guid}");
-            byte[] pdf = await RestTicketService.GenerateTicket(Loc["VisitorTicket"], (registeredAt > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]), Loc.Culture.Name, qr, guid.ToString(), form.FormData.FullName, registeredAt);
-            await Registered.InvokeAsync(pdf);
-        }
+        byte[] qr = await ts.GenerateQR($"{QRUrl}{Loc.Culture.Name}/{guid}");
+        byte[] pdf = await ts.GenerateTicket(Loc["VisitorTicket"], (registeredAt > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]), Loc.Culture, qr, guid.ToString(), form.FormData.FullName, registeredAt);
+        await Registered.InvokeAsync(pdf);
 
         // Reset form, scroll back to homepage and show popup
         form.Reset();

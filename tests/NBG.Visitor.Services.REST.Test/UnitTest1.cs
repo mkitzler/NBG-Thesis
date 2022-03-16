@@ -1,4 +1,4 @@
-using NBG.Visitor.Clients.REST;
+using NBG.Services.Clients.REST;
 using NBG.Visitor.Domain;
 using NBG.Visitor.Domain.Commands;
 using NBG.Visitor.Domain.Dtos;
@@ -70,5 +70,7 @@ namespace NBG.Visitor.Services.REST.Test
             Assert.IsNotNull(max);
             Assert.IsNotNull(max.Guid);
         }
+
+
     }
 }

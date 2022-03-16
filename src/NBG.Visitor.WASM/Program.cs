@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
-using NBG.Visitor.Clients.REST;
+using NBG.Services.Clients.REST;
 using NBG.Visitor.Domain;
 using System;
 using System.Collections.Generic;
@@ -32,6 +32,8 @@ namespace NBG.Visitor.WASM
             });
             builder.Services.AddSingleton<IVisitService, RestVisitService>();
             builder.Services.AddMudServices();
+
+            builder.Services.AddSingleton<ITicketService, RestTicketService>();
 
             await builder.Build().RunAsync();
         }

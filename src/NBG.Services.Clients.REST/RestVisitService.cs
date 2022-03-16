@@ -9,7 +9,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Clients.REST
+namespace NBG.Services.Clients.REST
 {
     public class RestVisitService : IVisitService
     {
@@ -46,7 +46,7 @@ namespace NBG.Visitor.Clients.REST
 
         public async Task<VisitDto> UpdateVisit(int Id, PatchVisitCommand changes)
         {
-            HttpResponseMessage resp = await _http.PatchAsync($"{API_URL}/UpdateVisit/{Id}", JsonContent.Create<PatchVisitCommand>(changes)).ConfigureAwait(false);
+            HttpResponseMessage resp = await _http.PatchAsync($"{API_URL}/UpdateVisit/{Id}", JsonContent.Create(changes)).ConfigureAwait(false);
             return await resp.Content.ReadFromJsonAsync<VisitDto>().ConfigureAwait(false);
         }
 

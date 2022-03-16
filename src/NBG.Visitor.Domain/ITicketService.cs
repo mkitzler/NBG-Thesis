@@ -19,17 +19,6 @@ namespace NBG.Visitor.Domain
         /// <summary>
         /// Generates a ticket for the specified visit.
         /// </summary>
-        /// <param name="loc">The localizer for the text</param>
-        /// <param name="qr">The QR Code on the ticket as a BitMap</param>
-        /// <param name="id">The Guid of the visit</param>
-        /// <param name="name">The Name of the Visitor</param>
-        /// <param name="arrival">The arrival DateTime of the Visitor. Will print "Planned Arrival" on the ticket if in the future</param>
-        /// <returns>A Pdf file as byte array</returns>
-        Task<byte[]> GenerateTicket(Localizer loc, byte[] qr, string id, string name, DateTime arrival);
-
-        /// <summary>
-        /// Generates a ticket for the specified visit.
-        /// </summary>
         /// <param name="visitorTicketLabel">The localized string for visitor ticket</param>
         /// <param name="arrivalLabel">The localized string for arrival</param>
         /// <param name="dateCulture">The local date format</param>

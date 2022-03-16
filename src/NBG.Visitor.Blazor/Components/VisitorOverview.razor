@@ -14,6 +14,7 @@
 @inject IVisitService DataRepository;
 @inject IDialogService DialogService;
 @inject ISnackbar Snackbar;
+@inject ITicketService TicketService;
 
 <link href="_content/NBG.Visitor.Blazor/css/VisitorOverview.css" rel="stylesheet"/>
 
@@ -213,7 +214,8 @@
 
         public async Task PrintVisitorPass(VisitDto visit)
     {
-        byte[] qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
+        //byte[] qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
+        byte[] qr = await TicketService.GenerateQR("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
 
         RenderFragment rf = 
     @<div>
@@ -223,7 +225,8 @@
     ;
         var dialog = DialogService.Show<MudDialog>(visit.Visitor.FirstName + " " + visit.Visitor.LastName, new DialogParameters() {["DialogContent"] = rf});
 
-        byte[] pdf = TicketPdfGenerator.GetPdf(Loc, qr, visit.Guid.ToString(), visit.Visitor.FullName/* + " " + visit.VisitStart?.ToString("g", Loc.Culture) ???*/, visit.VisitStart??DateTime.Now);
+        //byte[] pdf = TicketPdfGenerator.GetPdf(Loc, qr, visit.Guid.ToString(), visit.Visitor.FullName/* + " " + visit.VisitStart?.ToString("g", Loc.Culture) ???*/, visit.VisitStart??DateTime.Now);
+        byte[] pdf = await TicketService.GenerateTicket(Loc["VisitorTicket"], (/*registeredAt > DateTime.Now TODO: adjust for this use case*/true ? Loc["PlannedArrival"] : Loc["Arrival"]), Loc.Culture, qr, visit.Guid.ToString(), visit.Visitor.FullName/* + " " + visit.VisitStart?.ToString("g", Loc.Culture) ???*/, visit.VisitStart ?? DateTime.Now);
         using (System.IO.MemoryStream ms = new System.IO.MemoryStream(pdf))
         {
             using (System.IO.FileStream fs = new System.IO.FileStream("./pdf.pdf", System.IO.FileMode.Create))

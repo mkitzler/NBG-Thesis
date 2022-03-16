@@ -17,6 +17,7 @@ using NBG.Visitor.Blazor.Scheduling;
 using Quartz.Spi;
 using Quartz;
 using Quartz.Impl;
+using NBG.Visitor.Blazor.TicketGeneration;
 
 namespace NBG.Visitor
 {
@@ -97,6 +98,8 @@ namespace NBG.Visitor
 
             services.AddDbContextFactory<VisitContext>(options =>
                 options.UseNpgsql("Host=nbg.ftp.sh;Database=nbg;Username=nbg;Password=nbg1234"));
+
+            services.AddSingleton<ITicketService, TicketService>();
 
 
             //Quartz scheduler
