@@ -19,12 +19,15 @@ namespace NBG.Services.Clients.REST
         public async Task<VisitorDto> ReadVisitorIfExists(string firstName, string lastName, string phoneNumber)
         {
             HttpResponseMessage resp = await _http.PostAsJsonAsync<ReadVisitorCommand>($"{API_URL}/ReadVisitorIfExists", new() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber }).ConfigureAwait(false);
-            return await resp.Content.ReadFromJsonAsync<VisitorDto>().ConfigureAwait(false);
+            if(resp.IsSuccessStatusCode)
+                return await resp.Content.ReadFromJsonAsync<VisitorDto>().ConfigureAwait(false);
+            else
+                return null;
         }
 
-        public async Task<VisitDto> AddVisit(DateTime? start, string firstName, string lastName, string phoneNumber, string email = null, string company = null, string contactPerson = null, Guid? guid = null, VisitStatusDto status = VisitStatusDto.VISIT_ACTIVE)
+        public async Task<VisitDto> AddVisit(DateTime? start, string firstName, string lastName, string phoneNumber, string email = null, string company = null, string contactPerson = null, VisitStatusDto status = VisitStatusDto.VISIT_ACTIVE)
         {
-            HttpResponseMessage resp = await _http.PostAsJsonAsync<AddVisitCommand>($"{API_URL}/AddVisit", new() { Start = start, FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email, Company = company, ContactPerson = contactPerson, Guid = guid, Status = status }).ConfigureAwait(false);
+            HttpResponseMessage resp = await _http.PostAsJsonAsync<AddVisitCommand>($"{API_URL}/AddVisit", new() { Start = start, FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email, Company = company, ContactPerson = contactPerson, Status = status }).ConfigureAwait(false);
             return await resp.Content.ReadFromJsonAsync<VisitDto>().ConfigureAwait(false);
         }
 
@@ -41,13 +44,19 @@ namespace NBG.Services.Clients.REST
         public async Task<VisitDto> UpdateVisit(int Id, DateTime? start, DateTime? end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
         {
             HttpResponseMessage resp = await _http.PutAsJsonAsync<UpdateVisitCommand>($"{API_URL}/UpdateVisit/{Id}", new() { Start = start, End = end, FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email, Company = company, ContactPerson = contactPerson, Status = status }).ConfigureAwait(false);
-            return await resp.Content.ReadFromJsonAsync<VisitDto>().ConfigureAwait(false);
+            if (resp.IsSuccessStatusCode)
+                return await resp.Content.ReadFromJsonAsync<VisitDto>().ConfigureAwait(false);
+            else
+                return null;
         }
 
         public async Task<VisitDto> UpdateVisit(int Id, PatchVisitCommand changes)
         {
             HttpResponseMessage resp = await _http.PatchAsync($"{API_URL}/UpdateVisit/{Id}", JsonContent.Create(changes)).ConfigureAwait(false);
-            return await resp.Content.ReadFromJsonAsync<VisitDto>().ConfigureAwait(false);
+            if (resp.IsSuccessStatusCode)
+                return await resp.Content.ReadFromJsonAsync<VisitDto>().ConfigureAwait(false);
+            else
+                return null;
         }
 
         public async Task<RegisterFormDataDto> ReadRegisterFormDataByGuid(Guid guid)
@@ -57,7 +66,11 @@ namespace NBG.Services.Clients.REST
 
         public async Task<VisitDto> ReadVisitByGuid(Guid guid)
         {
-            return await _http.GetFromJsonAsync<VisitDto>($"{API_URL}/ReadVisitByGuid/{guid}").ConfigureAwait(false);
+            HttpResponseMessage resp = await _http.GetAsync($"{API_URL}/ReadVisitByGuid/{guid}").ConfigureAwait(false);
+            if (resp.IsSuccessStatusCode)
+                return await resp.Content.ReadFromJsonAsync<VisitDto>().ConfigureAwait(false);
+            else
+                return null;
         }
 
         public async Task RemoveOldVisits()

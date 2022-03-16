@@ -16,7 +16,6 @@ namespace NBG.Visitor.Domain.Commands
         public string Email { get; set; } = null;
         public string Company { get; set; } = null;
         public string ContactPerson { get; set; } = null;
-        public Guid? Guid { get; set; } = null;
         public VisitStatusDto Status { get; set; } = VisitStatusDto.VISIT_ACTIVE;
     }
 }

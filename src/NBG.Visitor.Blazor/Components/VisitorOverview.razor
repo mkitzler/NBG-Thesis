@@ -193,7 +193,9 @@
             var visit = (VisitDto)result.Data;
             visit.Status = VisitStatusDto.VISIT_PENDING;
 
-            await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, null, visit.Status);
+            visit = await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, VisitStatusDto.VISIT_PENDING);
+            Visits.Add(visit);
+
             Visits.Add(visit);
 
             Snackbar.Add(Loc["AddedVisitMsg"], Severity.Success);
