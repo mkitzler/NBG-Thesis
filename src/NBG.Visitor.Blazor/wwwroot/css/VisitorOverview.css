@@ -66,13 +66,13 @@
     text-align: center;
   }
   .mud-table .mud-table-body td.mud-table-cell .mud-chip.mud-chip-color-success {
-    background-color: #00c853;
+    background-color: var(--mud-palette-success);
   }
   .mud-table .mud-table-body td.mud-table-cell .mud-chip.mud-chip-color-warning {
-    background-color: #ff9800;
+    background-color: var(--mud-palette-warning);
   }
   .mud-table .mud-table-body td.mud-table-cell .mud-chip.mud-chip-color-error {
-    background-color: #f44336;
+    background-color: var(--mud-palette-error);
   }
   .mud-table .mud-table-body td.mud-table-cell .signOffBtn, .mud-table .mud-table-body td.mud-table-cell .optionsMenu {
     width: 65% !important;
@@ -136,12 +136,12 @@
     height: 40px;
     border-width: 2px;
     border-style: solid;
-    border-color: #d32f2f;
+    border-color: var(--mud-palette-primary);
     background-color: #ffeeed;
-    color: #d32f2f;
+    color: var(--mud-palette-primary);
   }
   .mud-table .mud-table-head th.mud-table-cell #addButtonToolTip div button:hover {
-    background-color: #d32f2f !important;
+    background-color: var(--mud-palette-primary) !important;
     color: white !important;
   }
   .mud-table .mud-table-head th.optionsMenuTh {
@@ -208,10 +208,10 @@ body {
 }
 
 .mud-table {
-  transition: box-shadow 0.25s ease-in, margin 0.25s ease-in, padding-top 0.25s ease-in;
+  transition: box-shadow 0.2s ease-in, margin 0.2s ease-in, padding-top 0.2s ease-in;
 }
 .mud-table .mud-toolbar.mud-table-toolbar {
-  transition: padding-left 0.25s ease-in;
+  transition: padding-left 0.2s ease-in;
 }
 .mud-table .mud-toolbar.mud-table-toolbar .mud-paper #titleDescBox {
   position: relative;
@@ -221,17 +221,26 @@ body {
   margin-left: 15px;
 }
 .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form svg, .mud-table .mud-toolbar.mud-table-toolbar .mud-paper form.mud-form span {
-  transition: font-size 0.25s linear;
+  transition: font-size 0.2s linear;
 }
 .mud-table .mud-toolbar.mud-table-toolbar > .mud-input-control * {
-  transition: font-size 0.25s linear;
+  transition: font-size 0.2s linear;
 }
 .mud-table .mud-toolbar.mud-table-toolbar button.mud-button-root.mud-icon-button {
   position: absolute;
-  transition: font-size 0.25s ease-in, margin 0.25s ease-in, padding 0.25s ease-in, left 0.25s ease-in, right 0.25s ease-in, top 0.25s ease-in, height 0.25s ease-in, width 0.25s ease-in;
+  transition: font-size 0.2s ease-in, margin 0.2s ease-in, padding 0.2s ease-in, left 0.2s ease-in, right 0.2s ease-in, top 0.2s ease-in, height 0.2s ease-in, width 0.2s ease-in;
 }
 .mud-table .mud-table-container {
   height: 72vh;
+}
+.mud-table .mud-table-container .mud-table-body td.mud-table-cell .mud-chip.mud-chip-color-success {
+  background-color: var(--mud-palette-success);
+}
+.mud-table .mud-table-container .mud-table-body td.mud-table-cell .mud-chip.mud-chip-color-warning {
+  background-color: var(--mud-palette-warning);
+}
+.mud-table .mud-table-container .mud-table-body td.mud-table-cell .mud-chip.mud-chip-color-error {
+  background-color: var(--mud-palette-error);
 }
 
 *::-webkit-scrollbar {
@@ -243,10 +252,6 @@ body {
   /* IE and Edge */
   scrollbar-width: none !important;
   /* Firefox */
-}
-
-.mud-popover:not(.mud-popover-open) {
-  display: none;
 }
 
 /*.mud-toolbar.mud-table-toolbar .mud-paper {

@@ -1,10 +1,18 @@
-﻿//TABLE
+﻿//COLORS
+$mud-color-primary: var(--mud-palette-primary);
+$mud-color-secondary: var(--mud-palette-secondary);
+$mud-color-success: var(--mud-palette-success); //Visit Active
+$mud-color-warning: var(--mud-palette-warning); //Visit Pending
+$mud-color-error:   var(--mud-palette-error); //Visit Over
+
+$color-button: #e0e0e0;
+$color-button-hover: #d0d0d0;
+$color-addvisitbtn-secondary: #ffeeed;
+
+//TABLE
 $table-height: 72vh;
 
 //BUTTONS
-$button-color: #e0e0e0;
-$button-hover-color: #d0d0d0;
-$add-visit-button-color: #d32f2f;
 $button-height-width: 40px;
 $btn-right-spacing: 64px;
 
@@ -13,7 +21,7 @@ $sm-toolbar-vertical-spacing: 5px;
 $md-toolbar-horizontal-spacing: 30px;
 
 //TRANSITIONS
-$transition-speed: 0.25s;
+$transition-speed: 0.2s;
 $transition-type: ease-in;
 
 // 320-520px
@@ -58,12 +66,11 @@ $transition-type: ease-in;
 // 0-960px and mobile/touchscreen interfaces
 @media only screen and (max-width:960px), (hover: none), (pointer:coarse){
     .mud-table {
-
         margin-top: 16px !important;
         margin-right: 32px;
         margin-left: 10px !important;
-        .mud-toolbar.mud-table-toolbar {
 
+        .mud-toolbar.mud-table-toolbar {
             height: 125px;
             margin-left: 0;
             padding-left: 0;
@@ -72,8 +79,8 @@ $transition-type: ease-in;
             flex-direction: column;
             //Contains title, description and filters
             .mud-paper {
-
                 min-width: 373px;
+
                 #titleDescBox {
                     h5 {
                         position: relative;
@@ -95,9 +102,9 @@ $transition-type: ease-in;
             }
             //Search Bar
             > .mud-input-control {
-
                 margin-left: 15px;
                 margin-top: 0 !important;
+
                 .mud-input-control-input-container .mud-input.mud-input-text {
                     margin-top: $sm-toolbar-vertical-spacing;
                 }
@@ -112,16 +119,17 @@ $transition-type: ease-in;
                     height: 30px;
                     text-align: center;
                 }
-
                 //Mudchip (visit status) colors redefined to prevent :hover effect
                 .mud-chip.mud-chip-color-success {
-                    background-color: #00c853; //MudBlazor Success
+                    background-color: $mud-color-success;
                 }
+
                 .mud-chip.mud-chip-color-warning {
-                    background-color: #ff9800; //MudBlazor Warning
+                    background-color: $mud-color-warning;
                 }
+
                 .mud-chip.mud-chip-color-error {
-                    background-color: #f44336; //MudBlazor Error
+                    background-color: $mud-color-error;
                 }
 
                 .signOffBtn, .optionsMenu {
@@ -214,12 +222,12 @@ $transition-type: ease-in;
                         height: 40px;
                         border-width: 2px;
                         border-style: solid;
-                        border-color: $add-visit-button-color;
-                        background-color: #ffeeed;
-                        color: #d32f2f;
+                        border-color: $mud-color-primary;
+                        background-color: $color-addvisitbtn-secondary;
+                        color: $mud-color-primary;
                     }
                     button:hover {
-                        background-color: $add-visit-button-color !important;
+                        background-color: $mud-color-primary !important;
                         color: white !important;
                     }
                 }
@@ -293,11 +301,11 @@ body {
 }
 
 .visitorOverviewBtn:not(#addVisitBtn):not(:hover), .optionsMenu button:not(:hover) {
-    background-color: $button-color;
+    background-color: $color-button;
 }
 
 .visitorOverviewBtn:not(#addVisitBtn):hover, .optionsMenu button:hover {
-    background-color: $button-hover-color;
+    background-color: $color-button-hover;
 }
 
 .mud-table {
@@ -331,6 +339,23 @@ body {
     }
     .mud-table-container {
         height: $table-height;
+
+        .mud-table-body {
+            td.mud-table-cell {
+                //Mudchip (visit status) colors redefined to prevent :hover effect
+                .mud-chip.mud-chip-color-success {
+                    background-color: $mud-color-success;
+                }
+
+                .mud-chip.mud-chip-color-warning {
+                    background-color: $mud-color-warning;
+                }
+
+                .mud-chip.mud-chip-color-error {
+                    background-color: $mud-color-error;
+                }
+            }
+        }
     }
 }
 
@@ -341,10 +366,6 @@ body {
 * {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none !important; /* Firefox */
-}
-
-.mud-popover:not(.mud-popover-open){
-    display:none;
 }
 
 //-------------------------------------------------MISC-------------------------------------------

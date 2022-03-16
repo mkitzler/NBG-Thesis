@@ -324,4 +324,10 @@
   <data name="ClearFields" xml:space="preserve">
     <value>Clear fields</value>
   </data>
+  <data name="AllSignedOffPrompt" xml:space="preserve">
+    <value>All active visitors have been signed off.</value>
+  </data>
+  <data name="NoVisitsPrompt" xml:space="preserve">
+    <value>No visits found.</value>
+  </data>
 </root>

@@ -122,6 +122,12 @@ namespace NBG.Visitor.Services.DB
             return mapper.Map<VisitDto>(await context.Visits.Where(x => x.Guid == guid).Include(v => v.Visitor).FirstOrDefaultAsync());
         }
 
+        public async Task<VisitDto> ReadActiveVisits()
+        {
+            using var context = _contextFactory.CreateDbContext();
+            return mapper.Map<VisitDto>(await context.Visits.Where(x => x.Status == mapper.Map<VisitStatus>(VisitStatusDto.VISIT_ACTIVE)).Include(v => v.Visitor).FirstOrDefaultAsync());
+        }
+
         public async Task RemoveOldVisits()
         {
             using var context = _contextFactory.CreateDbContext();

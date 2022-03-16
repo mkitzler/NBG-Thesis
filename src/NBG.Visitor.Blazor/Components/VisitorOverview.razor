@@ -18,7 +18,7 @@
 
 <link href="_content/NBG.Visitor.Blazor/css/VisitorOverview.css" rel="stylesheet"/>
 
-<MudThemeProvider Theme="MudBlazorConfig.Theme" />
+<MudThemeProvider Theme="MudBlazorConfig.VisitorOverviewTheme" />
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -32,14 +32,14 @@
         }
     </style>
 }
-<MudTable Items=@Visits @ref="_visitTable" Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Breakpoint="Breakpoint.Sm" HorizontalScrollbar=true> 
+
+<MudTable Items=@Visits @ref="_visitTable" Class="ml-8 mr-8 mt-7 rounded-lg visitTable" Elevation="5" Filter="new Func<VisitDto,bool>(FilterFunc)" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" Loading="@_loading" FixedFooter="@fixedFooter" FixedHeader="@fixedHeader" Breakpoint="Breakpoint.Sm" HorizontalScrollbar=true NoRecordsContent="@NoVisitMessage"> 
     <ToolBarContent>
         <MudCard Elevation="0">
             <div id="titleDescBox">
                 <MudText Typo="Typo.h5">@Loc["Title"]</MudText>
                 <MudText>@Loc["Description"]</MudText>
             </div>
-
             <MudForm>
                 <MudRadioGroup @bind-SelectedOption="@ActiveFilter">
                     <MudRadio Option="@(VisitStatusDto.VISIT_ACTIVE)" Color="MudBlazor.Color.Success" T="VisitStatusDto?">@Loc["Active"]</MudRadio>
@@ -51,6 +51,7 @@
 
         <MudTextField @bind-Value="searchString" Placeholder=@Loc["Search"] Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="MudBlazor.Size.Medium"></MudTextField>
         <MudIconButton OnClick="ResetFilters" Class="resetFilterBtn visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
+        
     </ToolBarContent>
     <HeaderContent >
         <MudTh Class="pl-16"><MudTableSortLabel SortBy="new Func<VisitDto, object>(x=>x.Visitor.FirstName)">@Loc["FirstName"]</MudTableSortLabel></MudTh>
@@ -144,6 +145,8 @@
 
     // Dialog configuration
     private DialogOptions maxWidth = new DialogOptions() { MaxWidth = MaxWidth.ExtraSmall, FullWidth = true };
+    bool showNoVisitPrompt { get; set; } = false;
+    private RenderFragment NoVisitMessage { get; set; }
 
     // Filtering
     private string searchString = "";
@@ -163,6 +166,14 @@
             Visits.Add(visit);
         }
         _loading = false;
+        if (_visitTable.GetFilteredItemsCount() > 0)
+        {
+            showNoVisitPrompt = false;
+        }
+        else
+        {
+            showNoVisitPrompt = true;
+        }
     }
 
     public async Task AddVisit()
@@ -182,7 +193,7 @@
             var visit = (VisitDto)result.Data;
             visit.Status = VisitStatusDto.VISIT_PENDING;
 
-            await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, null, VisitStatusDto.VISIT_PENDING);
+            await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, null, visit.Status);
             Visits.Add(visit);
 
             Snackbar.Add(Loc["AddedVisitMsg"], Severity.Success);
@@ -230,19 +241,31 @@
             Snackbar.Add(Loc["SignedOffVisitor"], Severity.Success);
             await JS.InvokeVoidAsync("console.log",Loc["SignedOffVisitor"]);
         }
+        var activeVisits = await DataRepository.ReadActiveVisits();
+        if(Visits.Where(x => x.Status == VisitStatusDto.VISIT_ACTIVE).ToList().Count <= 0)
+        {
+            parameters = new DialogParameters();
+            parameters.Add("ContentText", Loc["AllSignedOffPrompt"]);
+            parameters.Add("ButtonText", "OK");
+            parameters.Add("Color", MudBlazor.Color.Success);
+            parameters.Add("Loc", Loc);
+
+            dialog = DialogService.Show<Dialog>(Loc["DeleteVisit"], parameters);
+        }
+
     }
 
-        public async Task PrintVisitorPass(VisitDto visit)
+    public async Task PrintVisitorPass(VisitDto visit)
     {
         //byte[] qr = QRGenerator.GenerateQrCode("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
         byte[] qr = await TicketService.GenerateQR("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString());
 
         RenderFragment rf = 
-    @<div>
-                <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr)}")"/>
-                <a href=@("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString())>Link</a>
-    </div>
-    ;
+        @<div>
+                    <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr)}")"/>
+                    <a href=@("https://fiss.dev.nbg.tech:44303/terminal/" + Loc.Culture.Name + "/" + visit.Guid.ToString())>Link</a>
+        </div>
+        ;
         var dialog = DialogService.Show<MudDialog>(visit.Visitor.FirstName + " " + visit.Visitor.LastName, new DialogParameters() {["DialogContent"] = rf});
 
         //byte[] pdf = TicketPdfGenerator.GetPdf(Loc, qr, visit.Guid.ToString(), visit.Visitor.FullName/* + " " + visit.VisitStart?.ToString("g", Loc.Culture) ???*/, visit.VisitStart??DateTime.Now);
@@ -255,14 +278,7 @@
             }
         }
 
-        if (await dialog.Result == DialogResult.Cancel()) {}    //Needed so carousel scroll won't get stuck (wait until dialog is closed)
-                                                                 //if (PdfExporter.PrintPDF("Microsoft Print to PDF", "A5", "./pdf.pdf", 1) == true)
-                                                                 //{
-                                                                 //    await JS.InvokeVoidAsync("console.log","Printing was successful.");
-                                                                 //}
-                                                                 //else{
-                                                                 //    await JS.InvokeVoidAsync("console.log","Printing failed.");
-                                                                 //}
+        if (await dialog.Result == DialogResult.Cancel()) {} 
     }
 
     public async Task DeleteVisit(VisitDto visit)
@@ -279,8 +295,8 @@
 
         if (!result.Cancelled)
         {
-            //await DataRepository.RemoveVisit(visit.Id);
-            //Visits.Remove(visit);
+            await DataRepository.RemoveVisit(visit.Id);
+            Visits.Remove(visit);
             await DataRepository.RemoveOldVisits();
 
             Snackbar.Add(Loc["DeletedVisitMsg"], Severity.Success);
