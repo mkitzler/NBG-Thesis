@@ -2,5 +2,9 @@
   {
     "outputFile": "wwwroot/css/VisitorOverview.css",
     "inputFile": "wwwroot/css/VisitorOverview.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/TerminalView.css",
+    "inputFile": "wwwroot/css/TerminalView.scss"
   }
 ]

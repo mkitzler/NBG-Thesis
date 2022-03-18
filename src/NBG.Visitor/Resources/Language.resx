@@ -330,4 +330,13 @@
   <data name="NoVisitsPrompt" xml:space="preserve">
     <value>No visits found.</value>
   </data>
+  <data name="GDPRRegisterInfo" xml:space="preserve">
+    <value>Data will be kept for up to two week in compliance with the GDPR.</value>
+  </data>
+  <data name="MoreInfo" xml:space="preserve">
+    <value>More Info</value>
+  </data>
+  <data name="GDPRInfo" xml:space="preserve">
+    <value>Information regarding the GDPR</value>
+  </data>
 </root>

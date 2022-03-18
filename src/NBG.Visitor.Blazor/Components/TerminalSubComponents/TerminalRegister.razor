@@ -7,7 +7,7 @@
         <MudPaper Style="padding: 2rem; background-color: #fffc; border-radius: 1rem;" Elevation=15>
             <MudForm @ref="_visitorForm" @bind-IsValid=Valid>
                 <MudGrid Justify=Justify.Center Style="text-align: center;">
-                    <MudItem xs=12 Class="mb-6">
+                    <MudItem xs=12 Class="mb-4">
                         <MudText Typo="Typo.h2">@Loc["VisitorRegistration"]</MudText>
                     </MudItem>
                     <MudItem xs=12 Style="display: flex; justify-content: space-between; align-items: flex-end;">
@@ -32,8 +32,8 @@
                     <MudItem xs=12>
                         <MudTextField Required="true" Class="mb-2 touchscreen-textfield absolute-helper-container" T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Filled Clearable=true RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                     </MudItem>
-                    <MudItem>
-
+                    <MudItem Class="d-flex">
+                        <MudText Typo=Typo.body1>@Loc["GDPRRegisterInfo"]</MudText><MudButton Style="margin: -1.5rem 0.5rem; padding: 1.5rem 0.5rem; min-width: 8rem;" Variant=Variant.Text OnClick=@(() => _gdpr.Show())>@Loc["MoreInfo"]</MudButton>
                     </MudItem>
                 </MudGrid>
             </MudForm>
@@ -53,6 +53,18 @@
     </RightItem>
 </TerminalFooter>
 
+<MudMessageBox @ref="_gdpr">
+    <TitleContent>
+        <MudText Typo=Typo.h4>@Loc["GDPRInfo"]</MudText>
+    </TitleContent>
+    <MessageContent>
+        Bohan schreib eina
+    </MessageContent>
+    <YesButton>
+        <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">OK</MudButton>
+    </YesButton>
+</MudMessageBox>
+
 @code {
     [CascadingParameter]
     public Localizer Loc { get; set; }
@@ -69,7 +81,6 @@
     = new();
     #endif
 
-    private MudForm _visitorForm;
     private bool _valid = false;
     public bool Valid
     {
@@ -83,6 +94,9 @@
             StateHasChanged();
         }
     }
+
+    private MudForm _visitorForm;
+    private MudMessageBox _gdpr;
 
     #if DEBUG
     protected override void OnAfterRender(bool firstRender)

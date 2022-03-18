@@ -15,26 +15,26 @@
 @inject IVisitService vs;
 @inject ITicketService ts;
 
-<link href="_content/NBG.Visitor.Blazor/css/site.css" rel="stylesheet"/>
+<link href="_content/NBG.Visitor.Blazor/css/TerminalView.css" rel="stylesheet"/>
 
 <MudThemeProvider Theme=MudBlazorConfig.Theme/>
-<MudDialogProvider FullWidth=true/>
+<MudDialogProvider FullWidth=true MaxWidth=MaxWidth.Medium/>
 
 <div style=@Style>
-    <CustomMudCarousel Style="height: 100%; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object" SelectedIndex=@(HideFirstPage ? 1 : 0)>
+    <CustomMudCarousel Style="height: 100%; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" @ref="_carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object" SelectedIndex=@(HideFirstPage ? 1 : 0)>
         <MudCarouselItem>
-            <TerminalHome OnNext=carousel.Next />
+            <TerminalHome OnNext=_carousel.Next />
         </MudCarouselItem>
         <MudCarouselItem>
-            <TerminalRegister @ref="form" OnBack=carousel.Previous OnNext=carousel.Next />
+            <TerminalRegister @ref="_form" OnBack=_carousel.Previous OnNext=_carousel.Next />
         </MudCarouselItem>
         <MudCarouselItem>
-            <TerminalSafety OnBack=carousel.Previous OnRegister=Register />
+            <TerminalSafety OnBack=_carousel.Previous OnRegister=Register />
         </MudCarouselItem>
     </CustomMudCarousel>
 </div>
 
-<MudMessageBox @ref="qrFailedBox">
+<MudMessageBox @ref="_qrFailedBox">
     <TitleContent>
         <MudText Typo=Typo.h4>@Loc["InvalidQR"]</MudText>
     </TitleContent>
@@ -43,7 +43,7 @@
     </YesButton>
 </MudMessageBox>
 
-<MudMessageBox @ref="registerBox">
+<MudMessageBox @ref="_registerBox">
     <TitleContent>
         <MudText Typo=Typo.h4>@Loc["RegisterSuccess"]</MudText>
     </TitleContent>
@@ -52,7 +52,7 @@
     </YesButton>
 </MudMessageBox>
 
-<MudMessageBox @ref="confirmSignoutBox">
+<MudMessageBox @ref="_confirmSignoutBox">
     <TitleContent>
         <MudText Typo=Typo.h4>@Loc["SignOut"]</MudText>
     </TitleContent>
@@ -96,12 +96,12 @@
     [Parameter]
     public EventCallback<byte[]> Registered {get; set;}
 
-    private MudCarousel<object> carousel;
-    private TerminalRegister form;
+    private MudCarousel<object> _carousel;
+    private TerminalRegister _form;
 
-    private MudMessageBox registerBox;
-    private MudMessageBox confirmSignoutBox;
-    private MudMessageBox qrFailedBox;
+    private MudMessageBox _registerBox;
+    private MudMessageBox _confirmSignoutBox;
+    private MudMessageBox _qrFailedBox;
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -126,11 +126,11 @@
         await Task.Delay(1000);
 #else
         // Add visit or update to status active with user verified data
-        Guid guid = PreregisteredVisitGuid ?? (await vs.AddVisit(registeredAt, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email, form.FormData.Company, form.FormData.ContactPerson)).Guid;
+        Guid guid = PreregisteredVisitGuid ?? (await vs.AddVisit(registeredAt, _form.FormData.FirstName, _form.FormData.LastName, _form.FormData.PhoneNumber, _form.FormData.Email, _form.FormData.Company, _form.FormData.ContactPerson)).Guid;
         if (PreregisteredVisitGuid.HasValue)
         {
             int id = (await vs.ReadVisitByGuid(guid)).Id;
-            await vs.UpdateVisit(id, registeredAt, null, VisitStatusDto.VISIT_ACTIVE, form.FormData.ContactPerson, form.FormData.Company, form.FormData.FirstName, form.FormData.LastName, form.FormData.PhoneNumber, form.FormData.Email);
+            await vs.UpdateVisit(id, registeredAt, null, VisitStatusDto.VISIT_ACTIVE, _form.FormData.ContactPerson, _form.FormData.Company, _form.FormData.FirstName, _form.FormData.LastName, _form.FormData.PhoneNumber, _form.FormData.Email);
         }
 #endif
 
@@ -140,12 +140,12 @@
 
         // Generate qr code and pdf
         byte[] qr = await ts.GenerateQR($"{QRUrl}{Loc.Culture.Name}/{guid}");
-        byte[] pdf = await ts.GenerateTicket(Loc["VisitorTicket"], (registeredAt > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]), Loc.Culture, qr, guid.ToString(), form.FormData.FullName, registeredAt);
+        byte[] pdf = await ts.GenerateTicket(Loc["VisitorTicket"], (registeredAt > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]), Loc.Culture, qr, guid.ToString(), _form.FormData.FullName, registeredAt);
         await Registered.InvokeAsync(pdf);
 
         // Reset form, scroll back to homepage and show popup
-        form.Reset();
-        carousel.MoveTo(0);
+        _form.Reset();
+        _carousel.MoveTo(0);
 #if DEBUG
         RenderFragment rf = 
             @<div>
@@ -158,7 +158,7 @@
 #pragma warning restore BL0005
         await registerBox.Show();
 #else
-        await registerBox.Show();
+        await _registerBox.Show();
 #endif
     }
 
@@ -189,12 +189,12 @@
                 }
                 else
                 {
-                    await qrFailedBox.Show();
+                    await _qrFailedBox.Show();
                 }
             }
             else
             {
-                await qrFailedBox.Show();
+                await _qrFailedBox.Show();
             }
         }
     }
@@ -207,11 +207,11 @@
     {
         // Needs to move first or form won't be loaded
         if (!HideFirstPage)
-            carousel.MoveTo(1);
+            _carousel.MoveTo(1);
 
-        form.FormData = await vs.ReadRegisterFormDataByGuid(guid);
-        form.Valid = true;
-        await form.Validate();
+        _form.FormData = await vs.ReadRegisterFormDataByGuid(guid);
+        _form.Valid = true;
+        await _form.Validate();
     }
 
     /// <summary>
@@ -235,7 +235,7 @@
 #if DEBUG
         Console.WriteLine("Active");
 #endif
-        bool? result = await confirmSignoutBox.Show(new() {DisableBackdropClick = true, CloseButton = false});
+        bool? result = await _confirmSignoutBox.Show(new() {DisableBackdropClick = true, CloseButton = false});
         if (result ?? false)
         {
 #if DEBUG

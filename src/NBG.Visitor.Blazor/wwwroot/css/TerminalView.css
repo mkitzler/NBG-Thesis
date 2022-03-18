@@ -1,0 +1,54 @@
+﻿.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.touchscreen-button {
+  padding: 1.5rem 3rem;
+}
+
+.touchscreen-textfield .mud-input {
+  height: 4.5rem;
+  font-size: 1.25rem;
+}
+.touchscreen-textfield .mud-input-label {
+  margin-top: 0.5rem;
+  font-size: 1.25rem !important;
+}
+.touchscreen-textfield .mud-input-slot {
+  margin-top: 0.5rem !important;
+}
+.touchscreen-textfield .mud-icon-button-label {
+  height: 3rem;
+  width: 3rem;
+}
+.touchscreen-textfield .mud-icon-button-label .mud-svg-icon {
+  height: 1.75rem;
+  width: 1.75rem;
+}
+
+.absolute-helper-container .mud-input-control-helper-container {
+  position: absolute;
+  top: 100%;
+}
+
+.lang-select {
+  height: 95% !important;
+  margin: 0 1rem;
+}
+.lang-select .mud-select, .lang-select .mud-input-control-input-container, .lang-select .mud-input, .lang-select .mud-input-slot {
+  height: 95% !important;
+}
+.lang-select .mud-input-slot {
+  display: flex !important;
+  align-items: center;
+}
+.lang-select .mud-input-label {
+  background-color: #0000;
+  color: #fffa;
+}
+
+.mud-dialog {
+  padding: 0.5rem 1rem;
+}
