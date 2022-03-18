@@ -20,5 +20,17 @@ namespace NBG.Visitor.Blazor.Components
                 Dark = Colors.Shades.Black
             }
         };
+
+        public static MudTheme VisitorOverviewTheme = new MudTheme()
+        {
+            Palette = new Palette()
+            {
+                Primary = Colors.Red.Darken3,
+                Secondary = Colors.Grey.Lighten1,
+                SecondaryContrastText = Colors.Grey.Darken2,
+                Error = Colors.Red.Default,
+                Dark = Colors.Shades.Black
+            }
+        };
     }
 }

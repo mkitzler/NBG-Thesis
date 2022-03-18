@@ -77,5 +77,10 @@ namespace NBG.Services.Clients.REST
         {
             await _http.DeleteAsync(API_URL);
         }
+
+        public Task<VisitDto> ReadActiveVisits()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
