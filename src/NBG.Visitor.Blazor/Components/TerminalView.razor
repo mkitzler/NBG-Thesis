@@ -12,14 +12,13 @@
 @using System.Net
 @using System.IO
 
-@inject IDialogService Dialog;
 @inject IVisitService vs;
 @inject ITicketService ts;
 
 <link href="_content/NBG.Visitor.Blazor/css/site.css" rel="stylesheet"/>
 
 <MudThemeProvider Theme=MudBlazorConfig.Theme/>
-<MudDialogProvider/>
+<MudDialogProvider FullWidth=true/>
 
 <div style=@Style>
     <CustomMudCarousel Style="height: 100%; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" @ref="carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object" SelectedIndex=@(HideFirstPage ? 1 : 0)>
@@ -37,7 +36,7 @@
 
 <MudMessageBox @ref="qrFailedBox">
     <TitleContent>
-        <MudText Typo=Typo.h4 Class="ma-4">@Loc["InvalidQR"]</MudText>
+        <MudText Typo=Typo.h4>@Loc["InvalidQR"]</MudText>
     </TitleContent>
     <YesButton>
         <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">OK</MudButton>
@@ -46,7 +45,7 @@
 
 <MudMessageBox @ref="registerBox">
     <TitleContent>
-        <MudText Typo=Typo.h4 Class="ma-4">@Loc["RegisterSuccess"]</MudText>
+        <MudText Typo=Typo.h4>@Loc["RegisterSuccess"]</MudText>
     </TitleContent>
     <YesButton>
         <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">OK</MudButton>
@@ -58,7 +57,7 @@
         <MudText Typo=Typo.h4>@Loc["SignOut"]</MudText>
     </TitleContent>
     <MessageContent>
-        <MudText Typo=Typo.h6 Class="ma-4">@Loc["ConfirmSignOut"]</MudText>
+        <MudText Typo=Typo.h6>@Loc["ConfirmSignOut"]</MudText>
     </MessageContent>
     <NoButton>
         <MudButton Class="touchscreen-button" Variant="Variant.Filled" Color="MudBlazor.Color.Secondary">@Loc["No"]</MudButton>
@@ -92,7 +91,7 @@
     public Guid? PreregisteredVisitGuid { get; set; } = null;
 
     /// <summary>
-    /// Gets called when the user finished registration with the Pdf file of the ticket async byte array.
+    /// Gets called when the user finished registration with the Pdf file of the ticket as byte array.
     /// </summary>
     [Parameter]
     public EventCallback<byte[]> Registered {get; set;}
