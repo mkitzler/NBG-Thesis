@@ -14,6 +14,7 @@
 
 @inject IVisitService vs;
 @inject ITicketService ts;
+@inject IDialogService dialog;
 
 <link href="_content/NBG.Visitor.Blazor/css/TerminalView.css" rel="stylesheet"/>
 
@@ -33,39 +34,6 @@
         </MudCarouselItem>
     </CustomMudCarousel>
 </div>
-
-<MudMessageBox @ref="_qrFailedBox">
-    <TitleContent>
-        <MudText Typo=Typo.h4>@Loc["InvalidQR"]</MudText>
-    </TitleContent>
-    <YesButton>
-        <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">OK</MudButton>
-    </YesButton>
-</MudMessageBox>
-
-<MudMessageBox @ref="_registerBox">
-    <TitleContent>
-        <MudText Typo=Typo.h4>@Loc["RegisterSuccess"]</MudText>
-    </TitleContent>
-    <YesButton>
-        <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">OK</MudButton>
-    </YesButton>
-</MudMessageBox>
-
-<MudMessageBox @ref="_confirmSignoutBox">
-    <TitleContent>
-        <MudText Typo=Typo.h4>@Loc["SignOut"]</MudText>
-    </TitleContent>
-    <MessageContent>
-        <MudText Typo=Typo.h6>@Loc["ConfirmSignOut"]</MudText>
-    </MessageContent>
-    <NoButton>
-        <MudButton Class="touchscreen-button" Variant="Variant.Filled" Color="MudBlazor.Color.Secondary">@Loc["No"]</MudButton>
-    </NoButton>
-    <YesButton>
-        <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary" EndIcon="@Icons.Material.Filled.Logout">@Loc["Yes"]</MudButton>
-    </YesButton>
-</MudMessageBox>
 
 @code {
     [CascadingParameter]
@@ -98,10 +66,6 @@
 
     private MudCarousel<object> _carousel;
     private TerminalRegister _form;
-
-    private MudMessageBox _registerBox;
-    private MudMessageBox _confirmSignoutBox;
-    private MudMessageBox _qrFailedBox;
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -147,18 +111,17 @@
         _form.Reset();
         _carousel.MoveTo(0);
 #if DEBUG
-        RenderFragment rf = 
-            @<div>
+        RenderFragment rf = __builder =>
+        {
+            <div>
                 <img style="width: 100%" src="@($"data:image/png;base64,{Convert.ToBase64String(qr)}")"/>
                 <a href=@($"{QRUrl}{Loc.Culture.Name}/{guid}")>Link</a>
-            </div>;
-            
-#pragma warning disable BL0005 // Only für debug purposes, warning neglectable
-        registerBox.MessageContent = rf;
-#pragma warning restore BL0005
-        await registerBox.Show();
+            </div>
+        };
+        
+        await dialog.Show<TerminalDialog>(Loc["RegisterSuccess"], new DialogParameters() { ["DialogContent"] = rf }).Result;
 #else
-        await _registerBox.Show();
+        await dialog.Show<TerminalDialog>(Loc["RegisterSuccess"]).Result;
 #endif
     }
 
@@ -189,12 +152,12 @@
                 }
                 else
                 {
-                    await _qrFailedBox.Show();
+                    await dialog.Show<TerminalDialog>(Loc["InvalidQR"]).Result;
                 }
             }
             else
             {
-                await _qrFailedBox.Show();
+                await dialog.Show<TerminalDialog>(Loc["InvalidQR"]).Result;
             }
         }
     }
@@ -232,11 +195,12 @@
     /// <param name="visitId">The id of the visit.</param>
     public async Task SignOutUser(int visitId)
     {
-#if DEBUG
-        Console.WriteLine("Active");
-#endif
-        bool? result = await _confirmSignoutBox.Show(new() {DisableBackdropClick = true, CloseButton = false});
-        if (result ?? false)
+        RenderFragment yesBtn = __builder =>
+        {
+            <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary" EndIcon="@Icons.Material.Filled.Logout">@Loc["Yes"]</MudButton>
+        };
+        DialogResult result = await dialog.Show<TerminalDialog>(Loc["SignOut"], new() { ["DialogText"] = Loc["ConfirmSignOut"], ["NoButtonText"] = Loc["No"], ["YesButton"] = yesBtn }, new() {DisableBackdropClick = true, CloseButton = false}).Result;
+        if (!result.Cancelled)
         {
 #if DEBUG
             Console.WriteLine("Ended Visit");

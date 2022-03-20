@@ -1,0 +1,65 @@
+﻿@using MudBlazor;
+@using NBG.Visitor.Domain.Dtos;
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo=Typo.h4>@MudDialog.Title</MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (DialogContent != null)
+        {
+            @DialogContent
+        }
+        else
+        {
+            <MudText Typo=Typo.h6>@DialogText</MudText>
+        }
+    </DialogContent>
+    <DialogActions>
+        @if (NoButton != null)
+        {
+            <CascadingValue Value=_noCallback>
+                @NoButton
+            </CascadingValue>
+        }
+        else if (NoButtonText != null)
+        {
+            <MudButton OnClick=Cancel Class="touchscreen-button" Variant="Variant.Filled" Color="MudBlazor.Color.Secondary">@NoButtonText</MudButton>
+        }
+        @if (YesButton != null)
+        {
+            <CascadingValue Value=_yesCallback>
+                @YesButton
+            </CascadingValue>
+        }
+        else
+        {
+            <MudButton OnClick=Submit Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">@YesButtonText</MudButton>
+        }
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public RenderFragment DialogContent { get; set; }
+    [Parameter] public string DialogText { get; set; }
+    [Parameter] public RenderFragment YesButton { get; set; }
+    [Parameter] public string YesButtonText { get; set; } = "OK";
+    [Parameter] public RenderFragment NoButton { get; set; }
+    [Parameter] public string NoButtonText { get; set; }
+
+    private ActivatableCallback _yesCallback, _noCallback;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (YesButton != null)
+            _yesCallback = new ActivatableCallback() { ActivateCallback = (o, e) => Submit() };
+        if (NoButton != null)
+            _noCallback = new ActivatableCallback() { ActivateCallback = (o, e) => Cancel() };
+    }
+
+    void Submit() => MudDialog.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialog.Cancel();
+}
+

@@ -65,12 +65,12 @@
 	public System.Resources.ResourceManager SafetyItemResource { get; set; }
 
 	[Parameter]
-	public int ItemsPerPage { get; set; } = 6;
-
-	[Parameter]
 	public EventCallback OnRegister { get; set; }
 	[Parameter]
 	public EventCallback OnBack { get; set; }
+
+	[Parameter]
+	public int ItemsPerPage { get; set; } = 6;
 
 	public int Pages
 	{
