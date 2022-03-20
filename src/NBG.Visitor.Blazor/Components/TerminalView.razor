@@ -200,7 +200,7 @@
             <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary" EndIcon="@Icons.Material.Filled.Logout">@Loc["Yes"]</MudButton>
         };
         DialogResult result = await dialog.Show<TerminalDialog>(Loc["SignOut"], new() { ["DialogText"] = Loc["ConfirmSignOut"], ["NoButtonText"] = Loc["No"], ["YesButton"] = yesBtn }, new() {DisableBackdropClick = true, CloseButton = false}).Result;
-        if (!result.Cancelled)
+        if ((bool)result.Data)
         {
 #if DEBUG
             Console.WriteLine("Ended Visit");

@@ -18,7 +18,7 @@
     <DialogActions>
         @if (NoButton != null)
         {
-            <CascadingValue Value=_noCallback>
+            <CascadingValue Value=@(new ActivatableCallback() { ActivateCallback = (o, e) => Cancel() })>
                 @NoButton
             </CascadingValue>
         }
@@ -28,7 +28,7 @@
         }
         @if (YesButton != null)
         {
-            <CascadingValue Value=_yesCallback>
+            <CascadingValue Value=@(new ActivatableCallback() { ActivateCallback = (o, e) => Submit() })>
                 @YesButton
             </CascadingValue>
         }
@@ -48,16 +48,6 @@
     [Parameter] public string YesButtonText { get; set; } = "OK";
     [Parameter] public RenderFragment NoButton { get; set; }
     [Parameter] public string NoButtonText { get; set; }
-
-    private ActivatableCallback _yesCallback, _noCallback;
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        if (YesButton != null)
-            _yesCallback = new ActivatableCallback() { ActivateCallback = (o, e) => Submit() };
-        if (NoButton != null)
-            _noCallback = new ActivatableCallback() { ActivateCallback = (o, e) => Cancel() };
-    }
 
     void Submit() => MudDialog.Close(DialogResult.Ok(true));
     void Cancel() => MudDialog.Cancel();
