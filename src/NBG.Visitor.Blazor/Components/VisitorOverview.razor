@@ -50,7 +50,7 @@
         </MudCard>
 
         <MudTextField @bind-Value="searchString" Placeholder=@Loc["Search"] Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="MudBlazor.Size.Medium"></MudTextField>
-        <MudIconButton OnClick="ResetFilters" Class="resetFilterBtn visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
+        <MudIconButton OnClick="ResetFilters" Class="resetFilterBtn visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close" ></MudIconButton>
         
     </ToolBarContent>
     <HeaderContent >
@@ -121,6 +121,7 @@
         <MudTablePager PageSizeOptions="@pageSizeOptions" @ref="_pager"/>
     </PagerContent>
 </MudTable>
+
 
 @code {
 
@@ -194,7 +195,6 @@
             visit.Status = VisitStatusDto.VISIT_PENDING;
 
             visit = await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, VisitStatusDto.VISIT_PENDING);
-            Visits.Add(visit);
 
             Visits.Add(visit);
 
@@ -243,7 +243,7 @@
             Snackbar.Add(Loc["SignedOffVisitor"], Severity.Success);
             await JS.InvokeVoidAsync("console.log",Loc["SignedOffVisitor"]);
         }
-        var activeVisits = await DataRepository.ReadActiveVisits();
+        
         if(Visits.Where(x => x.Status == VisitStatusDto.VISIT_ACTIVE).ToList().Count <= 0)
         {
             parameters = new DialogParameters();
@@ -254,7 +254,6 @@
 
             dialog = DialogService.Show<Dialog>(Loc["DeleteVisit"], parameters);
         }
-
     }
 
     public async Task PrintVisitorPass(VisitDto visit)

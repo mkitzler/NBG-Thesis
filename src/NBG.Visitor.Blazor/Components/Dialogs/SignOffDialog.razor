@@ -71,9 +71,7 @@
             errorHidden = true;
             endDate -= endDate.Value.TimeOfDay;
             endDate += endTime;
-            JS.InvokeVoidAsync("console.log",endDate);
             visit.VisitEnd = endDate??null;
-            JS.InvokeVoidAsync("console.log",visit.VisitEnd);
             MudDialog.Close(DialogResult.Ok(visit));
         }
         else
