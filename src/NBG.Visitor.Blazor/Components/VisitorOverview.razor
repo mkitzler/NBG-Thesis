@@ -181,9 +181,8 @@
     {
         VisitDto _visit = new VisitDto();
         _visit.Visitor = new VisitorDto();
-        //_visit.Status = VisitStatusDto.VISIT_PENDING;
 
-        var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]="Add" };
+        var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]=EEditDialogMode.ADD };
         parameters.Add("Loc", Loc);
 
         var dialog = DialogService.Show<EditDialog>(Loc["AddVisit"], parameters, maxWidth);
@@ -209,7 +208,7 @@
 
     public async Task EditVisit(VisitDto _visit)
     {
-        var parameters = new DialogParameters { ["visit"]=_visit, ["mode"]="Edit" };
+        var parameters = new DialogParameters { ["visit"]=_visit, ["mode"]=EEditDialogMode.EDIT };
         parameters.Add("Loc", Loc);
 
         var dialog = DialogService.Show<EditDialog>(Loc["EditVisit"], parameters, maxWidth);
@@ -252,7 +251,7 @@
             parameters.Add("Color", MudBlazor.Color.Success);
             parameters.Add("Loc", Loc);
 
-            dialog = DialogService.Show<Dialog>(Loc["DeleteVisit"], parameters);
+            dialog = DialogService.Show<PromptDialog>("Info", parameters);
         }
     }
 
@@ -290,7 +289,7 @@
         parameters.Add("Color", MudBlazor.Color.Error);
         parameters.Add("Loc", Loc);
 
-        var dialog = DialogService.Show<Dialog>(Loc["DeleteVisit"], parameters);
+        var dialog = DialogService.Show<PromptDialog>(Loc["DeleteVisit"], parameters);
 
         var result = await dialog.Result;
 
