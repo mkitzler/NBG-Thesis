@@ -50,7 +50,7 @@
         </MudCard>
 
         <MudTextField @bind-Value="searchString" Placeholder=@Loc["Search"] Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="MudBlazor.Size.Medium"></MudTextField>
-        <MudIconButton OnClick="ResetFilters" Class="resetFilterBtn visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close"></MudIconButton>
+        <MudIconButton OnClick="ResetFilters" Class="resetFilterBtn visitorOverviewBtn" Style=@resetFilterBtnStyle Icon="@Icons.Filled.Close" ></MudIconButton>
         
     </ToolBarContent>
     <HeaderContent >
@@ -122,6 +122,7 @@
     </PagerContent>
 </MudTable>
 
+
 @code {
 
     private List<VisitDto> Visits = new List<VisitDto>();
@@ -180,9 +181,8 @@
     {
         VisitDto _visit = new VisitDto();
         _visit.Visitor = new VisitorDto();
-        //_visit.Status = VisitStatusDto.VISIT_PENDING;
 
-        var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]="Add" };
+        var parameters = new DialogParameters { ["visit"] = _visit, ["mode"]=EEditDialogMode.ADD };
         parameters.Add("Loc", Loc);
 
         var dialog = DialogService.Show<EditDialog>(Loc["AddVisit"], parameters, maxWidth);
@@ -194,7 +194,6 @@
             visit.Status = VisitStatusDto.VISIT_PENDING;
 
             visit = await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, VisitStatusDto.VISIT_PENDING);
-            Visits.Add(visit);
 
             Visits.Add(visit);
 
@@ -209,7 +208,7 @@
 
     public async Task EditVisit(VisitDto _visit)
     {
-        var parameters = new DialogParameters { ["visit"]=_visit, ["mode"]="Edit" };
+        var parameters = new DialogParameters { ["visit"]=_visit, ["mode"]=EEditDialogMode.EDIT };
         parameters.Add("Loc", Loc);
 
         var dialog = DialogService.Show<EditDialog>(Loc["EditVisit"], parameters, maxWidth);
@@ -243,7 +242,7 @@
             Snackbar.Add(Loc["SignedOffVisitor"], Severity.Success);
             await JS.InvokeVoidAsync("console.log",Loc["SignedOffVisitor"]);
         }
-        var activeVisits = await DataRepository.ReadActiveVisits();
+        
         if(Visits.Where(x => x.Status == VisitStatusDto.VISIT_ACTIVE).ToList().Count <= 0)
         {
             parameters = new DialogParameters();
@@ -252,9 +251,8 @@
             parameters.Add("Color", MudBlazor.Color.Success);
             parameters.Add("Loc", Loc);
 
-            dialog = DialogService.Show<Dialog>(Loc["DeleteVisit"], parameters);
+            dialog = DialogService.Show<PromptDialog>("Info", parameters);
         }
-
     }
 
     public async Task PrintVisitorPass(VisitDto visit)
@@ -291,7 +289,7 @@
         parameters.Add("Color", MudBlazor.Color.Error);
         parameters.Add("Loc", Loc);
 
-        var dialog = DialogService.Show<Dialog>(Loc["DeleteVisit"], parameters);
+        var dialog = DialogService.Show<PromptDialog>(Loc["DeleteVisit"], parameters);
 
         var result = await dialog.Result;
 

@@ -138,8 +138,6 @@ namespace NBG.Visitor.Services.DB
             var visitors = await context.ReadAllVisitors();
             foreach (var visitor in visitors)
             {
-                Console.WriteLine("-------------------------------");
-                Console.WriteLine("NAME: " + visitor.FirstName);
                 var visitorVisits = from v in visits
                                     where v.Visitor.Id == visitor.Id
                                     select v;
@@ -148,24 +146,15 @@ namespace NBG.Visitor.Services.DB
 
                 foreach (var visitorVisit in visitorVisits)
                 {
-                    Console.WriteLine("VISIT ID: " + visitorVisit.Id);
-                    Console.WriteLine("VISITOR ID: " + visitorVisit.Visitor.Id);
-                    Console.WriteLine("VISIT END: " + visitorVisit.VisitEnd);
-                    Console.WriteLine("TIME SPAN: " + ((DateTime.Now - visitorVisit.VisitEnd) ?? TimeSpan.Zero).ToString());
-                    Console.WriteLine("TOTAL DAYS: " + ((DateTime.Now - visitorVisit.VisitEnd) ?? TimeSpan.Zero).TotalDays);
                     if (((DateTime.Now - visitorVisit.VisitEnd) ?? TimeSpan.Zero).TotalDays >= 14.0)
                     {
                         await context.RemoveVisit(context.Visits.Find(visitorVisit.Id)).ConfigureAwait(false);
-                        Console.WriteLine("Removed Visit with Id:" + visitorVisit.Id);
                         removedVisitCount++;
                     }
                 }
 
                 if (visitorVisits.Count() - removedVisitCount < 1)
                 {
-
-                    Console.WriteLine(visitorVisits.Count());
-                    Console.WriteLine(removedVisitCount);
                     await context.RemoveVisitor(visitor);
                 }
             }

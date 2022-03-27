@@ -9,7 +9,7 @@ namespace NBG.Visitor.Blazor.Components
 {
     public static class MudBlazorConfig
     {
-        public static MudTheme Theme = new MudTheme()
+        public static MudTheme TerminalViewTheme = new MudTheme()
         {
             Palette = new Palette()
             {

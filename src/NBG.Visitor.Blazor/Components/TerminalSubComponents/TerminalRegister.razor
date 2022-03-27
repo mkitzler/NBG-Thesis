@@ -33,7 +33,11 @@
                         <MudTextField Required="true" Class="mb-2 touchscreen-textfield absolute-helper-container" T="string" @bind-Value="FormData.ContactPerson" Label=@Loc["ContactPerson"] Variant=Variant.Filled Clearable=true RequiredError=@Loc["Required"] Immediate=true TextChanged=Revalidate />
                     </MudItem>
                     <MudItem Class="d-flex">
-                        <MudText Typo=Typo.body1>@Loc["GDPRRegisterInfo"]</MudText><MudButton Style="margin: -1.5rem 0.5rem; padding: 1.5rem 0.5rem; min-width: 8rem;" Variant=Variant.Text OnClick=@(() => _gdpr.Show())>@Loc["MoreInfo"]</MudButton>
+                        <MudText Typo=Typo.body1>@Loc["GDPRRegisterInfo"]</MudText>
+                        @if (!HideGDPRButton)
+                        {
+                            <MudButton Style="margin: -1.5rem 0.5rem; padding: 1.5rem 0.5rem; min-width: 8rem;" Variant=Variant.Text OnClick=@(() => _gdpr.Show())>@Loc["MoreInfo"]</MudButton>
+                        }
                     </MudItem>
                 </MudGrid>
             </MudForm>
@@ -85,6 +89,12 @@
     public EventCallback OnNext { get; set; }
     [Parameter]
     public EventCallback OnBack { get; set; }
+
+    /// <summary>
+    /// Hides the "More Info" button on the registration page.
+    /// </summary>
+    [Parameter]
+    public bool HideGDPRButton { get; set; } = false;
 
     public RegisterFormDataDto FormData { get; set; }
     #if DEBUG

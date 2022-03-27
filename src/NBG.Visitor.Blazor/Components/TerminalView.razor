@@ -18,22 +18,20 @@
 
 <link href="_content/NBG.Visitor.Blazor/css/TerminalView.css" rel="stylesheet"/>
 
-<MudThemeProvider Theme=MudBlazorConfig.Theme/>
+<MudThemeProvider Theme=MudBlazorConfig.TerminalViewTheme/>
 <MudDialogProvider FullWidth=true MaxWidth=MaxWidth.Medium/>
 
-<div style=@Style>
-    <CustomMudCarousel Style="height: 100%; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" @ref="_carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object" SelectedIndex=@(HideFirstPage ? 1 : 0)>
-        <MudCarouselItem>
-            <TerminalHome OnNext=_carousel.Next />
-        </MudCarouselItem>
-        <MudCarouselItem>
-            <TerminalRegister @ref="_form" OnBack=_carousel.Previous OnNext=_carousel.Next />
-        </MudCarouselItem>
-        <MudCarouselItem>
-            <TerminalSafety OnBack=_carousel.Previous OnRegister=Register />
-        </MudCarouselItem>
-    </CustomMudCarousel>
-</div>
+<CustomMudCarousel Style=@Style @ref="_carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object" SelectedIndex=@(HideFirstPage ? 1 : 0)>
+    <MudCarouselItem>
+        <TerminalHome OnNext=_carousel.Next />
+    </MudCarouselItem>
+    <MudCarouselItem>
+        <TerminalRegister @ref="_form" OnBack=_carousel.Previous OnNext=_carousel.Next HideGDPRButton=HideGDPRButton/>
+    </MudCarouselItem>
+    <MudCarouselItem>
+        <TerminalSafety OnBack=_carousel.Previous OnRegister=Register />
+    </MudCarouselItem>
+</CustomMudCarousel>
 
 @code {
     [CascadingParameter]
@@ -55,6 +53,15 @@
     [Parameter]
     public bool HideFirstPage { get; set; } = false;
 
+    /// <summary>
+    /// Hides the "More Info" button on the registration page.
+    /// </summary>
+    [Parameter]
+    public bool HideGDPRButton { get; set; } = false;
+
+    /// <summary>
+    /// Loads the data of the specified guid.
+    /// </summary>
     [Parameter]
     public Guid? PreregisteredVisitGuid { get; set; } = null;
 
