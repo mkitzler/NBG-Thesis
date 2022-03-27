@@ -14,14 +14,14 @@
 					<MudGrid Style="height: 100%; padding: 1rem 4rem 2rem;" Justify=Justify.Center>
 						@for (int i = ItemsPerPage * localp; (i < ItemsPerPage * localp + ItemsPerPage) && i < _safetyItems.Length; i++)
 						{
-							var locali = i;
+							var si = _safetyItems[i];
 							<MudItem xs="5" Class="center">
 								<MudPaper Elevation=15 Style="padding: 1rem; background-color: #fffc; width: 100%;">
 									<div style="height: 10em; display: flex; width: 100%;">
-										<img style="width: 10em; align-self: center" src="@(_safetyItems[locali].ImagePath)"/>
+										<img style="width: 10em; align-self: center" src="@(si.ImagePath)"/>
 										<div style="overflow: scroll; margin-left: 2em;">
-											<MudText Style="text-decoration: underline;" Typo=Typo.h5>@_safetyItems[locali].Title</MudText>
-											<MudText>@_safetyItems[locali].Text</MudText>
+											<MudText Style="text-decoration: underline;" Typo=Typo.h5>@si.Title</MudText>
+											<MudText>@si.Text</MudText>
 										</div>
 									</div>
 								</MudPaper>
