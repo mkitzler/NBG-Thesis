@@ -1,6 +1,6 @@
 ﻿@using MudBlazor;
 @using System.ComponentModel.DataAnnotations
-@using NBG.Visitor.Domain.Dtos
+@using NBG.Visitor.Domain.Commands
 
 <MudGrid Justify=Justify.Center Class="center" Style="height: 89%; padding: 0 1rem">
     <MudItem lg=7>
@@ -96,7 +96,7 @@
     [Parameter]
     public bool HideGDPRButton { get; set; } = false;
 
-    public RegisterFormDataDto FormData { get; set; }
+    public RegisterFormDataCommand FormData { get; set; }
     #if DEBUG
     = new() {FirstName = "Max", LastName = "Mustermann", PhoneNumber = "1234", Company = "Test", ContactPerson = "Test"};
     #else
