@@ -10,14 +10,14 @@ namespace NBG.Visitor.Blazor.TicketGeneration
 {
     public class TicketService : ITicketService
     {
-        public async Task<byte[]> GenerateQR(string content)
+        public Task<byte[]> GenerateQR(string content)
         {
-            return QRGenerator.GenerateQrCode(content);
+            return Task.FromResult(QRGenerator.GenerateQrCode(content));
         }
 
-        public async Task<byte[]> GenerateTicket(string visitorTicketLabel, string arrivalLabel, CultureInfo dateCulture, byte[] qr, string id, string name, DateTime arrival)
+        public Task<byte[]> GenerateTicket(string visitorTicketLabel, string arrivalLabel, CultureInfo dateCulture, byte[] qr, string id, string name, DateTime arrival)
         {
-            return TicketPdfGenerator.GetPdf(visitorTicketLabel, arrivalLabel, dateCulture, qr, id, name, arrival);
+            return Task.FromResult(TicketPdfGenerator.GetPdf(visitorTicketLabel, arrivalLabel, dateCulture, qr, id, name, arrival));
         }
     }
 }

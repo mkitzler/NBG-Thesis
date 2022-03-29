@@ -54,10 +54,6 @@
     private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
     private bool dense = true;
 
-    protected override async Task OnInitializedAsync()
-    {
-    }
-
     public void ChangeLang(string to)
     {
         Loc.Culture = new(to);

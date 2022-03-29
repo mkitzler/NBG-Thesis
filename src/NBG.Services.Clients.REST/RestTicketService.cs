@@ -15,7 +15,7 @@ namespace NBG.Services.Clients.REST
     public class RestTicketService : ITicketService
     {
         private const string API_URL = "https://localhost:44323/api/Ticket";
-        private static HttpClient _http = new HttpClient();
+        private static readonly HttpClient _http = new();
 
         public async Task<byte[]> GenerateQR(string content)
         {

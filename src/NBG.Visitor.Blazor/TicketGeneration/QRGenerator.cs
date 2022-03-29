@@ -14,9 +14,9 @@ namespace NBG.Visitor.Blazor
         /// <returns>The QR code as bitmap</returns>
         public static byte[] GenerateQrCode(string content)
         {
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeGenerator qrGenerator = new();
             QRCodeData qrCodeData = qrGenerator.CreateQrCode(content, QRCodeGenerator.ECCLevel.H);
-            QRCode qrCode = new QRCode(qrCodeData);
+            QRCode qrCode = new (qrCodeData);
             //Old
             //Bitmap logo = BitmapFromUrl("https://fiss.dev.nbg.tech:44303/_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png");
             Bitmap logo = StaticContent.NBG_Icon_Red;

@@ -33,7 +33,7 @@ namespace NBG.Visitor.Blazor.TicketGeneration
             page.Width = new(2.1, XGraphicsUnit.Inch);
 
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            using (MemoryStream qrStream = new MemoryStream(qr))
+            using (MemoryStream qrStream = new (qr))
             {
                 gfx.DrawImage(XImage.FromStream(qrStream), 21.6, 21.6, 108, 108);   // 1 Point == 1/72 Inch
             }
@@ -44,11 +44,9 @@ namespace NBG.Visitor.Blazor.TicketGeneration
             gfx.DrawString(arrival.ToString("g", dateCulture), new("Consolas", 8, XFontStyle.Regular), XBrushes.Black, 75.6, 210, XStringFormats.Center);
             //gfx.DrawLine(new(XColor.FromArgb(0, 0, 0)), 0, 151.2, 151.2, 151.2);
 
-            using (MemoryStream docStream = new MemoryStream())
-            {
-                doc.Save(docStream);
-                return docStream.ToArray();
-            }
+            using MemoryStream docStream = new();
+            doc.Save(docStream);
+            return docStream.ToArray();
         }
     }
 }

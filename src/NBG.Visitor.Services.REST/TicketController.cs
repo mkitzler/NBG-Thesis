@@ -19,13 +19,13 @@ namespace NBG.Visitor.Services.REST
     public class TicketController : ControllerBase
     {
         [HttpPost("GenerateQR")]
-        public async Task<byte[]> GenerateQR([FromBody] string content)
+        public static byte[] GenerateQR([FromBody] string content)
         {
             return QRGenerator.GenerateQrCode(content);
         }
 
         [HttpPost("GenerateTicket")]
-        public async Task<byte[]> GenerateTicket([FromBody] GenerateTicketCommand ticket)
+        public static byte[] GenerateTicket([FromBody] GenerateTicketCommand ticket)
         {
             return TicketPdfGenerator.GetPdf(ticket.VisitorTicketLabel, ticket.ArrivalLabel, new CultureInfo(ticket.DateCulture), ticket.QR, ticket.Guid, ticket.Name, ticket.Arrival);
         }

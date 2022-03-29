@@ -34,7 +34,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.1" />
     <PackageReference Include="MudBlazor" Version="5.1.5" />
-    <PackageReference Include="PdfiumViewer" Version="2.13.0" />
     <PackageReference Include="PdfSharp" Version="1.50.5147" />
     <PackageReference Include="QRCoder" Version="1.4.3" />
     <PackageReference Include="Quartz" Version="3.3.3" />
@@ -42,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NBG.Services.Clients.REST\NBG.Services.Clients.REST.csproj" />
     <ProjectReference Include="..\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj" />
   </ItemGroup>
 
@@ -53,17 +51,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\StaticContent.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StaticContent.resx</DependentUpon>
-    </Compile>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Update="Resources\StaticContent.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>StaticContent.Designer.cs</LastGenOutput>
+      <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>
 
