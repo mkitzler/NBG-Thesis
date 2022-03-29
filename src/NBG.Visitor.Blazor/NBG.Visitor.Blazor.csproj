@@ -49,22 +49,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.10" />
     <PackageReference Include="MudBlazor" Version="5.1.5" />
-    <PackageReference Include="Radzen.Blazor" Version="3.13.11" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\StaticContent.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StaticContent.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\StaticContent.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>StaticContent.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
