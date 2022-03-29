@@ -8,7 +8,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Services.Clients.REST
+namespace NBG.Visitor.Clients.REST
 {
     public class RestVisitService : IVisitService
     {
@@ -18,7 +18,7 @@ namespace NBG.Services.Clients.REST
         public async Task<VisitorDto> ReadVisitorIfExists(string firstName, string lastName, string phoneNumber)
         {
             HttpResponseMessage resp = await _http.PostAsJsonAsync<ReadVisitorCommand>($"{API_URL}/ReadVisitorIfExists", new() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber }).ConfigureAwait(false);
-            if(resp.IsSuccessStatusCode)
+            if (resp.IsSuccessStatusCode)
                 return await resp.Content.ReadFromJsonAsync<VisitorDto>().ConfigureAwait(false);
             else
                 return null;
