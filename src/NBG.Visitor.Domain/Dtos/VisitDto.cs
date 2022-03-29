@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NBG.Visitor.Domain.Dtos
+namespace NBG.Visitor.Domain.Commands
 {
     public class VisitDto
     {

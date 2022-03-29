@@ -1,4 +1,4 @@
-﻿using NBG.Visitor.Domain.Dtos;
+﻿using NBG.Visitor.Domain.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,6 +1,5 @@
 ﻿using NBG.Visitor.Domain;
 using NBG.Visitor.Domain.Commands;
-using NBG.Visitor.Domain.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,9 +58,9 @@ namespace NBG.Visitor.Clients.REST
                 return null;
         }
 
-        public async Task<RegisterFormDataDto> ReadRegisterFormDataByGuid(Guid guid)
+        public async Task<RegisterFormDataCommand> ReadRegisterFormDataByGuid(Guid guid)
         {
-            return await _http.GetFromJsonAsync<RegisterFormDataDto>($"{API_URL}/ReadRegisterFormDataByGuid/{guid}").ConfigureAwait(false);
+            return await _http.GetFromJsonAsync<RegisterFormDataCommand>($"{API_URL}/ReadRegisterFormDataByGuid/{guid}").ConfigureAwait(false);
         }
 
         public async Task<VisitDto> ReadVisitByGuid(Guid guid)

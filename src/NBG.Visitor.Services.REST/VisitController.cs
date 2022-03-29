@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NBG.Visitor.Domain;
 using NBG.Visitor.Domain.Commands;
-using NBG.Visitor.Domain.Dtos;
 using NBG.Visitor.Services.DB;
 using Newtonsoft.Json;
 using System;
@@ -83,7 +82,7 @@ namespace NBG.Visitor.Services.REST
         }
 
         [HttpGet("ReadRegisterFormDataByGuid/{guid}")]
-        public async Task<RegisterFormDataDto> ReadRegisterFormDataByGuid(Guid guid)
+        public async Task<RegisterFormDataCommand> ReadRegisterFormDataByGuid(Guid guid)
         {
             return await _vs.ReadRegisterFormDataByGuid(guid);
         }

@@ -109,7 +109,7 @@ namespace NBG.Visitor
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
             services.AddSingleton<DeleteOldVisitorsJob>();
-            services.AddSingleton(new Job(type: typeof(DeleteOldVisitorsJob), expression: "0 0 0 1,15 * ?"));
+            services.AddSingleton(new Job(type: typeof(DeleteOldVisitorsJob), expression: "0 0 0 * * ?"));
             //"0 0 0 1,15 * ?": on the 1st and the 15th at 00:00:00 (Midnight) * => every month ? => No specific day of week
             //"0/30 0/1 * 1/1 * ? *": * ? * every 30 seconds
         }

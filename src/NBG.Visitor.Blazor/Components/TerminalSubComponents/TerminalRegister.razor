@@ -1,6 +1,6 @@
 ﻿@using MudBlazor;
 @using System.ComponentModel.DataAnnotations
-@using NBG.Visitor.Domain.Dtos
+@using NBG.Visitor.Domain.Commands
 
 <MudGrid Justify=Justify.Center Class="center" Style="height: 89%; padding: 0 1rem">
     <MudItem lg=7>
@@ -62,7 +62,7 @@
         <MudText Typo=Typo.h4>@Loc["GDPRInfo"]</MudText>
     </TitleContent>
     <MessageContent>
-        <MudText Typo=Typo.h6>
+        <MudText Typo=Typo.h6 Style="overflow: auto; max-height: 50vh;">
             <p>
                 Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
                 sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem
@@ -96,7 +96,7 @@
     [Parameter]
     public bool HideGDPRButton { get; set; } = false;
 
-    public RegisterFormDataDto FormData { get; set; }
+    public RegisterFormDataCommand FormData { get; set; }
     #if DEBUG
     = new() {FirstName = "Max", LastName = "Mustermann", PhoneNumber = "1234", Company = "Test", ContactPerson = "Test"};
     #else

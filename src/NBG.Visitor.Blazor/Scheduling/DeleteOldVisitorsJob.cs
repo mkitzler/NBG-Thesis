@@ -23,7 +23,7 @@ namespace NBG.Visitor.Blazor.Scheduling
         public async Task Execute(IJobExecutionContext context)
         {
             await DataRepository.RemoveOldVisits();
-            Console.WriteLine("DeleteOldVisitorsJob executed at " + DateTime.Now.ToString());
+            Console.WriteLine("RemoveOldVisits executed at " + DateTime.Now.ToString());
         }
     }
 }

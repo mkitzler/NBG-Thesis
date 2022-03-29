@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using NBG.Visitor.Domain.Dtos;
+using NBG.Visitor.Domain.Commands;
 using NBG.Visitor.Storage.Models;
 
 namespace NBG.Visitor.Services.DB.Mapping

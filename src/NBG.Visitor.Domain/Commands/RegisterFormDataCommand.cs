@@ -1,6 +1,6 @@
-﻿namespace NBG.Visitor.Domain.Dtos
+﻿namespace NBG.Visitor.Domain.Commands
 {
-    public class RegisterFormDataDto
+    public class RegisterFormDataCommand
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
