@@ -10,6 +10,7 @@ using NBG.Visitor.Blazor;
 using System.IO;
 using System.Globalization;
 using NBG.Visitor.Blazor.TicketGeneration;
+using NBG.Visitor.Domain;
 
 namespace NBG.Visitor.Services.REST
 {
@@ -18,16 +19,23 @@ namespace NBG.Visitor.Services.REST
     [ApiController]
     public class TicketController : ControllerBase
     {
+        private readonly ITicketService _ts;
+
+        public TicketController(ITicketService ts)
+        {
+            _ts = ts;
+        }
+
         [HttpPost("GenerateQR")]
         public async Task<byte[]> GenerateQR([FromBody] string content)
         {
-            return QRGenerator.GenerateQrCode(content);
+            return await _ts.GenerateQR(content);
         }
 
         [HttpPost("GenerateTicket")]
         public async Task<byte[]> GenerateTicket([FromBody] GenerateTicketCommand ticket)
         {
-            return TicketPdfGenerator.GetPdf(ticket.VisitorTicketLabel, ticket.ArrivalLabel, new CultureInfo(ticket.DateCulture), ticket.QR, ticket.Guid, ticket.Name, ticket.Arrival);
+            return await _ts.GenerateTicket(ticket.VisitorTicketLabel, ticket.ArrivalLabel, new CultureInfo(ticket.DateCulture), ticket.QR, ticket.Guid, ticket.Name, ticket.Arrival);
         }
     }
 }

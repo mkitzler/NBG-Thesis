@@ -10,7 +10,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NBG.Services.Clients.REST
+namespace NBG.Visitor.Clients.REST
 {
     public class RestTicketService : ITicketService
     {
@@ -19,7 +19,7 @@ namespace NBG.Services.Clients.REST
 
         public async Task<byte[]> GenerateQR(string content)
         {
-            HttpResponseMessage resp = await _http.PostAsJsonAsync<string>($"{API_URL}/GenerateQR", content).ConfigureAwait(false);
+            HttpResponseMessage resp = await _http.PostAsJsonAsync($"{API_URL}/GenerateQR", content).ConfigureAwait(false);
             return await resp.Content.ReadFromJsonAsync<byte[]>().ConfigureAwait(false);
         }
 

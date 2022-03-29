@@ -1,4 +1,4 @@
-using NBG.Services.Clients.REST;
+using NBG.Visitor.Clients.REST;
 using NBG.Visitor.Domain;
 using NBG.Visitor.Domain.Commands;
 using NBG.Visitor.Domain.Dtos;

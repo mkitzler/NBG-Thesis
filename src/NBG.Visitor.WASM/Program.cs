@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
-using NBG.Services.Clients.REST;
+using NBG.Visitor.Clients.REST;
 using NBG.Visitor.Domain;
 using System;
 using System.Collections.Generic;
