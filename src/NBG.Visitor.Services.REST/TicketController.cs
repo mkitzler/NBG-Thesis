@@ -27,13 +27,13 @@ namespace NBG.Visitor.Services.REST
         }
 
         [HttpPost("GenerateQR")]
-        public static byte[] GenerateQR([FromBody] string content)
+        public async Task<byte[]> GenerateQR([FromBody] string content)
         {
             return await _ts.GenerateQR(content);
         }
 
         [HttpPost("GenerateTicket")]
-        public static byte[] GenerateTicket([FromBody] GenerateTicketCommand ticket)
+        public async Task<byte[]> GenerateTicket([FromBody] GenerateTicketCommand ticket)
         {
             return await _ts.GenerateTicket(ticket.VisitorTicketLabel, ticket.ArrivalLabel, new CultureInfo(ticket.DateCulture), ticket.QR, ticket.Guid, ticket.Name, ticket.Arrival);
         }
