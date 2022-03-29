@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Services.DB", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Services.REST", "src\NBG.Visitor.Services.REST\NBG.Visitor.Services.REST.csproj", "{0CBEE1B4-B253-4A27-B195-7414782D9E1E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Services.Clients.REST", "src\NBG.Services.Clients.REST\NBG.Services.Clients.REST.csproj", "{CB378188-BD5A-46FC-9DA6-F3B6C11EE64B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Clients.REST", "src\NBG.Services.Clients.REST\NBG.Visitor.Clients.REST.csproj", "{CB378188-BD5A-46FC-9DA6-F3B6C11EE64B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NBG.Visitor.Storage", "src\NBG.Visitor.Storage\NBG.Visitor.Storage.csproj", "{A37209E6-FBAC-4403-9F03-EC23AC64C5C9}"
 EndProject

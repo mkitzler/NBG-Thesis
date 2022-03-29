@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NBG.Services.Clients.REST\NBG.Services.Clients.REST.csproj" />
+    <ProjectReference Include="..\NBG.Services.Clients.REST\NBG.Visitor.Clients.REST.csproj" />
     <ProjectReference Include="..\NBG.Visitor.Blazor\NBG.Visitor.Blazor.csproj" />
     <ProjectReference Include="..\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj" />
   </ItemGroup>

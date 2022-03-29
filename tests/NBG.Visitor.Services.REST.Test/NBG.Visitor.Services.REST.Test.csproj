@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\NBG.Services.Clients.REST\NBG.Services.Clients.REST.csproj" />
+    <ProjectReference Include="..\..\src\NBG.Services.Clients.REST\NBG.Visitor.Clients.REST.csproj" />
     <ProjectReference Include="..\..\src\NBG.Visitor.Domain\NBG.Visitor.Domain.csproj" />
   </ItemGroup>
 
