@@ -97,7 +97,7 @@
         @if (@context.Status == VisitStatusDto.VISIT_ACTIVE)
         {
             <MudTd Class = "pt-1 pb-1">
-                <MudIconButton OnClick=@(()=>SignOffVisit(@context)) Class="signOffBtn visitorOverviewBtn" Icon=@Icons.Filled.Logout></MudIconButton>
+                <MudIconButton OnClick=@(()=>SignOutVisit(@context)) Class="signOffBtn visitorOverviewBtn" Icon=@Icons.Filled.Logout></MudIconButton>
             </MudTd>
         }
         else
@@ -223,12 +223,12 @@
         }
     }
 
-    public async Task SignOffVisit(VisitDto _visit)
+    public async Task SignOutVisit(VisitDto _visit)
     {
         var parameters = new DialogParameters { ["visit"] = _visit };
         parameters.Add("Loc", Loc);
 
-        var dialog = DialogService.Show<SignOffDialog>(Loc["SignOffVisitor"], parameters);
+        var dialog = DialogService.Show<SignOutDialog>(Loc["SignOutVisitor"], parameters);
         var result = await dialog.Result;
 
         if (!result.Cancelled)
@@ -238,14 +238,14 @@
                 visit.Status = VisitStatusDto.VISIT_OVER;
             await DataRepository.UpdateVisit(visit.Id, visit.VisitStart??null, visit.VisitEnd??DateTime.Now, visit.Status, visit.ContactPerson, visit.CompanyLabel, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email);
 
-            Snackbar.Add(Loc["SignedOffVisitor"], Severity.Success);
-            await JS.InvokeVoidAsync("console.log",Loc["SignedOffVisitor"]);
+            Snackbar.Add(Loc["SignedOutVisitor"], Severity.Success);
+            await JS.InvokeVoidAsync("console.log",Loc["SignedOutVisitor"]);
         }
         
         if(Visits.Where(x => x.Status == VisitStatusDto.VISIT_ACTIVE).ToList().Count <= 0)
         {
             parameters = new DialogParameters();
-            parameters.Add("ContentText", Loc["AllSignedOffPrompt"]);
+            parameters.Add("ContentText", Loc["AllSignedOutPrompt"]);
             parameters.Add("ButtonText", "OK");
             parameters.Add("Color", MudBlazor.Color.Success);
             parameters.Add("Loc", Loc);

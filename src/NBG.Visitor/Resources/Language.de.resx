@@ -207,16 +207,16 @@
   <data name="Save" xml:space="preserve">
     <value>Speichern</value>
   </data>
-  <data name="Seach" xml:space="preserve">
+  <data name="Search" xml:space="preserve">
     <value>Suchen</value>
   </data>
-  <data name="SignedOffVisitor" xml:space="preserve">
+  <data name="SignedOutVisitor" xml:space="preserve">
     <value>Besucher abgemeldet.</value>
   </data>
-  <data name="SignOffPrompt" xml:space="preserve">
+  <data name="SignOutPrompt" xml:space="preserve">
     <value>Wollen Sie diesen Besucher wirklich abmelden? Dieser Vorgang kann nicht rückgängig gemacht werden.</value>
   </data>
-  <data name="SignOffVisitor" xml:space="preserve">
+  <data name="SignOutVisitor" xml:space="preserve">
     <value>Besucher abmelden</value>
   </data>
   <data name="Start" xml:space="preserve">
@@ -324,7 +324,7 @@
   <data name="ClearFields" xml:space="preserve">
     <value>Felder löschen</value>
   </data>
-  <data name="AllSignedOffPrompt" xml:space="preserve">
+  <data name="AllSignedOutPrompt" xml:space="preserve">
     <value>Alle aktiven Besucher wurden abgemeldet.</value>
   </data>
   <data name="NoVisitsPrompt" xml:space="preserve">

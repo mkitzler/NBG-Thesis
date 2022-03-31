@@ -101,13 +101,12 @@ namespace NBG.Visitor
 
             services.AddSingleton<ITicketService, TicketService>();
 
+            services.AddControllersWithViews();
 
             //Quartz scheduler
-            services.AddControllersWithViews();
             services.AddHostedService<QuartzHostedService>();
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-
             services.AddSingleton<DeleteOldVisitorsJob>();
             services.AddSingleton(new Job(type: typeof(DeleteOldVisitorsJob), expression: "0 0 0 * * ?"));
             //"0 0 0 1,15 * ?": on the 1st and the 15th at 00:00:00 (Midnight) * => every month ? => No specific day of week
