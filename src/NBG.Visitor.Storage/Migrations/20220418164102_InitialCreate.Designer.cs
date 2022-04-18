@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NBG.Visitor.Services.DB;
+using NBG.Visitor.Storage;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace NBG.Visitor.Storage.Migrations
 {
     [DbContext(typeof(VisitContext))]
-    [Migration("20220130142725_initialCreate")]
-    partial class initialCreate
+    [Migration("20220418164102_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

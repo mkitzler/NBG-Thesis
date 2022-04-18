@@ -18,6 +18,7 @@ using Quartz.Spi;
 using Quartz;
 using Quartz.Impl;
 using NBG.Visitor.Blazor.TicketGeneration;
+using NBG.Visitor.Storage;
 
 namespace NBG.Visitor
 {

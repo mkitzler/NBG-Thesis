@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NBG.Visitor.Domain;
 using NBG.Visitor.Domain.Commands;
 using NBG.Visitor.Services.DB.Mapping;
+using NBG.Visitor.Storage;
 using NBG.Visitor.Storage.Models;
 using System;
 using System.Collections.Generic;

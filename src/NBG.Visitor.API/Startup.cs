@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using NBG.Visitor.Domain;
 using NBG.Visitor.Services.DB;
+using NBG.Visitor.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;

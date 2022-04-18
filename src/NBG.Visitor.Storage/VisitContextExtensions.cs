@@ -3,7 +3,7 @@ using NBG.Visitor.Storage.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NBG.Visitor.Services.DB
+namespace NBG.Visitor.Storage
 {
     public static class VisitContextExtensions
     {

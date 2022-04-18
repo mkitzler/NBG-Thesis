@@ -2,7 +2,7 @@
 using NBG.Visitor.Storage.Models;
 using System;
 
-namespace NBG.Visitor.Services.DB
+namespace NBG.Visitor.Storage
 {
     public class VisitContext : DbContext
     {
