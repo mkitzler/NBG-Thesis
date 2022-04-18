@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NBG.Visitor.Blazor.TicketGeneration;
 using NBG.Visitor.Domain;
 using NBG.Visitor.Services.DB;
 using NBG.Visitor.Storage;
@@ -39,6 +40,7 @@ namespace NBG.Visitor.API
             services.AddDbContextFactory<VisitContext>(options =>
                 options.UseNpgsql("Host=nbg.ftp.sh;Database=nbg;Username=nbg;Password=nbg1234"));
             services.AddSingleton<IVisitService, VisitService>();
+            services.AddSingleton<ITicketService, TicketService>();
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
