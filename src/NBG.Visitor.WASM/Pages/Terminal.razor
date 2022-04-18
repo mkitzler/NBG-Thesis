@@ -1,15 +1,14 @@
 ﻿@page "/terminal"
+@layout RegistrationLayout
 @using NBG.Visitor.Blazor
 @using NBG.Visitor.Blazor.Components
 @using System.Reflection
+@using NBG.Visitor.Blazor.Shared
 
-<CascadingValue Value="Loc">
-    <CascadingValue Value="SafetyItemResource">
-        <TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" QRUrl="https://localhost:44335/terminal"></TerminalView>
-    </CascadingValue>
+<CascadingValue Value="SafetyItemResource">
+    <TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" QRUrl="https://localhost:44335/terminal"></TerminalView>
 </CascadingValue>
 
 @code{
-    private Localizer Loc = new("NBG.Visitor.WASM.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
     private System.Resources.ResourceManager SafetyItemResource = new("NBG.Visitor.WASM.Resources.SafetyItems", Assembly.GetExecutingAssembly());
 }

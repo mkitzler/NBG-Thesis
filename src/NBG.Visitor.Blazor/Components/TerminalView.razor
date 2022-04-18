@@ -20,21 +20,33 @@
 <MudThemeProvider Theme=MudBlazorConfig.TerminalViewTheme/>
 <MudDialogProvider FullWidth=true MaxWidth=MaxWidth.Medium/>
 
-<CustomMudCarousel Style=@Style @ref="_carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object" SelectedIndex=@(HideFirstPage ? 1 : 0)>
-    <MudCarouselItem>
-        <TerminalHome OnNext=_carousel.Next />
-    </MudCarouselItem>
-    <MudCarouselItem>
-        <TerminalRegister @ref="_form" OnBack=_carousel.Previous OnNext=_carousel.Next HideGDPRButton=HideGDPRButton/>
-    </MudCarouselItem>
-    <MudCarouselItem>
-        <TerminalSafety OnBack=_carousel.Previous OnRegister=Register />
-    </MudCarouselItem>
-</CustomMudCarousel>
+<CascadingValue Value="Loc">
+    <CustomMudCarousel Style=@Style @ref="_carousel" AutoCycle="false" ShowArrows="false" ShowDelimiters="false" Swipe="false" TData="object" SelectedIndex=@(HideFirstPage ? 1 : 0)>
+        <MudCarouselItem>
+            <TerminalHome OnNext=_carousel.Next />
+        </MudCarouselItem>
+        <MudCarouselItem>
+            <TerminalRegister @ref="_form" OnBack=_carousel.Previous OnNext=_carousel.Next HideGDPRButton=HideGDPRButton/>
+        </MudCarouselItem>
+        <MudCarouselItem>
+            <TerminalSafety OnBack=_carousel.Previous OnRegister=Register />
+        </MudCarouselItem>
+    </CustomMudCarousel>
+</CascadingValue>
 
 @code {
-    [CascadingParameter]
-    public Localizer Loc { get; set; }
+    /// <summary>
+    /// Sets the language of the component.
+    /// </summary>
+    [Parameter]
+    public string Language {
+        get {
+            return Loc.Culture.Name;
+        }
+        set {
+            Loc.Culture = new(value);
+        }
+    }
 
     [Parameter]
     public string Style { get; set; }
@@ -69,6 +81,8 @@
     /// </summary>
     [Parameter]
     public EventCallback<byte[]> Registered {get; set;}
+
+    private Localizer Loc = new("NBG.Visitor.Blazor.Resources.Text.Language", Assembly.GetAssembly(typeof(TerminalView)), "de-DE");
 
     private MudCarousel<object> _carousel;
     private TerminalRegister _form;
@@ -206,7 +220,7 @@
             <MudButton Class="touchscreen-button" Variant="Variant.Outlined" Color="MudBlazor.Color.Primary" EndIcon="@Icons.Material.Filled.Logout">@Loc["Yes"]</MudButton>
         };
         DialogResult result = await dialog.Show<TerminalDialog>(Loc["SignOut"], new() { ["DialogText"] = Loc["ConfirmSignOut"], ["NoButtonText"] = Loc["No"], ["YesButton"] = yesBtn }, new() {DisableBackdropClick = true, CloseButton = false}).Result;
-        if ((bool)result.Data)
+        if (!result.Cancelled && (bool)result.Data)
         {
 #if DEBUG
             Console.WriteLine("Ended Visit");

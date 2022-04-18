@@ -1,12 +1,12 @@
 ﻿@page "/terminal/{Culture}/{Guid:guid}"
+@layout RegistrationLayout
 @using NBG.Visitor.Blazor
 @using NBG.Visitor.Blazor.Components
 @using System.Reflection
 @using System.IO
+@using NBG.Visitor.Blazor.Shared
 
-<CascadingValue Value="Loc">
-    <TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" Registered=OnRegister PreregisteredVisitGuid=Guid></TerminalView>
-</CascadingValue>
+<TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" PreregisteredVisitGuid=Guid Language=@Culture Registered=OnRegister></TerminalView>
 
 @code{
     [ParameterAttribute]
@@ -14,14 +14,6 @@
 
     [ParameterAttribute]
     public string Culture { get; set; }
-
-    private Localizer Loc;
-
-    protected override void OnInitialized()
-    {
-        Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), Culture);
-        base.OnInitialized();
-    }
 
     private void OnRegister(byte[] pdf)
     {

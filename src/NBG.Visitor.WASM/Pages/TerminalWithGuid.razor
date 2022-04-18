@@ -1,13 +1,11 @@
 ﻿@page "/terminal/{Culture}/{Guid:guid}"
+@layout RegistrationLayout
 @using NBG.Visitor.Blazor
 @using NBG.Visitor.Blazor.Components
 @using System.Reflection
+@using NBG.Visitor.Blazor.Shared
 
-<CascadingValue Value="Loc">
-    <CascadingValue Value="SafetyItemResource">
-        <TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" QRUrl="https://localhost:44335/terminal" PreregisteredVisitGuid=Guid></TerminalView>
-    </CascadingValue>
-</CascadingValue>
+<TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" PreregisteredVisitGuid=Guid Language=Culture QRUrl="https://localhost:44335/terminal"></TerminalView>
 
 @code{
     [ParameterAttribute]
@@ -15,13 +13,4 @@
 
     [ParameterAttribute]
     public string Culture { get; set; }
-
-    private Localizer Loc;
-    private System.Resources.ResourceManager SafetyItemResource = new("NBG.Visitor.WASM.Resources.SafetyItems", Assembly.GetExecutingAssembly());
-
-    protected override void OnInitialized()
-    {
-        Loc = new("NBG.Visitor.WASM.Resources.Language", Assembly.GetExecutingAssembly(), Culture);
-        base.OnInitialized();
-    }
 }

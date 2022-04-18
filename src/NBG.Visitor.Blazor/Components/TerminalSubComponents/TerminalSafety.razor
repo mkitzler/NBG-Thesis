@@ -61,9 +61,6 @@
 	[CascadingParameter]
 	public Localizer Loc { get; set; }
 
-	[CascadingParameter]
-	public System.Resources.ResourceManager SafetyItemResource { get; set; }
-
 	[Parameter]
 	public EventCallback OnRegister { get; set; }
 	[Parameter]
@@ -88,7 +85,7 @@
 	}
 
 	private CustomMudCarousel<object> _carousel;
-	private SafetyItem[] _safetyItems => SafetyItem.LoadFromResource((SafetyItemResource != null) ? new Localizer(SafetyItemResource, Loc.Culture) : new("NBG.Visitor.Resources.SafetyItems", Assembly.GetEntryAssembly(), Loc.Culture)).ToArray();
+	private SafetyItem[] _safetyItems => SafetyItem.LoadFromResource(new("NBG.Visitor.Blazor.Resources.Text.SafetyItems", Assembly.GetAssembly(typeof(TerminalSafety)), Loc.Culture)).ToArray();
 	private bool _accepted;
 	private bool _registering = false;
 

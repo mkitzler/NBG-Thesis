@@ -1,16 +1,14 @@
 ﻿@page "/terminal"
+@layout RegistrationLayout
 @using NBG.Visitor.Blazor
 @using NBG.Visitor.Blazor.Components
 @using System.Reflection
 @using System.IO
+@using NBG.Visitor.Blazor.Shared
 
-<CascadingValue Value="Loc">
-    <TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" Registered=OnRegister></TerminalView>
-</CascadingValue>
+<TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" Registered=OnRegister></TerminalView>
 
 @code{
-    private Localizer Loc = new("NBG.Visitor.Resources.Language", Assembly.GetExecutingAssembly(), "de-DE");
-
     private void OnRegister(byte[] pdf)
     {
         using (StreamWriter sw = new StreamWriter(new FileStream("./ticket.pdf", FileMode.Create)))

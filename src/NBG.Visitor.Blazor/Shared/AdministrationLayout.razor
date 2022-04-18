@@ -1,0 +1,46 @@
+﻿@inherits LayoutComponentBase
+@using MudBlazor;
+@using NBG.Visitor.Blazor
+@using System.Globalization
+@using System.Reflection
+
+<style>
+    #LangButton * {
+        color:white !important;
+    }
+</style>
+
+<div class="page">
+
+    <div class="main">
+        <MudAppBar Class="red darken-4" Fixed="false" Dense=@dense Elevation="5">
+            <img src="/img/Logo/nbg_logo.png" style="max-height:80%; position:absolute; left:15px;"/>
+            <MudSpacer></MudSpacer>
+
+            <MudMenu id="LangButton" Label="@Loc["LangShort"]" Class="mr-5" StartIcon="@Icons.Filled.Language" Dense="true">
+                <MudMenuItem OnClick=@(() => ChangeLang("de-DE")) Style="height:24px;"><MudText>German</MudText></MudMenuItem>
+                <MudMenuItem OnClick=@(() => ChangeLang("en-US")) Style="height:24px;"><MudText>English</MudText></MudMenuItem>
+            </MudMenu>
+
+            <form method="get" action="logout">
+                <button type="submit" class="nav-link btn btn-link" id="logoutBtn">@Loc["LogOut"]</button>
+            </form>
+        </MudAppBar>
+        <CascadingValue Value="Loc">
+            <div class="content">
+                @Body
+            </div>
+        </CascadingValue>
+    </div>
+</div>
+
+@code{
+    private Localizer Loc = new("NBG.Visitor.Blazor.Resources.Text.Language", Assembly.GetAssembly(typeof(AdministrationLayout)), "de-DE");
+    private bool dense = true;
+
+    public void ChangeLang(string to)
+    {
+        Loc.Culture = new(to);
+        StateHasChanged();
+    }
+}
