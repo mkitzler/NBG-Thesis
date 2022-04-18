@@ -3,12 +3,17 @@
 @using NBG.Visitor.Blazor
 @using NBG.Visitor.Blazor.Components
 @using System.Reflection
+@using NBG.Visitor.Blazor.Components.Dialogs
 @using NBG.Visitor.Blazor.Shared
+@using System.IO
 
-<CascadingValue Value="SafetyItemResource">
-    <TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" QRUrl="https://localhost:44335/terminal"></TerminalView>
-</CascadingValue>
+@inject IJSRuntime JS
+
+<TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" QRUrl="https://localhost:44335/terminal" Registered=OnRegister></TerminalView>
 
 @code{
-    private System.Resources.ResourceManager SafetyItemResource = new("NBG.Visitor.WASM.Resources.SafetyItems", Assembly.GetExecutingAssembly());
+    private async Task OnRegister(byte[] pdf)
+    {
+        await JS.InvokeVoidAsync("downloadFileFromBytes", "ticket.pdf", pdf);
+    }
 }

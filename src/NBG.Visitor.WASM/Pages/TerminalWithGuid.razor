@@ -5,7 +5,9 @@
 @using System.Reflection
 @using NBG.Visitor.Blazor.Shared
 
-<TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" PreregisteredVisitGuid=Guid Language=Culture QRUrl="https://localhost:44335/terminal"></TerminalView>
+@inject IJSRuntime JS
+
+<TerminalView Style="height: 100vh; background-image: url(_content/NBG.Visitor.Blazor/images/background.jpg); background-repeat: no-repeat;" PreregisteredVisitGuid=Guid Language=Culture QRUrl="https://localhost:44335/terminal" Registered=OnRegister></TerminalView>
 
 @code{
     [ParameterAttribute]
@@ -13,4 +15,9 @@
 
     [ParameterAttribute]
     public string Culture { get; set; }
+
+    private async Task OnRegister(byte[] pdf)
+    {
+        await JS.InvokeVoidAsync("downloadFileFromBytes", "ticket.pdf", pdf);
+    }
 }
