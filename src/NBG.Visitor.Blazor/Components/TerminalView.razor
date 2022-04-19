@@ -124,7 +124,7 @@
 
         // Generate qr code and pdf
         byte[] qr = await ts.GenerateQR($"{QRUrl}{Loc.Culture.Name}/{guid}");
-        byte[] pdf = await ts.GenerateTicket(Loc["VisitorTicket"], (registeredAt > DateTime.Now ? Loc["PlannedArrival"] : Loc["Arrival"]), Loc.Culture, qr, guid.ToString(), _form.FormData.FullName, registeredAt);
+        byte[] pdf = await ts.GenerateTicket(Loc["VisitorTicket"], Loc["Arrival"], Loc.Culture, qr, guid.ToString(), _form.FormData.FullName, registeredAt);
         await Registered.InvokeAsync(pdf);
 
         // Reset form, scroll back to homepage and show popup
@@ -225,7 +225,7 @@
 #if DEBUG
             Console.WriteLine("Ended Visit");
 #else
-            await vs.UpdateVisit(visitId, new() { Status = VisitStatusDto.VISIT_OVER });
+            await vs.UpdateVisit(visitId, new() { Status = VisitStatusDto.VISIT_OVER, VisitEnd = DateTime.Now });
 #endif
         }
     }
