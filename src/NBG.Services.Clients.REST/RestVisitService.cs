@@ -29,6 +29,12 @@ namespace NBG.Visitor.Clients.REST
             HttpResponseMessage resp = await _http.PostAsJsonAsync<AddVisitCommand>($"{API_URL}/AddVisit", new() { Start = start, FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email, Company = company, ContactPerson = contactPerson, Status = status }).ConfigureAwait(false);
             return await resp.Content.ReadFromJsonAsync<VisitDto>().ConfigureAwait(false);
         }
+        
+        public async Task<VisitDto> AddPlannedVisit(DateTime? plannedStart, string firstName, string lastName, string phoneNumber, string email = null, string company = null, string contactPerson = null, VisitStatusDto status = VisitStatusDto.VISIT_PENDING)
+        {
+            HttpResponseMessage resp = await _http.PostAsJsonAsync<AddVisitCommand>($"{API_URL}/AddPlannedVisit", new() { PlannedStart = plannedStart, FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email, Company = company, ContactPerson = contactPerson, Status = status }).ConfigureAwait(false);
+            return await resp.Content.ReadFromJsonAsync<VisitDto>().ConfigureAwait(false);
+        }
 
         public async Task<List<VisitDto>> ReadAllVisits()
         {

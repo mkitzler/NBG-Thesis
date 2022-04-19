@@ -61,6 +61,15 @@ namespace NBG.Visitor.Services.DB
             return mapper.Map<VisitDto>(ret);
         }
 
+        public async Task<VisitDto> AddPlannedVisit(DateTime? plannedStart, string firstName, string lastName, string phoneNumber, string email = null, string company = null, string contactPerson = null, VisitStatusDto status = VisitStatusDto.VISIT_ACTIVE)
+        {
+            using var context = _contextFactory.CreateDbContext();
+            var visitor = new Storage.Models.Visitor() { FirstName = firstName, LastName = lastName, PhoneNumber = phoneNumber, Email = email };
+            Visit ret = await context.AddVisit(new Visit() { PlannedVisitStart = plannedStart, Visitor = visitor, ContactPerson = contactPerson, CompanyLabel = company, Status = mapper.Map<VisitStatus>(status) }).ConfigureAwait(false);
+            await context.SaveChangesAsync().ConfigureAwait(false);
+            return mapper.Map<VisitDto>(ret);
+        }
+
         public async Task<VisitDto> UpdateVisit(int Id, DateTime? start, DateTime? end, VisitStatusDto status, string contactPerson, string company, string firstName, string lastName, string phoneNumber, string email = null)
         {
             using var context = _contextFactory.CreateDbContext();

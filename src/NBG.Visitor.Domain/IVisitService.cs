@@ -11,6 +11,7 @@ namespace NBG.Visitor.Domain
         Task<VisitorDto?> ReadVisitorIfExists(string firstName, string lastName, string phoneNumber);
         #nullable disable
         Task<VisitDto> AddVisit(DateTime? start, string firstName, string lastName, string phoneNumber, string email = null, string company = null, string contactPerson = null, VisitStatusDto status = VisitStatusDto.VISIT_ACTIVE);
+        Task<VisitDto> AddPlannedVisit(DateTime? plannedStart, string firstName, string lastName, string phoneNumber, string email = null, string company = null, string contactPerson = null, VisitStatusDto status = VisitStatusDto.VISIT_PENDING);
         Task<List<VisitDto>> ReadAllVisits();
         Task<VisitDto> ReadActiveVisits();
         Task RemoveVisit(int Id);

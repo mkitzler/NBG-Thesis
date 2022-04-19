@@ -44,6 +44,12 @@ namespace NBG.Visitor.Services.REST
         {
             return await _vs.AddVisit(visit.Start, visit.FirstName, visit.LastName, visit.PhoneNumber, visit.Email, visit.Company, visit.ContactPerson, visit.Status);
         }
+        
+        [HttpPost("AddPlannedVisit")]
+        public async Task<VisitDto> AddPlannedVisit([FromBody] AddVisitCommand visit)
+        {
+            return await _vs.AddPlannedVisit(visit.PlannedStart, visit.FirstName, visit.LastName, visit.PhoneNumber, visit.Email, visit.Company, visit.ContactPerson, visit.Status);
+        }
 
         [HttpGet("ReadAllVisits")]
         public async Task<List<VisitDto>> ReadAllVisits()

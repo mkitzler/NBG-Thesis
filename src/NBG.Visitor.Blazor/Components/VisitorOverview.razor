@@ -192,7 +192,7 @@
             var visit = (VisitDto)result.Data;
             visit.Status = VisitStatusDto.VISIT_PENDING;
 
-            visit = await DataRepository.AddVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, VisitStatusDto.VISIT_PENDING);
+            visit = await DataRepository.AddPlannedVisit(visit.PlannedVisitStart, visit.Visitor.FirstName, visit.Visitor.LastName, visit.Visitor.PhoneNumber, visit.Visitor.Email, visit.CompanyLabel, visit.ContactPerson, VisitStatusDto.VISIT_PENDING);
 
             Visits.Add(visit);
 

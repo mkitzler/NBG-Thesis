@@ -10,6 +10,7 @@ namespace NBG.Visitor.Domain.Commands
     public class AddVisitCommand
     {
         public DateTime? Start { get; set; }
+        public DateTime? PlannedStart { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
