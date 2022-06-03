@@ -20,7 +20,7 @@ namespace NBG.Visitor.Blazor
             //Old
             //Bitmap logo = BitmapFromUrl("https://fiss.dev.nbg.tech:44303/_content/NBG.Visitor.Blazor/images/NBG_Icon_Red.png");
             Bitmap logo = StaticContent.NBG_Icon_Red;
-            return qrCode.GetGraphic(30, System.Drawing.Color.Black, System.Drawing.Color.White, logo, 25, 15, false).ToBytes();
+            return qrCode.GetGraphic(30, Color.Black, Color.White, logo, 25, 15, false).ToBytes();
         }
 
         // Old

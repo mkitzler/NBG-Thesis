@@ -17,24 +17,29 @@ namespace NBG.Visitor.Blazor.Components
             {
                 switch (direction)
                 {
+                    #region ...
                     case SwipeDirection.LeftToRight:
                         Previous();
                         break;
                     case SwipeDirection.RightToLeft:
                         Next();
                         break;
+                    #endregion
                 }
             }
         }
 
         /// <summary>
-        /// Gets or Sets if CustomNext or CustomPrevious should wrap around to the first / last item.
+        /// Gets or Sets if Next or Previous should wrap around to the first / last item.
         /// </summary>
         [Parameter] public bool Wrap { get; set; } = true;
 
         /// <summary>
-        /// Goes to the next item if not at the last item.
+        /// Goes to the next item.
         /// </summary>
+        /// <remarks>
+        /// Wraps only if Wrap is set to true.
+        /// </remarks>
         new public void Next()
         {
             if (Wrap || SelectedIndex < Items.Count - 1)
@@ -44,8 +49,11 @@ namespace NBG.Visitor.Blazor.Components
         }
 
         /// <summary>
-        /// Goes to the previous item if not at the first item.
+        /// Goes to the previous item.
         /// </summary>
+        /// <remarks>
+        /// Wraps only if Wrap is set to true.
+        /// </remarks>
         new public void Previous()
         {
             if (Wrap || SelectedIndex > 0)
